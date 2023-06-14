@@ -24,10 +24,4 @@
     <ProjectReference Include="..\BusinessObject\BusinessObject.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Respository\GameRepo\" />
-    <Folder Include="Respository\GameKeyRepo\" />
-    <Folder Include="Respository\OrderRepo\" />
-  </ItemGroup>
-
 </Project>
