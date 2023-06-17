@@ -4,7 +4,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="clr-namespace:GameStoreClient"
     xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-    StartupUri="MainWindow.xaml">
+    StartupUri="Views/HomeWindow.xaml">
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -12,6 +12,8 @@
                     BaseTheme="Dark"
                     PrimaryColor="BlueGrey"
                     SecondaryColor="Blue" />
+                <ResourceDictionary Source="Styles/Page.xaml" />
+                <ResourceDictionary Source="Styles/DataTemplate.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Defaults.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesign3.Defaults.xaml" />
             </ResourceDictionary.MergedDictionaries>

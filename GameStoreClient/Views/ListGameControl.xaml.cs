@@ -1,4 +1,6 @@
-﻿using System;
+﻿using GameStoreClient.ViewModels.HomeWindow;
+using GameStoreClient.ViewModels.ListGameWindow;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -13,16 +15,17 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace GameStoreClient
+namespace GameStoreClient.Views
 {
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    /// Interaction logic for ListGameControl.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class ListGameControl : UserControl
     {
-        public MainWindow()
+        public ListGameControl()
         {
             InitializeComponent();
+            this.DataContext = new ListGameVM();
         }
     }
 }

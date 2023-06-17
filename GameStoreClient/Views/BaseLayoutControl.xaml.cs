@@ -14,12 +14,12 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace GameStoreClient
+namespace GameStoreClient.Views
 {
     /// <summary>
-    /// Interaction logic for NavigationRaill.xaml
+    /// Interaction logic for BaseLayoutControl.xaml
     /// </summary>
-    public partial class NavigationRail : UserControl
+    public partial class BaseLayoutControl : UserControl
     {
         public List<RailItem> SampleList { get; set; } = new List<RailItem>()
         {
@@ -27,15 +27,16 @@ namespace GameStoreClient
             new RailItem(PackIconKind.Store,PackIconKind.StoreOutline,"Store",null),
 
         };
-        public NavigationRail()
+        public BaseLayoutControl()
         {
             InitializeComponent();
-            DataContext = this;
+            this.DataContext = this;
         }
     }
     public class RailItem
     {
-        public RailItem() { 
+        public RailItem()
+        {
         }
 
         public RailItem(PackIconKind? unselectedIcon, PackIconKind? selectedIcon, string? title, string? notification)
