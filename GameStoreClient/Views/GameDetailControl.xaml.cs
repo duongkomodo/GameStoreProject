@@ -1,6 +1,4 @@
-﻿using GameStoreClient.ViewModels;
-using MaterialDesignThemes.Wpf;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -18,18 +16,13 @@ using System.Windows.Shapes;
 namespace GameStoreClient.Views
 {
     /// <summary>
-    /// Interaction logic for BaseLayoutControl.xaml
+    /// Interaction logic for GameDetailControl.xaml
     /// </summary>
-    public partial class BaseLayoutControl : UserControl
+    public partial class GameDetailControl : UserControl
     {
-      
-        public BaseLayoutControl()
+        public GameDetailControl()
         {
             InitializeComponent();
-            this.DataContext = new BaseLayoutVM();
         }
-
-    
     }
-   
 }

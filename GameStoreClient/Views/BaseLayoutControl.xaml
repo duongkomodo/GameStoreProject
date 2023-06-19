@@ -6,8 +6,8 @@
     xmlns:local="clr-namespace:GameStoreClient.Views"
     xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    d:DesignHeight="450"
-    d:DesignWidth="800"
+    d:DesignHeight="620"
+    d:DesignWidth="1280"
     mc:Ignorable="d">
     <Grid>
         <Grid.RowDefinitions>
@@ -59,6 +59,29 @@
                     </Button>
                 </Grid>
             </materialDesign:ColorZone>
+            <StackPanel
+                Margin="10,0"
+                HorizontalAlignment="Right"
+                Orientation="Horizontal">
+                <StackPanel.Resources>
+                    <Style BasedOn="{StaticResource MaterialDesignFlatDarkBgButton}" TargetType="Button">
+                        <Setter Property="Margin" Value="5,0" />
+                    </Style>
+                </StackPanel.Resources>
+                <Button
+                    Command="{Binding MinimizeWindowCommand}"
+                    CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}}}"
+                    Content="{materialDesign:PackIcon Minimize}"
+                    IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"
+                    ToolTip="Minimize" />
+                <Button
+                    Command="{Binding CloseWindowCommand}"
+                    CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}}}"
+                    Content="{materialDesign:PackIcon Close}"
+                    IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"
+                    ToolTip="Close" />
+            </StackPanel>
+
         </Grid>
 
 
@@ -96,22 +119,29 @@
 
                 <RadioButton Command="{Binding Path=DataContext.HomeCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}" IsChecked="True">
                     <StackPanel Orientation="Horizontal">
-                        <materialDesign:PackIcon Width="20" Kind="Home" />
-                        <TextBlock Margin="4,0,0,0" Text="Home" />
+                        <materialDesign:PackIcon
+                            Width="40"
+                            Height="40"
+                            Kind="Home" />
+                        <TextBlock
+                            VerticalAlignment="Center"
+                            FontSize="20"
+                            Text="Home" />
                     </StackPanel>
                 </RadioButton>
                 <RadioButton Command="{Binding Path=DataContext.ListGameCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}">
                     <StackPanel Orientation="Horizontal">
-                        <materialDesign:PackIcon Kind="Category" />
-                        <TextBlock Margin="4,0,0,0" Text="Category" />
+                        <materialDesign:PackIcon
+                            Width="40"
+                            Height="40"
+                            Kind="Category" />
+                        <TextBlock
+                            VerticalAlignment="Center"
+                            FontSize="20"
+                            Text="Category" />
                     </StackPanel>
                 </RadioButton>
-                <RadioButton>
-                    <StackPanel Orientation="Horizontal">
-                        <materialDesign:PackIcon Kind="Smiley" />
-                        <TextBlock Margin="4,0,0,0" Text="third" />
-                    </StackPanel>
-                </RadioButton>
+
             </StackPanel>
             <ListBox
                 Grid.Row="1"

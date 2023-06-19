@@ -14,8 +14,6 @@
         Grid.Row="2"
         Grid.Column="1"
         Margin="20">
-
-
         <Grid.RowDefinitions>
             <RowDefinition Height="8*" />
             <RowDefinition Height="1*" />
@@ -30,6 +28,7 @@
             Background="{DynamicResource MaterialDesignCardBackground}"
             BorderThickness="1"
             CornerRadius="10">
+            
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="1*" />
@@ -46,7 +45,6 @@
                     TextTrimming="CharacterEllipsis" />
                 <WrapPanel Grid.Row="2">
                     <ItemsControl x:Name="TableList" ItemsSource="{Binding NewGameList, Mode=TwoWay}">
-
                         <ItemsControl.ItemsPanel>
                             <ItemsPanelTemplate>
                                 <WrapPanel Orientation="Horizontal" />
@@ -54,7 +52,6 @@
                         </ItemsControl.ItemsPanel>
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
-
                                 <Border
                                     Width="180"
                                     Margin="10"
@@ -88,7 +85,6 @@
                                             Background="ForestGreen"
                                             Style="{StaticResource MaterialDesignRaisedSecondaryLightButton}">
                                             <StackPanel Orientation="Horizontal">
-
                                                 <materialDesign:PackIcon
                                                     Margin="1,1,5,1"
                                                     Foreground="White"
@@ -106,10 +102,7 @@
                                 </Border>
                             </DataTemplate>
                         </ItemsControl.ItemTemplate>
-
                     </ItemsControl>
-
-
                 </WrapPanel>
             </Grid>
         </Border>
@@ -130,9 +123,30 @@
                     Text="Category"
                     TextDecorations="Underline"
                     TextTrimming="CharacterEllipsis" />
-            </StackPanel>
+                <Grid Width="80" Background="{DynamicResource MaterialDesignCardBackground}">
+                    <ListBox
+                        Grid.Row="2"
+                        VerticalAlignment="Top"
+                        ItemsSource="{Binding CategoryList}"
+                        SelectedIndex="0">
+                        <ListBox.ItemContainerStyle>
+                            <Style BasedOn="{StaticResource MaterialDesign3.NavigationRailListBoxItem}" TargetType="ListBoxItem">
 
+                                <Setter Property="materialDesign:NavigationRailAssist.IsTextVisible" Value="True" />
+                            </Style>
+                        </ListBox.ItemContainerStyle>
+                        <ListBox.Resources>
+                            <DataTemplate DataType=" ">
+                                <TextBlock Text="{Binding Name}" />
+                            </DataTemplate>
+                        </ListBox.Resources>
+
+                    </ListBox>
+                </Grid>
+            </StackPanel>
         </Border>
+
+
 
         <Grid Grid.Row="1" Grid.ColumnSpan="2">
             <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
@@ -156,7 +170,5 @@
                 <Button Content="{materialDesign:PackIcon Kind=PageLast}" />
             </StackPanel>
         </Grid>
-
-
     </Grid>
 </UserControl>

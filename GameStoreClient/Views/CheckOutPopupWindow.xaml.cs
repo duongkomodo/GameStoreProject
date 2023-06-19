@@ -1,6 +1,4 @@
-﻿using GameStoreClient.ViewModels;
-using MaterialDesignThemes.Wpf;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,24 +10,18 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
 using System.Windows.Shapes;
 
 namespace GameStoreClient.Views
 {
     /// <summary>
-    /// Interaction logic for BaseLayoutControl.xaml
+    /// Interaction logic for CheckOutPopupWindow.xaml
     /// </summary>
-    public partial class BaseLayoutControl : UserControl
+    public partial class CheckOutPopupWindow : Window
     {
-      
-        public BaseLayoutControl()
+        public CheckOutPopupWindow()
         {
             InitializeComponent();
-            this.DataContext = new BaseLayoutVM();
         }
-
-    
     }
-   
 }
