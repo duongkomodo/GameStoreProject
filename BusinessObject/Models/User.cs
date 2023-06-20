@@ -17,9 +17,11 @@ namespace BusinessObject.Models
         public string? PhoneNumber { get; set; } = null!;
         [EmailAddress]
         public string Email { get; set; }
+        public string Avatar { get; set; }
         public string PasswordHash { get; set; }
 
         public virtual ICollection<Order> Orders { get; set; }
+        public virtual UserCart UserCart { get; set; }
         public virtual ICollection<UserFavoriteGame> FavoriteGames { get; set; }
 
 

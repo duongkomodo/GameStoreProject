@@ -75,6 +75,16 @@ namespace DataAccess.Respository
 
             });
 
+            modelBuilder.Entity<UserCart>(entity =>
+            {
+                entity.HasKey(c => c.UserId);
+                entity.HasOne(d => d.User)
+           .WithOne(p => p.UserCart)
+           .HasConstraintName("FK_UserCart_User");
+
+            });
+
+
         }
     }
 }
