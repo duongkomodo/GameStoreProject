@@ -4,6 +4,7 @@ using DataAccess.Respository;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataAccess.Migrations
 {
     [DbContext(typeof(GameStoreContext))]
-    partial class GameStoreContextModelSnapshot : ModelSnapshot
+    [Migration("20230620050738_ver1")]
+    partial class ver1
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -76,9 +78,14 @@ namespace DataAccess.Migrations
                     b.Property<string>("TechReq")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
                     b.HasKey("GameId");
 
                     b.HasIndex("CategoryId");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Games");
                 });
@@ -108,8 +115,7 @@ namespace DataAccess.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("OrderId"), 1L, 1);
 
                     b.Property<string>("Id")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<DateTime>("OrderTime")
                         .HasColumnType("datetime2");
@@ -119,11 +125,11 @@ namespace DataAccess.Migrations
 
                     b.Property<string>("UserId")
                         .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("OrderId");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("Id");
 
                     b.ToTable("Orders");
                 });
@@ -221,22 +227,6 @@ namespace DataAccess.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers", (string)null);
-                });
-
-            modelBuilder.Entity("BusinessObject.Models.UserFavoriteGame", b =>
-                {
-                    b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<int>("GameId")
-                        .HasColumnType("int");
-
-                    b.HasKey("UserId", "GameId")
-                        .HasName("PK_UserGame_Favorite");
-
-                    b.HasIndex("GameId");
-
-                    b.ToTable("UserFavoriteGame");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -378,6 +368,10 @@ namespace DataAccess.Migrations
                         .WithMany("Games")
                         .HasForeignKey("CategoryId");
 
+                    b.HasOne("BusinessObject.Models.User", null)
+                        .WithMany("FavoriteGames")
+                        .HasForeignKey("UserId");
+
                     b.Navigation("Category");
                 });
 
@@ -396,10 +390,7 @@ namespace DataAccess.Migrations
                 {
                     b.HasOne("BusinessObject.Models.User", "User")
                         .WithMany("Orders")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
-                        .HasConstraintName("FK_Orders_Customers");
+                        .HasForeignKey("Id");
 
                     b.Navigation("User");
                 });
@@ -421,25 +412,6 @@ namespace DataAccess.Migrations
                     b.Navigation("Game");
 
                     b.Navigation("Order");
-                });
-
-            modelBuilder.Entity("BusinessObject.Models.UserFavoriteGame", b =>
-                {
-                    b.HasOne("BusinessObject.Models.Game", "Game")
-                        .WithMany("FavoriteUsers")
-                        .HasForeignKey("GameId")
-                        .IsRequired()
-                        .HasConstraintName("FK_Games_User");
-
-                    b.HasOne("BusinessObject.Models.User", "User")
-                        .WithMany("FavoriteGames")
-                        .HasForeignKey("UserId")
-                        .IsRequired()
-                        .HasConstraintName("FK_User_Games");
-
-                    b.Navigation("Game");
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -500,8 +472,6 @@ namespace DataAccess.Migrations
 
             modelBuilder.Entity("BusinessObject.Models.Game", b =>
                 {
-                    b.Navigation("FavoriteUsers");
-
                     b.Navigation("Keys");
 
                     b.Navigation("OrderDetails");

@@ -1,5 +1,6 @@
 ﻿using AutoMapper.Execution;
 using BusinessObject.Models;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -9,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace DataAccess.Respository
 {
-    public class GameStoreContext : DbContext
+    public class GameStoreContext : IdentityDbContext<User>
     {
         public GameStoreContext(DbContextOptions<GameStoreContext> options) : base(options)
         {
@@ -24,7 +25,29 @@ namespace DataAccess.Respository
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<OrderDetail>(entity =>
+            base.OnModelCreating(modelBuilder);
+
+
+            modelBuilder.Entity<UserFavoriteGame>(entity =>
+            {
+                entity.HasKey(e => new { e.UserId, e.GameId })
+                   .HasName("PK_UserGame_Favorite");
+
+           
+
+                entity.HasOne(d => d.User)
+          .WithMany(p => p.FavoriteGames)
+          .HasForeignKey(d => d.UserId)
+          .OnDelete(DeleteBehavior.ClientSetNull)
+          .HasConstraintName("FK_User_Games");
+
+                entity.HasOne(d => d.Game)
+          .WithMany(p => p.FavoriteUsers)
+          .HasForeignKey(d => d.GameId)
+          .OnDelete(DeleteBehavior.ClientSetNull)
+          .HasConstraintName("FK_Games_User");
+            });
+                modelBuilder.Entity<OrderDetail>(entity =>
             {
                 entity.HasKey(e => new { e.OrderId, e.GameId })
                     .HasName("PK_Order_Details");
