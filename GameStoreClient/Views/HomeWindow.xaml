@@ -30,7 +30,6 @@
         <local:BaseLayoutControl Grid.RowSpan="2" Grid.ColumnSpan="2" />
         <Grid Grid.Row="1" Grid.Column="1">
             <ScrollViewer VerticalScrollBarVisibility="Auto">
-
                 <ContentControl x:Name="Pages" Content="{Binding CurrentView}" />
             </ScrollViewer>
 

@@ -21,8 +21,10 @@ namespace GameStoreClient.ViewModels.NavigationWindow
 
         private void Home(object obj) => CurrentView = new HomeVM();
         private void ListGame(object obj) => CurrentView = new ListGameVM();
+        private void UserInfo(object obj) => CurrentView = new UserInfoVM();
         public ICommand HomeCommand { get; set; }
         public ICommand ListGameCommand { get; set; }
+        public ICommand UserInfoCommand { get; set; }
 
         public NavigationVM()
         {
@@ -43,6 +45,15 @@ namespace GameStoreClient.ViewModels.NavigationWindow
             }, (p) =>
             {
                 ListGame(p);
+            });
+
+            UserInfoCommand = new RelayCommand<object>((p) =>
+            {
+                return true;
+
+            }, (p) =>
+            {
+                UserInfo(p);
             });
 
 
