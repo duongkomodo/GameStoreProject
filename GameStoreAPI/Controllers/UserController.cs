@@ -1,5 +1,8 @@
 ﻿using BusinessObject.Models;
+using DataAccess.Dto;
 using DataAccess.Respository;
+using DataAccess.Respository.UserRepo;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -10,66 +13,58 @@ namespace GameStoreAPI.Controllers
     public class UserController : Controller
     {
         private readonly GameStoreContext _context;
+        private readonly IUserRepository _userRepo;
 
-        public UserController(GameStoreContext context)
+        public UserController(GameStoreContext context, IUserRepository userRepository)
         {
             _context = context;
+            _userRepo = userRepository; 
+            
         }
 
         [HttpPost]
-        public IActionResult Create(User user)
+        [AllowAnonymous]
+        public async Task<SignUpOutputDto> SignUp(SignUpInputDto model)
         {
-            User u = _context.Users.FirstOrDefault(x => x.Email == user.Email);
-            if (_context.Users.Contains(user) || u != null)
+
+            if (await _userRepo.CheckAccountExistByEmailAsync(model.Email))
             {
-                return NoContent();
+                return new SignUpOutputDto()
+                {
+                    Result = "Email already exist!" 
+                };
             }
 
-            _context.Users.Add(user);
-            try
+            if (await _userRepo.CheckAccountExistByUsernameAsync(model.FirstName))
             {
-                _context.SaveChanges();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                return NotFound();
+                return new SignUpOutputDto()
+                {
+                    Result = "Name already exist!" 
+                };
+
             }
 
-            return NoContent();
+            var result = await _userRepo.SignUpAsync(model);
+
+            return result;
         }
 
-        [HttpGet]
-        public IActionResult Read()
+        [HttpPost]
+        [AllowAnonymous]
+
+        public async Task<string> Login(SignInDto model)
         {
-            if (_context.Users == null)
+            var resultToken = await _userRepo.SignInAsync(model);
+            if (!string.IsNullOrEmpty(resultToken))
             {
-                return NotFound();
+                return resultToken;
             }
-            List<User> users = _context.Users.ToList();
-            return Ok(users);
+
+            return "Login fail!";
         }
 
-        [HttpPut]
-        public IActionResult Update(User user)
-        {
-            User entry = _context.Users.First(x => x.Email == user.Email);
-            if (entry == null)
-            {
-                return NoContent();
-            }
 
-            _context.Entry(entry).CurrentValues.SetValues(user);
-            try
-            {
-                _context.SaveChanges();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                return NotFound();
-            }
-
-            return NoContent();
-        }
+      
 
     }
 }

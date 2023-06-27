@@ -19,8 +19,6 @@
             <ColumnDefinition Width="auto" />
         </Grid.ColumnDefinitions>
         <materialDesign:Card materialDesign:ElevationAssist.Elevation="Dp24" Content="24 dp" />
-
-
         <Grid
             Grid.Column="1"
             Width="1080"
@@ -41,7 +39,6 @@
                         <ColumnDefinition Width="*" />
                         <ColumnDefinition Width="Auto" />
                     </Grid.ColumnDefinitions>
-
                     <TextBox
                         Grid.Column="1"
                         MinWidth="200"
@@ -69,12 +66,8 @@
                     </Style>
                 </StackPanel.Resources>
                 <local:CustomWindowBar />
-
             </StackPanel>
-
         </Grid>
-
-
         <Grid
             Grid.RowSpan="2"
             Width="200"
@@ -101,12 +94,10 @@
                         <Setter Property="BorderBrush" Value="{DynamicResource MaterialDesignDarkForeground}" />
                     </Style>
                     <Style TargetType="TextBlock">
-
                         <Setter Property="Foreground" Value="White" />
                         <Setter Property="TextAlignment" Value="Center" />
                     </Style>
                 </StackPanel.Resources>
-
                 <RadioButton Command="{Binding Path=DataContext.HomeCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}" IsChecked="True">
                     <StackPanel Orientation="Horizontal">
                         <materialDesign:PackIcon
@@ -131,7 +122,6 @@
                             Text="Category" />
                     </StackPanel>
                 </RadioButton>
-
             </StackPanel>
             <ListBox
                 Grid.Row="1"
@@ -144,25 +134,36 @@
                 BorderBrush="WhiteSmoke"
                 BorderThickness="0,0.5,0,0">
                 <StackPanel Height="40" Orientation="Horizontal">
-                    <Button
-                        Width="34"
-                        Height="34"
-                        Margin="12,0,12,0"
-                        Background="LightCyan"
-                        Command="{Binding Path=DataContext.UserInfoCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}"
-                        IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"
-                        Style="{StaticResource MaterialDesignFloatingActionButton}"
-                        ToolTip="MaterialDesignFloatingActionButton">
-                        <materialDesign:PackIcon
-                            Width="20"
-                            Height="20"
-                            Kind="User" />
-                    </Button>
-
-                    <TextBlock
-                        Foreground="White"
-                        Style="{StaticResource MaterialDesignBody1TextBlock}"
-                        Text="User" />
+                    <StackPanel Orientation="Horizontal" Visibility="Collapsed">
+                        <Button
+                            Width="34"
+                            Height="34"
+                            Margin="12,0,12,0"
+                            Background="LightCyan"
+                            Command="{Binding Path=DataContext.UserInfoCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}"
+                            IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"
+                            Style="{StaticResource MaterialDesignFloatingActionButton}"
+                            ToolTip="MaterialDesignFloatingActionButton">
+                            <materialDesign:PackIcon
+                                Width="20"
+                                Height="20"
+                                Kind="User" />
+                        </Button>
+                        <TextBlock
+                            Foreground="White"
+                            Style="{StaticResource MaterialDesignBody1TextBlock}"
+                            Text="User" />
+                    </StackPanel>
+                    <StackPanel VerticalAlignment="Center">
+                        <Button
+                            Width="86"
+                            Height="28"
+                            Margin="5,0"
+                            Background="Transparent"
+                            Content="Login/Sign Up"
+                            FontSize="8"
+                            Foreground="White" />
+                    </StackPanel>
 
                     <materialDesign:Badged VerticalAlignment="Center" Badge="3">
                         <Button
@@ -180,7 +181,6 @@
                                 Kind="Cart" />
                         </Button>
                     </materialDesign:Badged>
-
                 </StackPanel>
             </Border>
         </Grid>

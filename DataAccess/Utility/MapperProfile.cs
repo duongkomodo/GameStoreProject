@@ -9,15 +9,15 @@ using System.Threading.Tasks;
 
 namespace DataAccess.Utility
 {
-    public class Mapper : Profile
+    public class MapperProfile : Profile
     {
-        public Mapper()
+        public MapperProfile()
         {
-
+            CreateMap<User, UserDto>().ReverseMap();
 
         }
 
-        protected internal Mapper(string profileName) : base(profileName)
+        protected internal MapperProfile(string profileName) : base(profileName)
         {
         }
 

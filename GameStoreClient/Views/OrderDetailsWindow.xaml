@@ -54,7 +54,7 @@
                                 VerticalAlignment="Center"
                                 FontSize="14"
                                 Foreground="White"
-                                Text="Go Back" />
+                                Text="Back" />
                         </StackPanel>
                     </Button>
                     <TextBlock
