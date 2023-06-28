@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using DataAccess.Dto;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,24 +20,22 @@ namespace DataAccess.Respository.CategoryRepo
             _mapper = mapper;
         }
 
-        public bool AddCategory(CategoryDto model)
-        {
-            throw new NotImplementedException();
-        }
 
-        public List<CategoryDto>? LoadAllCategories()
+       public async Task<List<CategoryDto>>? LoadAllCategories()
         {
-            throw new NotImplementedException();
-        }
+            try
+            {
+                var list = await _context.Categories.ToListAsync();
+                var result = _mapper.Map<List<CategoryDto>>(list);
 
-        public bool RemoveCategory(int cId)
-        {
-            throw new NotImplementedException();
-        }
 
-        public bool UpdateCategory(CategoryDto model)
-        {
-            throw new NotImplementedException();
+                return result;
+            }
+            catch (Exception ex)
+            {
+
+                throw new Exception(ex.Message);
+            }
         }
     }
 }

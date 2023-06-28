@@ -8,8 +8,52 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Views\Assets\GameImg\ACValhalla.jpg" />
+    <None Remove="Views\Assets\GameImg\CODMW2.jpg" />
+    <None Remove="Views\Assets\GameImg\CyberPunk2077.jpg" />
+    <None Remove="Views\Assets\GameImg\Fallout4.jpg" />
+    <None Remove="Views\Assets\GameImg\GTAV.jpg" />
+    <None Remove="Views\Assets\GameImg\RedDead2.jpg" />
+    <None Remove="Views\Assets\GameImg\RimWorld.jpg" />
+    <None Remove="Views\Assets\GameImg\SeaOfThieves.jpg" />
+    <None Remove="Views\Assets\GameImg\share-re.png" />
+    <None Remove="Views\Assets\GameImg\StardewValley.jpg" />
+    <None Remove="Views\Assets\GameImg\StarField.jpg" />
+    <None Remove="Views\Assets\GameImg\Stellaris.jpg" />
+    <None Remove="Views\Assets\GameImg\Terraria.jpg" />
+    <None Remove="Views\Assets\GameImg\ThanTrung.jpg" />
+    <None Remove="Views\Assets\GameImg\TheElderScrollsOnline.jpg" />
+    <None Remove="Views\Assets\GameImg\TheWitcher3.jpg" />
+    <None Remove="Views\Assets\GameImg\TotalWarWARHAMMER3.jpg" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="MaterialDesignThemes" Version="4.9.0" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\DataAccess\DataAccess.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Views\Assets\GameImg\ACValhalla.jpg" />
+    <Resource Include="Views\Assets\GameImg\CODMW2.jpg" />
+    <Resource Include="Views\Assets\GameImg\CyberPunk2077.jpg" />
+    <Resource Include="Views\Assets\GameImg\Fallout4.jpg" />
+    <Resource Include="Views\Assets\GameImg\GTAV.jpg" />
+    <Resource Include="Views\Assets\GameImg\RedDead2.jpg" />
+    <Resource Include="Views\Assets\GameImg\RimWorld.jpg" />
+    <Resource Include="Views\Assets\GameImg\SeaOfThieves.jpg" />
+    <Resource Include="Views\Assets\GameImg\share-re.png" />
+    <Resource Include="Views\Assets\GameImg\StardewValley.jpg" />
+    <Resource Include="Views\Assets\GameImg\StarField.jpg" />
+    <Resource Include="Views\Assets\GameImg\Stellaris.jpg" />
+    <Resource Include="Views\Assets\GameImg\Terraria.jpg" />
+    <Resource Include="Views\Assets\GameImg\ThanTrung.jpg" />
+    <Resource Include="Views\Assets\GameImg\TheElderScrollsOnline.jpg" />
+    <Resource Include="Views\Assets\GameImg\TheWitcher3.jpg" />
+    <Resource Include="Views\Assets\GameImg\TotalWarWARHAMMER3.jpg" />
   </ItemGroup>
 
 </Project>

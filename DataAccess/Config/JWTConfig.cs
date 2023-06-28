@@ -1,13 +1,16 @@
 ﻿using DataAccess.Dto;
+using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
-namespace GameStoreAPI.Config
+namespace DataAccess.Config
 {
-    public class JWTConfig
+    public static class JWTConfig
     {
+        public static string AccessToken = null!;   
+
         public static string CreateToken(UserDto user, IConfiguration configuration)
         {
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["JWT:Secret"]));
@@ -26,5 +29,17 @@ namespace GameStoreAPI.Config
                 );
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
+
+        //public static RefreshToken GenerateRefreshToken()
+        //{
+        //    var refreshToken = new RefreshToken
+        //    {
+        //        Token = Convert.ToBase64String(RandomNumberGenerator.GetBytes(64)),
+        //        Expires = DateTime.Now.AddMinutes(30),
+        //        Created = DateTime.Now
+        //    };
+        //    return refreshToken;
+        //}
+
     }
 }

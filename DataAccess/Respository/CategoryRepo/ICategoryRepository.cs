@@ -9,9 +9,7 @@ namespace DataAccess.Respository.CategoryRepo
 {
     public interface ICategoryRepository
     {
-        List<CategoryDto>? LoadAllCategories();
-        bool AddCategory(CategoryDto model);
-        bool UpdateCategory(CategoryDto model);
-        bool RemoveCategory(int cId);
+        Task<List<CategoryDto>>? LoadAllCategories();
+ 
     }
 }

@@ -28,8 +28,7 @@ namespace BusinessObject.Models
         {
             get; set;
         }
-        [Column(TypeName = "decimal(18, 2)")]
-        public decimal Price
+        public float Price
         {
             get; set;
         }

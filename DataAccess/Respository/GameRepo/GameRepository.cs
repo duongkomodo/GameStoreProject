@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using DataAccess.Dto;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,14 +20,74 @@ namespace DataAccess.Respository.GameRepo
             _mapper = mapper;
         }
 
-        public bool AddGame(GameDto model)
+
+
+        public async Task<List<DisplayGameDto>>? LoadAllGames()
         {
-            throw new NotImplementedException();
+            try
+            {
+                var list = await _context.Games.ToListAsync();
+                var result = _mapper.Map<List<DisplayGameDto>>(list);
+
+                return result;
+            }
+            catch (Exception ex)
+            {
+
+                throw new Exception(ex.Message);
+            }
+    
         }
 
-        public List<GameDto>? LoadAllGames()
+        public async Task<List<DisplayGameDto>>? LoadRecentAddedGames()
         {
-            throw new NotImplementedException();
+            try
+            {
+                var list = await _context.Games.Include(x=>x.Category).OrderByDescending(x => x.GameId).Take(6).ToListAsync();
+                var result = _mapper.Map<List<DisplayGameDto>>(list);
+
+
+                return result;
+            }
+            catch (Exception ex)
+            {
+
+                throw new Exception(ex.Message);
+            }
+
+        }
+
+        public async Task<DisplayGameDto>? LoadMostBuyGame()
+        {
+            try
+            {
+                var list =  await _context.Games.GroupBy(game => game.GameId, game => game.OrderDetails,
+                    (key, game) => new { GameId = key, Count = game.Count() }).ToListAsync();
+
+
+                var gameId =  list.OrderByDescending(x=>x.Count).Select(x=>x.GameId).FirstOrDefault();
+
+
+                if (gameId == -1)
+                {
+                    return null;
+                }
+
+                var getGame = _context.Games.Where(x=>x.GameId== gameId).FirstOrDefault();
+                var result = new DisplayGameDto();
+                if (getGame != null)
+                {
+                    result = _mapper.Map<DisplayGameDto>(getGame);
+                }
+
+                return result;
+            }
+            catch (Exception ex)
+            {
+
+                throw new Exception(ex.Message);
+            }
+
         }
 
         public bool RemoveGame(int gId)
@@ -34,9 +95,6 @@ namespace DataAccess.Respository.GameRepo
             throw new NotImplementedException();
         }
 
-        public bool UpdateGame(GameDto model)
-        {
-            throw new NotImplementedException();
-        }
+
     }
 }

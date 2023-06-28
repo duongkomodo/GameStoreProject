@@ -1,6 +1,11 @@
 using AutoMapper;
 using BusinessObject.Models;
 using DataAccess.Respository;
+using DataAccess.Respository.CategoryRepo;
+using DataAccess.Respository.GameKeyRepo;
+using DataAccess.Respository.GameRepo;
+using DataAccess.Respository.OrderDetailRepo;
+using DataAccess.Respository.OrderRepo;
 using DataAccess.Respository.UserRepo;
 using DataAccess.Utility;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -17,6 +22,8 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
+
+builder.Services.AddCors();
 builder.Services.AddSwaggerGen(options => {
 options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
 {
@@ -55,6 +62,11 @@ builder.Services.AddIdentity<User, IdentityRole>(options => {
     .AddDefaultTokenProviders();
 //Life cycle DI: AddSingleton(), AddTransient(), AddScope()
 builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IGameRepository, GameRepository>();
+builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
+builder.Services.AddScoped<IGameKeyRepository, GameKeyRepository>();
+builder.Services.AddScoped<IOrderDetailRepository, OrderDetailRepository>();
+builder.Services.AddScoped<IOrderRepository, OrderRepository>();
 
 
 builder.Services.AddAutoMapper(typeof(DataAccess.Utility.MapperProfile));
@@ -80,6 +92,16 @@ builder.Services.AddAuthentication(options => {
             Encoding.UTF8.GetBytes(builder.Configuration["JWT:SecureKey"])),
 
     };
+    options.Events = new JwtBearerEvents
+    {
+        OnAuthenticationFailed = context => {
+            if (context.Exception.GetType() == typeof(SecurityTokenExpiredException))
+            {
+                context.Response.Headers.Add("IS-TOKEN-EXPIRED", "true");
+            }
+            return Task.CompletedTask;
+        }
+    };
 });
 
 
@@ -94,7 +116,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-app.UseCors();
+app.UseCors(opt => opt.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod());
 app.UseAuthorization();
 app.UseAuthentication();
 

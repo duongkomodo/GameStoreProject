@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using BusinessObject.Models;
+using DataAccess.Config;
 using DataAccess.Dto;
 using DataAccess.Utility;
 using Microsoft.AspNetCore.Identity;
@@ -113,21 +114,10 @@ namespace DataAccess.Respository.UserRepo
        
             //Map user with dto
             var userDto = _mapper.Map<UserDto>(user);
-            var authClaims = new List<Claim> {
-                new Claim(ClaimTypes.Email, userDto.Email),
-                new Claim(ClaimTypes.Name, userDto.FirstName + " " + userDto.LastName),
-                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-            };
-            var authenKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JWT:SecureKey"]));
-            var token = new JwtSecurityToken(
-                issuer: _configuration["JWT:ValidIssuer"],
-                audience: _configuration["JWT:ValidAudience"],
-                expires: DateTime.Now.AddMinutes(10),
-                notBefore: DateTime.Now,
-                claims: authClaims,
-                signingCredentials: new SigningCredentials(authenKey, SecurityAlgorithms.HmacSha512Signature)
-                 );
-            return new JwtSecurityTokenHandler().WriteToken(token);
+
+            var token = JWTConfig.CreateToken(userDto, _configuration);
+
+            return token;
         }
     }
 }

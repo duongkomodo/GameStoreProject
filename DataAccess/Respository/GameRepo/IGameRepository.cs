@@ -9,9 +9,8 @@ namespace DataAccess.Respository.GameRepo
 {
     public interface IGameRepository
     {
-        List<GameDto>? LoadAllGames();
-        bool AddGame(GameDto model);
-        bool UpdateGame(GameDto model);
-        bool RemoveGame(int gId);
+        Task<List<DisplayGameDto>>? LoadAllGames();
+        Task<List<DisplayGameDto>>? LoadRecentAddedGames();
+        Task<DisplayGameDto>? LoadMostBuyGame();
     }
 }

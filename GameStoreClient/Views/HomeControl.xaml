@@ -32,11 +32,16 @@
 
                 <Image
                     Grid.Column="2"
-                    Source="Assets\GameImg\share-re.png"
-                    Stretch="Fill" />
+                    Cursor="Hand"
+                    Source="{Binding MostBuyGames.Image}"
+                    Stretch="UniformToFill">
+                    <Image.InputBindings>
+                        <MouseBinding Command="{Binding ApplyFilter, Mode=OneTime}" Gesture="LeftClick" />
+                    </Image.InputBindings>
+                </Image>
                 <StackPanel>
                     <TextBlock
-                        Margin="5"
+                        Margin="10,10,0,0"
                         FontSize="14"
                         FontWeight="Bold"
                         Foreground="White"
@@ -50,16 +55,16 @@
                         FontWeight="Bold"
                         Foreground="#dd163b"
                         Style="{StaticResource MaterialDesignOverlineTextBlock}"
-                        Text="RESIDENT EVIL 4 REMAKE VIỆT HOÁ"
+                        Text="{Binding MostBuyGames.Name}"
                         TextTrimming="CharacterEllipsis"
-                        ToolTip="RESIDENT EVIL 4 REMAKE VIỆT HOÁ" />
+                        ToolTip="{Binding MostBuyGames.Name}" />
                     <TextBlock
                         Height="100"
                         Margin="10"
                         FontSize="16"
                         Foreground="White"
                         Style="{StaticResource MaterialDesignBodySmallTextBlock}"
-                        Text="Giới thiệu game Resident Evil 4 Remake Tải game Resident Evil 4 Remake miễn phí link Google Drive tốc độ cao tại Daominhha.com | Free download Resident Evil 4 Remake full PC Sống sót chỉ là khởi đầu. Sáu năm ..."
+                        Text="{Binding MostBuyGames.Description}"
                         TextTrimming="CharacterEllipsis"
                         TextWrapping="WrapWithOverflow" />
                     <Grid Height="60">
@@ -72,7 +77,7 @@
                             Grid.ColumnSpan="2"
                             Margin="8"
                             VerticalAlignment="Center"
-                            Content="345.000 VND"
+                            Content="{Binding MostBuyGames.Price, StringFormat={}{0}đ}"
                             FontSize="12"
                             Foreground="White"
                             IconBackground="{DynamicResource PrimaryHueDarkBrush}"
@@ -116,7 +121,7 @@
                     <RowDefinition Height="7*" />
                 </Grid.RowDefinitions>
                 <TextBlock
-                    Margin="5"
+                    Margin="10,10,0,0"
                     FontSize="14"
                     FontWeight="Bold"
                     Foreground="White"
@@ -125,10 +130,10 @@
                     TextDecorations="Underline"
                     TextTrimming="CharacterEllipsis" />
                 <WrapPanel Grid.Row="2">
-                    <ItemsControl x:Name="TableList" ItemsSource="{Binding NewGameList, Mode=TwoWay}">
+                    <ItemsControl x:Name="TableList" ItemsSource="{Binding RecentAddGames, Mode=TwoWay}">
                         <ItemsControl.ItemsPanel>
                             <ItemsPanelTemplate>
-                                <WrapPanel Orientation="Horizontal" />
+                                <WrapPanel HorizontalAlignment="Center" Orientation="Horizontal" />
                             </ItemsPanelTemplate>
                         </ItemsControl.ItemsPanel>
                         <ItemsControl.ItemTemplate>
@@ -139,19 +144,29 @@
                                     Background="#FF455A64"
                                     CornerRadius="10">
                                     <StackPanel>
-                                        <Image Source="{Binding Image}" />
+
+                                        <Image
+                                            Width="180"
+                                            Height="130"
+                                            Source="{Binding Image}"
+                                            Stretch="Fill"
+                                            ToolTip="Hand">
+                                            <Image.InputBindings>
+                                                <MouseBinding Command="{Binding ApplyFilter, Mode=OneTime}" Gesture="LeftClick" />
+                                            </Image.InputBindings>
+                                        </Image>
                                         <TextBlock
-                                            Margin="2"
+                                            Margin="10"
+                                            Cursor="Hand"
                                             FontSize="14"
                                             FontWeight="Bold"
                                             Foreground="#dd163b"
-                                            Style="{StaticResource MaterialDesignOverlineTextBlock}"
                                             Text="{Binding Name}"
                                             TextTrimming="CharacterEllipsis"
-                                            ToolTip=" " />
+                                            ToolTip="{Binding Name}" />
                                         <materialDesign:Chip
                                             VerticalAlignment="Center"
-                                            Content="345.000 VND"
+                                            Content="{Binding Price, StringFormat={}{0}đ}"
                                             FontSize="12"
                                             Foreground="White"
                                             IconBackground="{DynamicResource PrimaryHueDarkBrush}"
@@ -184,6 +199,7 @@
                             </DataTemplate>
                         </ItemsControl.ItemTemplate>
                     </ItemsControl>
+
                 </WrapPanel>
             </Grid>
         </Border>

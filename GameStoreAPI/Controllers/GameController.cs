@@ -1,5 +1,7 @@
 ﻿using BusinessObject.Models;
+using DataAccess.Dto;
 using DataAccess.Respository;
+using DataAccess.Respository.GameRepo;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -9,101 +11,48 @@ namespace GameStoreAPI.Controllers
     [Route("api/[controller]/[action]")]
     public class GameController : Controller
     {
-        private readonly GameStoreContext _context;
+        private readonly IGameRepository _gameRepo;
 
-        public GameController(GameStoreContext context)
+        public GameController(IGameRepository gameRepo)
         {
-            _context = context;
+            _gameRepo = gameRepo;
         }
 
-        [HttpPost]
-        public IActionResult Create(Game game)
-        {
-            Game g = _context.Games.FirstOrDefault(x => x.GameId == game.GameId);
-            if (_context.Games.Contains(game) || g != null)
-            {
-                return NoContent();
-            }
 
-            _context.Games.Add(game);
+        [HttpGet]
+        public async Task<IActionResult> LoadRecentAddedGames()
+        {
             try
             {
-                _context.SaveChanges();
+                return StatusCode(200, await _gameRepo.LoadRecentAddedGames());
             }
-            catch (DbUpdateConcurrencyException)
+            catch (ApplicationException ae)
             {
-                return NotFound();
+                return StatusCode(400, ae.Message);
             }
-
-            return NoContent();
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
         }
 
         [HttpGet]
-        public IActionResult Read()
+        public async Task<IActionResult> LoadAllGames()
         {
-            if (_context.Games == null)
-            {
-                return NotFound();
-            }
-            List<Game> games = _context.Games.ToList();
-            return Ok(games);
-        }
-
-        [HttpGet("{gid}")]
-        public IActionResult ReadDetail(int gid)
-        {
-            if (_context.Games == null)
-            {
-                return NotFound();
-            }
-            Game game = _context.Games.FirstOrDefault(x => x.GameId == gid);
-            return Ok(game);
-        }
-
-        [HttpPut]
-        public IActionResult Update(Game game)
-        {
-            Game entry = _context.Games.First(x => x.GameId == game.GameId);
-            if (entry == null)
-            {
-                return NoContent();
-            }
-
-            _context.Entry(entry).CurrentValues.SetValues(game);
             try
             {
-                _context.SaveChanges();
+                return StatusCode(200, await _gameRepo.LoadAllGames());
             }
-            catch (DbUpdateConcurrencyException)
+            catch (ApplicationException ae)
             {
-                return NotFound();
+                return StatusCode(400, ae.Message);
             }
-
-            return NoContent();
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
         }
 
-        [HttpDelete("{gid}")]
-        public IActionResult Delete(int gid)
-        {
-            Game game = new Game();
-            if (gid == null)
-            {
-                game = _context.Games.LastOrDefault();
-            }
-            else
-            {
-                game = _context.Games.FirstOrDefault(x => x.GameId == gid);
-            }
 
-            if (_context.Games == null || game == null)
-            {
-                return NotFound();
-            }
-
-            _context.GameKeys.RemoveRange(_context.GameKeys.Where(x => x.GameId.Equals(gid)));
-            _context.Games.Remove(game);
-            _context.SaveChanges();
-            return NoContent();
-        }
     }
 }
