@@ -24,7 +24,7 @@ namespace GameStoreClient.Views
         public CustomWindowBar()
         {
             InitializeComponent();
-           
+           this.DataContext = new CustomWindowBarVM();
         }
     }
 }

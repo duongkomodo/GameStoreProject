@@ -23,6 +23,8 @@ namespace BusinessObject.Models
         public bool IsAvailable { get; set; } = false;
         public int Quantity { get; set; }
         public float Price { get; set; }
+        [Range(0, 100)]
+        public int Discount { get; set; }
         public virtual ICollection<GameKey> Keys { get; set; }
         public int? CategoryId { get; set; }
         public virtual Category? Category { get; set; }  // category the game belongs to

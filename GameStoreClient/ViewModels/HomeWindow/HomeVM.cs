@@ -37,7 +37,18 @@ namespace GameStoreClient.ViewModels.HomeWindow
                 _mostBuyGame = value; OnPropertyChanged();
             }
         }
-
+        private bool _isListGameEmpty;
+        public bool IsListGameEmpty
+        {
+            get
+            {
+                return _isListGameEmpty;
+            }
+            set
+            {
+                _isListGameEmpty = RecentAddGames == null || RecentAddGames.Count == 0; OnPropertyChanged();
+            }
+        }
 
         #endregion
         #region Function
@@ -48,7 +59,8 @@ namespace GameStoreClient.ViewModels.HomeWindow
             if (result != null)
             {
                 MostBuyGames = result.First();
-                RecentAddGames = new ObservableCollection<DisplayGameDto>(result.Skip(1));
+                
+                RecentAddGames = new ObservableCollection<DisplayGameDto>(result.Take(5));
             }
         }
         #endregion

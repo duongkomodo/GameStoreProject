@@ -8,6 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Views\Assets\btn_google_sign-in.png" />
     <None Remove="Views\Assets\GameImg\ACValhalla.jpg" />
     <None Remove="Views\Assets\GameImg\CODMW2.jpg" />
     <None Remove="Views\Assets\GameImg\CyberPunk2077.jpg" />
@@ -37,6 +38,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Resource Include="Views\Assets\btn_google_sign-in.png" />
     <Resource Include="Views\Assets\GameImg\ACValhalla.jpg" />
     <Resource Include="Views\Assets\GameImg\CODMW2.jpg" />
     <Resource Include="Views\Assets\GameImg\CyberPunk2077.jpg" />

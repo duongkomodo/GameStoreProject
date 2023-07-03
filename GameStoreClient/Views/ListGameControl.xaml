@@ -6,7 +6,7 @@
     xmlns:dataAccess="clr-namespace:DataAccess.Dto;assembly=DataAccess"
     xmlns:local="clr-namespace:GameStoreClient.Views"
     xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:listgamewindow="clr-namespace:GameStoreClient.ViewModels.ListGameWindow" d:DataContext="{d:DesignInstance Type=listgamewindow:ListGameVM}"
     d:DesignHeight="720"
     d:DesignWidth="1100"
     Style="{StaticResource Page_Style}"
@@ -52,7 +52,7 @@
                     Grid.Row="2"
                     HorizontalAlignment="Left"
                     VerticalAlignment="Top">
-                    <ItemsControl x:Name="TableList" ItemsSource="{Binding AllGames, Mode=TwoWay}">
+                    <ItemsControl x:Name="TableList" ItemsSource="{Binding AllGames, UpdateSourceTrigger=PropertyChanged}">
                         <ItemsControl.ItemsPanel>
                             <ItemsPanelTemplate>
                                 <WrapPanel Orientation="Horizontal" />
@@ -69,9 +69,10 @@
                                         <Image
                                             Width="180"
                                             Height="130"
+                                            Cursor="Hand"
                                             Source="{Binding Image}"
                                             Stretch="Fill"
-                                            ToolTip="Hand">
+                                            ToolTip="{Binding Name}">
                                             <Image.InputBindings>
                                                 <MouseBinding Command="{Binding ApplyFilter, Mode=OneTime}" Gesture="LeftClick" />
                                             </Image.InputBindings>
@@ -141,15 +142,16 @@
                     Text="Category"
                     TextDecorations="Underline"
                     TextTrimming="CharacterEllipsis" />
-                <Grid Width="80" Background="{DynamicResource MaterialDesignCardBackground}">
+                <Grid HorizontalAlignment="Left" Background="{DynamicResource MaterialDesignCardBackground}">
                     <ListBox
                         Grid.Row="2"
                         VerticalAlignment="Top"
                         ItemsSource="{Binding AllCategories}"
-                        SelectedIndex="0">
+                        SelectedIndex="0"
+                        SelectedItem="{Binding SelectCategory}">
                         <ListBox.ItemContainerStyle>
-                            <Style BasedOn="{StaticResource MaterialDesign3.NavigationRailListBoxItem}" TargetType="ListBoxItem">
-
+                            <Style BasedOn="{StaticResource MaterialDesignNavigationAccentListBoxItem}" TargetType="ListBoxItem">
+                                <Setter Property="Width" Value="400" />
                                 <Setter Property="materialDesign:NavigationRailAssist.IsTextVisible" Value="True" />
                             </Style>
                         </ListBox.ItemContainerStyle>
@@ -188,15 +190,15 @@
                         <Setter Property="Height" Value="30" />
                     </Style>
                 </StackPanel.Resources>
-                <Button Content="{materialDesign:PackIcon Kind=PageFirst}" />
+                <Button Content="{materialDesign:PackIcon Kind=PageFirst}"  Command="{Binding OnFirstCommand}" />
                 <Button Command="{Binding OnPreviousCommand}" Content="{materialDesign:PackIcon Kind=ChevronLeft}" />
                 <TextBox
                     Width="40"
                     Height="30"
                     Margin="0,-7,1,0"
                     FontSize="20"
-                    IsReadOnly="True"
                     Foreground="White"
+                    IsReadOnly="True"
                     Text="{Binding AllGames.CurrentPage}"
                     TextAlignment="Center" />
                 <TextBlock
@@ -218,7 +220,7 @@
                     Text="{Binding AllGames.PageCount}"
                     TextAlignment="Center" />
                 <Button Command="{Binding OnNextCommand}" Content="{materialDesign:PackIcon Kind=ChevronRight}" />
-                <Button Content="{materialDesign:PackIcon Kind=PageLast}" />
+                <Button Command="{Binding OnLastCommand}" Content="{materialDesign:PackIcon Kind=PageLast}" />
             </StackPanel>
         </Grid>
     </Grid>

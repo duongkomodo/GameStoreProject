@@ -15,7 +15,7 @@ namespace GameStoreClient.ViewModels
         public ICommand MinimizeWindowCommand { get; set; }
         public CustomWindowBarVM()
         {
-            CloseWindowCommand = new RelayCommand<UserControl>((p) => { return p == null ? false : true; }, (p) => {
+            CloseWindowCommand = new RelayCommand<UserControl>((p) => { return p != null; }, (p) => {
                 FrameworkElement window = getWindowParent(p);
                 var w = window as Window;
                 if (w != null)
@@ -24,7 +24,7 @@ namespace GameStoreClient.ViewModels
                 }
             }
             );
-            MinimizeWindowCommand = new RelayCommand<UserControl>((p) => { return p == null ? false : true; }, (p) => {
+            MinimizeWindowCommand = new RelayCommand<UserControl>((p) => { return p != null; }, (p) => {
                 FrameworkElement window = getWindowParent(p);
                 var w = window as Window;
                 if (w != null)

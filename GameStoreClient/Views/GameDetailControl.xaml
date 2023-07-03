@@ -10,8 +10,8 @@
     d:DesignWidth="1050"
     Style="{StaticResource Page_Style}"
     mc:Ignorable="d">
-    <Grid Background="{DynamicResource MaterialDesignCardBackground}">
-        <Grid Margin="20">
+    <Grid Margin="20" Background="{DynamicResource MaterialDesignCardBackground}">
+        <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="320" />
                 <RowDefinition Height="1*" />
@@ -22,7 +22,7 @@
                     <ColumnDefinition />
                 </Grid.ColumnDefinitions>
                 <Border Margin="20">
-                    <Image Source="D:\.Net Project\API Net Core\GameStoreProject\GameStoreClient\IMG\OIP.jpg" />
+                    <Image Source="{Binding Game.Image}" />
                 </Border>
                 <StackPanel Grid.Column="1">
                     <StackPanel.Resources>
@@ -35,31 +35,24 @@
                     <TextBlock
                         FontSize="30"
                         FontWeight="Bold"
-                        Text="CyberPunk 2077" />
+                        Text="{Binding Game.Name}" />
                     <StackPanel Orientation="Horizontal">
-
                         <TextBlock FontSize="16" Text="Status: " />
-                        <TextBlock FontSize="16" Text="Avaialble " />
+                        <TextBlock FontSize="16" Text="{Binding Game.IsAvailable}" />
                     </StackPanel>
                     <StackPanel Orientation="Horizontal">
                         <TextBlock FontSize="16" Text="Category: " />
-                        <TextBlock FontSize="16" Text="Action " />
+                        <TextBlock FontSize="16" Text="{Binding Game.Category.Name}" />
                     </StackPanel>
                     <TextBlock
                         FontSize="20"
                         FontWeight="Bold"
                         Text="10.000đ " />
                     <StackPanel Orientation="Horizontal">
-                        <Grid Margin="0,0,10,0">
-                            <Line
-                                Width="70"
-                                VerticalAlignment="Center"
-                                Stretch="Fill"
-                                Stroke="WhiteSmoke"
-                                StrokeThickness="1"
-                                X1="1" />
-                            <TextBlock FontSize="18" Text="20.000đ " />
-                        </Grid>
+                        <TextBlock
+                            FontSize="18"
+                            Text="20.000đ "
+                            TextDecorations="Strikethrough" />
                         <Border
                             Height="30"
                             Background="#DC3545"
@@ -79,7 +72,6 @@
                         <StackPanel.Resources>
                             <Style BasedOn="{StaticResource MaterialDesignPaperButton}" TargetType="Button">
                                 <Setter Property="Margin" Value="10" />
-
                             </Style>
                         </StackPanel.Resources>
                         <Button Height="40" Background="Green">
@@ -118,15 +110,13 @@
                 <Grid.RowDefinitions>
                     <RowDefinition Height="1*" />
                     <RowDefinition Height="1*" />
-
                 </Grid.RowDefinitions>
                 <Grid.Resources>
                     <Style BasedOn="{StaticResource MaterialDesignTitleMediumTextBlock}" TargetType="TextBlock">
                         <Setter Property="Margin" Value="20" />
                         <Setter Property="Foreground" Value="White" />
-                        <Setter Property="FontSize" Value="30" />
+                        <Setter Property="FontSize" Value="20" />
                     </Style>
-
                 </Grid.Resources>
                 <TextBlock Text="Description:" />
                 <TextBlock
@@ -142,7 +132,6 @@
                     Grid.Column="2"
                     Background="{DynamicResource MaterialDesignLightSeparatorBackground}"
                     Text="" />
-
             </Grid>
         </Grid>
     </Grid>

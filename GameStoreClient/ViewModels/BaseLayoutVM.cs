@@ -10,6 +10,9 @@ namespace GameStoreClient.ViewModels
 {
   public  class BaseLayoutVM : BaseVM
     {
+
+
+
         public ICommand CloseWindowCommand { get; set; }
         public ICommand MinimizeWindowCommand { get; set; }
         public BaseLayoutVM()

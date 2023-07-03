@@ -16,7 +16,9 @@ namespace DataAccess.Dto
         public string? Image { get; set; }
         public bool IsAvailable { get; set; } = false;
         public int Quantity { get; set; }
+        public string Discount { get; set; }
         public string Price { get; set; }
+        public string SalePrice { get; set; }
         public int? CategoryId { get; set; }
         public virtual CategoryDto? Category { get; set; }  // category the game belongs to
     }

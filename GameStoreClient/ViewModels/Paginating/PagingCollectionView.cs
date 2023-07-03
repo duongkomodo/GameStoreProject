@@ -78,6 +78,28 @@ namespace GameStoreClient.ViewModels.Paginating
             var offset = index % (this._itemsPerPage);
             return this._innerList[this.StartIndex + offset];
         }
+
+        public override bool MoveCurrentToFirst()
+        {
+            if (this._currentPage > 1)
+            {
+                this.CurrentPage = 1;
+            }
+            this.Refresh();
+            return true;
+        }
+
+        public override bool MoveCurrentToLast()
+        {
+            if (this._currentPage < this.PageCount)
+            {
+                this.CurrentPage = this.PageCount;
+            }
+            this.Refresh();
+            return true;
+          
+        }
+
         public void MoveToNextPage()
         {
             if (this._currentPage < this.PageCount)
@@ -86,6 +108,8 @@ namespace GameStoreClient.ViewModels.Paginating
             }
             this.Refresh();
         }
+
+
         public void MoveToPreviousPage() 
         {
             if (this._currentPage > 1)

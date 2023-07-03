@@ -25,7 +25,6 @@ namespace GameStoreClient.Views
         public ListGameControl()
         {
             InitializeComponent();
-            this.DataContext = new ListGameVM();
         }
     }
 }

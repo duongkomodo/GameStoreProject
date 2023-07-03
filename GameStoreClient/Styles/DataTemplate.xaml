@@ -2,11 +2,14 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:homeView="clr-namespace:GameStoreClient.ViewModels.HomeWindow"
-    xmlns:vm="clr-namespace:GameStoreClient.ViewModels"
     xmlns:listgameView="clr-namespace:GameStoreClient.ViewModels.ListGameWindow"
-    xmlns:view="clr-namespace:GameStoreClient.Views">
+    xmlns:view="clr-namespace:GameStoreClient.Views"
+    xmlns:vm="clr-namespace:GameStoreClient.ViewModels">
     <DataTemplate DataType="{x:Type homeView:HomeVM}">
         <view:HomeControl />
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type vm:GameDetailVM}">
+        <view:GameDetailControl />
     </DataTemplate>
     <DataTemplate DataType="{x:Type listgameView:ListGameVM}">
         <view:ListGameControl />
