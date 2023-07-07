@@ -26,5 +26,10 @@ namespace GameStoreClient.Views
             InitializeComponent();
            this.DataContext = new CustomWindowBarVM();
         }
+
+        private void UserControl_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+
+        }
     }
 }

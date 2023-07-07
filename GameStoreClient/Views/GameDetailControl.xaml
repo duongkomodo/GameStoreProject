@@ -22,7 +22,20 @@
                     <ColumnDefinition />
                 </Grid.ColumnDefinitions>
                 <Border Margin="20">
-                    <Image Source="{Binding Game.Image}" />
+                    <Grid>
+                        <Image Source="{Binding Game.Image}" Stretch="Fill" />
+                        <TextBox
+                            VerticalContentAlignment="Center"
+                            Background="White"
+                            FontSize="50"
+                            FontWeight="Black"
+                            Foreground="Red"
+                            IsReadOnly="True"
+                            OpacityMask="#B2000000"
+                            Text="Out of Stock"
+                            TextAlignment="Center"
+                            Visibility="Hidden" />
+                    </Grid>
                 </Border>
                 <StackPanel Grid.Column="1">
                     <StackPanel.Resources>
@@ -37,33 +50,72 @@
                         FontWeight="Bold"
                         Text="{Binding Game.Name}" />
                     <StackPanel Orientation="Horizontal">
+
                         <TextBlock FontSize="16" Text="Status: " />
-                        <TextBlock FontSize="16" Text="{Binding Game.IsAvailable}" />
+                        <Grid>
+                            <Grid.Resources>
+                                <Style BasedOn="{StaticResource MaterialDesignBodyMediumTextBlock}" TargetType="{x:Type TextBlock}">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding Game.IsAvailable}" Value="True">
+                                            <Setter Property="Foreground" Value="#FF45BB34" />
+                                            <Setter Property="Text" Value="Available" />
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding SelectedTable.Status}" Value="False">
+                                            <Setter Property="Foreground" Value="#FFCB5E5E" />
+                                            <Setter Property="Text" Value="Out of stock" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Grid.Resources>
+                            <TextBlock
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                FontSize="16" />
+
+                        </Grid>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal">
                         <TextBlock FontSize="16" Text="Category: " />
-                        <TextBlock FontSize="16" Text="{Binding Game.Category.Name}" />
+                        <TextBlock
+                            FontSize="16"
+                            Foreground="Yellow"
+                            Text="{Binding Game.Category.Name}" />
                     </StackPanel>
                     <TextBlock
                         FontSize="20"
                         FontWeight="Bold"
-                        Text="10.000đ " />
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock
-                            FontSize="18"
-                            Text="20.000đ "
-                            TextDecorations="Strikethrough" />
-                        <Border
-                            Height="30"
-                            Background="#DC3545"
-                            CornerRadius="5">
+                        Text="{Binding Game.SalePrice}" />
+
+                    <Grid>
+                        <Grid.Resources>
+
+                            <Style TargetType="{x:Type StackPanel}">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding Game.Discount}" Value="0%">
+                                        <Setter Property="Visibility" Value="Collapsed" />
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+
+                        </Grid.Resources>
+                        <StackPanel Name="stpDiscount" Orientation="Horizontal">
                             <TextBlock
-                                VerticalAlignment="Center"
-                                FontSize="14"
-                                Text="55%"
-                                TextAlignment="Center" />
-                        </Border>
-                    </StackPanel>
+                                FontSize="18"
+                                Text="{Binding Game.Price}"
+                                TextDecorations="Strikethrough" />
+                            <Border
+                                Height="30"
+                                Background="#DC3545"
+                                CornerRadius="5">
+                                <TextBlock
+                                    VerticalAlignment="Center"
+                                    FontSize="14"
+                                    Text="{Binding Game.Discount}"
+                                    TextAlignment="Center" />
+                            </Border>
+                        </StackPanel>
+
+                    </Grid>
                     <Border
                         Margin="20,0"
                         BorderBrush="White"
@@ -80,25 +132,11 @@
                                     Width="20"
                                     Height="20"
                                     VerticalAlignment="Center"
-                                    Kind="CreditCard" />
-                                <TextBlock FontSize="10" Text="Buy Now" />
-                            </StackPanel>
-                        </Button>
-                        <Button
-                            Width="120"
-                            Height="40"
-                            Background="Transparent"
-                            BorderBrush="White"
-                            BorderThickness="1">
-                            <StackPanel Orientation="Horizontal">
-                                <materialDesign:PackIcon
-                                    Width="20"
-                                    Height="20"
-                                    VerticalAlignment="Center"
                                     Kind="Cart" />
                                 <TextBlock FontSize="10" Text="Add To Cart" />
                             </StackPanel>
                         </Button>
+
                     </StackPanel>
                 </StackPanel>
             </Grid>
@@ -122,7 +160,10 @@
                 <TextBlock
                     Grid.Column="1"
                     Background="{DynamicResource MaterialDesignLightSeparatorBackground}"
-                    Text="" />
+                    FontSize="16"
+                    FontWeight="Normal"
+                    Text="{Binding Game.Description}"
+                    TextWrapping="Wrap" />
                 <TextBlock
                     Grid.Row="1"
                     Text="Technical Requirements: "
@@ -131,7 +172,10 @@
                     Grid.Row="1"
                     Grid.Column="2"
                     Background="{DynamicResource MaterialDesignLightSeparatorBackground}"
-                    Text="" />
+                    FontSize="16"
+                    FontWeight="Normal"
+                    Text="{Binding Game.TechReq}"
+                    TextWrapping="Wrap" />
             </Grid>
         </Grid>
     </Grid>

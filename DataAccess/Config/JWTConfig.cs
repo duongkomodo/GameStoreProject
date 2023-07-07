@@ -13,7 +13,7 @@ namespace DataAccess.Config
 
         public static string CreateToken(UserDto user, IConfiguration configuration)
         {
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["JWT:Secret"]));
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["JWT:SecureKey"]));
             var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
             var claims = new[]
             {
@@ -21,8 +21,8 @@ namespace DataAccess.Config
                 new Claim(ClaimTypes.Name, user.LastName + " " + user.FirstName),
             };
             var token = new JwtSecurityToken(
-                issuer: configuration["JWT:Issuer"],
-                audience: configuration["JWT:Audience"],
+                issuer: configuration["JWT:ValidIssuer"],
+                audience: configuration["JWT:ValidAudience"],
                 claims,
                 expires: DateTime.Now.AddMinutes(15),
                 signingCredentials: credentials

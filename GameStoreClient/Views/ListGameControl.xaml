@@ -4,9 +4,12 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:dataAccess="clr-namespace:DataAccess.Dto;assembly=DataAccess"
+    xmlns:listgamewindow="clr-namespace:GameStoreClient.ViewModels.ListGameWindow"
     xmlns:local="clr-namespace:GameStoreClient.Views"
     xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:listgamewindow="clr-namespace:GameStoreClient.ViewModels.ListGameWindow" d:DataContext="{d:DesignInstance Type=listgamewindow:ListGameVM}"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:visibilityConvert="clr-namespace:GameStoreClient.ViewModels.Paginating"
+    d:DataContext="{d:DesignInstance Type=listgamewindow:ListGameVM}"
     d:DesignHeight="720"
     d:DesignWidth="1100"
     Style="{StaticResource Page_Style}"
@@ -60,35 +63,66 @@
                         </ItemsControl.ItemsPanel>
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
+                                <DataTemplate.Resources>
+                                    <visibilityConvert:BoolToVisibilityConverter
+                                        x:Key="BoolToHiddenConverter"
+                                        FalseValue="Visible"
+                                        TrueValue="Collapsed" />
+                                </DataTemplate.Resources>
                                 <Border
                                     Width="180"
                                     Margin="10"
                                     Background="#FF455A64"
                                     CornerRadius="10">
                                     <StackPanel>
-                                        <Image
-                                            Width="180"
-                                            Height="130"
-                                            Cursor="Hand"
-                                            Source="{Binding Image}"
-                                            Stretch="Fill"
-                                            ToolTip="{Binding Name}">
-                                            <Image.InputBindings>
-                                                <MouseBinding Command="{Binding ApplyFilter, Mode=OneTime}" Gesture="LeftClick" />
-                                            </Image.InputBindings>
-                                        </Image>
+                                        <Grid>
+                                            <Image
+                                                Width="180"
+                                                Height="130"
+                                                Cursor="Hand"
+                                                Source="{Binding Image}"
+                                                Stretch="Fill"
+                                                ToolTip="{Binding Name}">
+                                                <Image.InputBindings>
+                                                    <MouseBinding
+                                                        Command="{Binding Path=DataContext.GameDetailCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}"
+                                                        CommandParameter="{Binding}"
+                                                        Gesture="LeftClick" />
+                                                </Image.InputBindings>
+                                            </Image>
+                                            <TextBox
+                                                VerticalContentAlignment="Center"
+                                                Background="White"
+                                                FontSize="20"
+                                                FontWeight="Black"
+                                                Foreground="Red"
+                                                IsReadOnly="True"
+                                                OpacityMask="#B2000000"
+                                                Text="Out of Stock"
+                                                TextAlignment="Center"
+                                                Visibility="{Binding IsAvailable, Converter={StaticResource BoolToHiddenConverter}}" />
+                                        </Grid>
+
                                         <TextBlock
                                             Margin="10"
+                                            Cursor="Hand"
                                             FontSize="14"
                                             FontWeight="Bold"
                                             Foreground="#dd163b"
                                             Style="{StaticResource MaterialDesignOverlineTextBlock}"
                                             Text="{Binding Name}"
                                             TextTrimming="CharacterEllipsis"
-                                            ToolTip="{Binding Name}" />
+                                            ToolTip="{Binding Name}">
+                                            <TextBlock.InputBindings>
+                                                <MouseBinding
+                                                    Command="{Binding Path=DataContext.GameDetailCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}"
+                                                    CommandParameter="{Binding}"
+                                                    Gesture="LeftClick" />
+                                            </TextBlock.InputBindings>
+                                        </TextBlock>
                                         <materialDesign:Chip
                                             VerticalAlignment="Center"
-                                            Content="{Binding Price, StringFormat={}{0}đ}"
+                                            Content="{Binding SalePrice}"
                                             FontSize="12"
                                             Foreground="White"
                                             IconBackground="{DynamicResource PrimaryHueDarkBrush}"
@@ -101,6 +135,7 @@
                                             Grid.Column="2"
                                             Margin="5"
                                             Background="ForestGreen"
+                                            IsEnabled="{Binding IsAvailable}"
                                             Style="{StaticResource MaterialDesignRaisedSecondaryLightButton}">
                                             <StackPanel Orientation="Horizontal">
                                                 <materialDesign:PackIcon
@@ -190,7 +225,7 @@
                         <Setter Property="Height" Value="30" />
                     </Style>
                 </StackPanel.Resources>
-                <Button Content="{materialDesign:PackIcon Kind=PageFirst}"  Command="{Binding OnFirstCommand}" />
+                <Button Command="{Binding OnFirstCommand}" Content="{materialDesign:PackIcon Kind=PageFirst}" />
                 <Button Command="{Binding OnPreviousCommand}" Content="{materialDesign:PackIcon Kind=ChevronLeft}" />
                 <TextBox
                     Width="40"

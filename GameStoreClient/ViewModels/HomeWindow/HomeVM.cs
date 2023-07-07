@@ -46,7 +46,7 @@ namespace GameStoreClient.ViewModels.HomeWindow
             }
             set
             {
-                _isListGameEmpty = RecentAddGames == null || RecentAddGames.Count == 0; OnPropertyChanged();
+                _isListGameEmpty = MostBuyGames != null; OnPropertyChanged();
             }
         }
 

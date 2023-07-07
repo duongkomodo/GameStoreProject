@@ -179,7 +179,7 @@
                             Height="30"
                             Margin="50,0,0,0"
                             Background="WhiteSmoke"
-                            IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"
+                            Command="{Binding Path=DataContext.ViewCartCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"
                             Style="{StaticResource MaterialDesignFlatSecondaryDarkButton}"
                             ToolTip="Icon">
                             <materialDesign:PackIcon

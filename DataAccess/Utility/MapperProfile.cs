@@ -14,7 +14,10 @@ namespace DataAccess.Utility
         public MapperProfile()
         {
             CreateMap<User, UserDto>().ReverseMap();
-            CreateMap<Game, DisplayGameDto>().ForMember(dest => dest.Price, act => act.MapFrom(src => src.Price.ToString("N0")));
+            CreateMap<Game, DisplayGameDto>()
+                .ForMember(dest => dest.Price, act => act.MapFrom(src => src.Price.ToString("#,##0đ")))
+                .ForMember(dest => dest.Discount, act => act.MapFrom(src => src.Discount.ToString("0%")))
+                .ForMember(dest => dest.SalePrice, act => act.MapFrom(src => (src.Price - (src.Price * src.Discount)/100).ToString("#,##0đ")));
             CreateMap<Category, CategoryDto>().ReverseMap();
 
         }

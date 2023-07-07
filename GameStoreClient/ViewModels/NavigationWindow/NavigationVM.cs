@@ -42,8 +42,20 @@ namespace GameStoreClient.ViewModels.NavigationWindow
         public ICommand GameDetailCommand { get; set; }
         public ICommand UserInfoCommand { get; set; }
         public ICommand LoginSignUpCommand { get; set; }
+        public ICommand ViewCartCommand { get; set; }
         public NavigationVM()
         {
+            ViewCartCommand = new RelayCommand<object>((p) =>
+            {
+                return true;
+            }, (p) =>
+            {
+                CartWindow cart = new CartWindow();
+                cart.Show();
+                
+
+            });
+
             GameDetailCommand = new RelayCommand<object>((p) =>
             {
                 return true;

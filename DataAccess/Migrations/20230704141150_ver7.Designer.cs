@@ -4,6 +4,7 @@ using DataAccess.Respository;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataAccess.Migrations
 {
     [DbContext(typeof(GameStoreContext))]
-    partial class GameStoreContextModelSnapshot : ModelSnapshot
+    [Migration("20230704141150_ver7")]
+    partial class ver7
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -40,7 +42,7 @@ namespace DataAccess.Migrations
 
                     b.HasKey("CategoryId");
 
-                    b.ToTable("Categories", (string)null);
+                    b.ToTable("Categories");
                 });
 
             modelBuilder.Entity("BusinessObject.Models.Game", b =>
@@ -83,7 +85,7 @@ namespace DataAccess.Migrations
 
                     b.HasIndex("CategoryId");
 
-                    b.ToTable("Games", (string)null);
+                    b.ToTable("Games");
                 });
 
             modelBuilder.Entity("BusinessObject.Models.GameKey", b =>
@@ -99,7 +101,7 @@ namespace DataAccess.Migrations
 
                     b.HasKey("GameId", "Code");
 
-                    b.ToTable("GameKeys", (string)null);
+                    b.ToTable("GameKeys");
                 });
 
             modelBuilder.Entity("BusinessObject.Models.Order", b =>
@@ -128,7 +130,7 @@ namespace DataAccess.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Orders", (string)null);
+                    b.ToTable("Orders");
                 });
 
             modelBuilder.Entity("BusinessObject.Models.OrderDetail", b =>
@@ -150,7 +152,7 @@ namespace DataAccess.Migrations
 
                     b.HasIndex("GameId");
 
-                    b.ToTable("OrderDetails", (string)null);
+                    b.ToTable("OrderDetails");
                 });
 
             modelBuilder.Entity("BusinessObject.Models.User", b =>
@@ -247,7 +249,7 @@ namespace DataAccess.Migrations
 
                     b.HasIndex("GameId");
 
-                    b.ToTable("UserCart", (string)null);
+                    b.ToTable("UserCart");
                 });
 
             modelBuilder.Entity("BusinessObject.Models.UserFavoriteGame", b =>
@@ -263,7 +265,7 @@ namespace DataAccess.Migrations
 
                     b.HasIndex("GameId");
 
-                    b.ToTable("UserFavoriteGame", (string)null);
+                    b.ToTable("UserFavoriteGame");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>

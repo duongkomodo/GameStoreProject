@@ -1,23 +1,21 @@
-﻿ using System;
+﻿using BusinessObject.Models;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BusinessObject.Models
+namespace DataAccess.Dto
 {
-    public class UserCart
+    public class UserCartDto
     {
-
-        [ForeignKey("UserId")]
         public User User { get; set; }
         public string UserId { get; set; }
         public int GameId
         {
             get; set;
         }
-        [ForeignKey("GameId")]
         public virtual Game Game
         {
             get; set;
@@ -31,6 +29,6 @@ namespace BusinessObject.Models
             get; set;
         }
 
+
     }
 }
-

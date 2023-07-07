@@ -14,6 +14,9 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Text;
+using static WebPWrecover.Services.EmailSender;
+using WebPWrecover.Services;
+using Microsoft.AspNetCore.Identity.UI.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -42,7 +45,7 @@ options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
                     Type= ReferenceType.SecurityScheme,
                 }
             },
-            new List<string>()
+        new List<string>()
         }
 
     });
@@ -57,6 +60,10 @@ builder.Services.AddIdentity<User, IdentityRole>(options => {
     options.Password.RequireNonAlphanumeric = false;
     options.Password.RequireUppercase = true;
     options.Password.RequireLowercase = false;
+
+    options.SignIn.RequireConfirmedEmail = true;
+
+   
 }).AddRoles<IdentityRole>()
     .AddEntityFrameworkStores<GameStoreContext>()
     .AddDefaultTokenProviders();
@@ -67,6 +74,8 @@ builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
 builder.Services.AddScoped<IGameKeyRepository, GameKeyRepository>();
 builder.Services.AddScoped<IOrderDetailRepository, OrderDetailRepository>();
 builder.Services.AddScoped<IOrderRepository, OrderRepository>();
+builder.Services.AddTransient<IEmailSender, EmailSender>();
+
 
 
 builder.Services.AddAutoMapper(typeof(DataAccess.Utility.MapperProfile));
@@ -103,7 +112,6 @@ builder.Services.AddAuthentication(options => {
         }
     };
 });
-
 
 var app = builder.Build();
 
