@@ -1,4 +1,5 @@
-﻿using System;
+﻿using GameStoreClient.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -19,9 +20,10 @@ namespace GameStoreClient.Views
     /// </summary>
     public partial class CartWindow : Window
     {
-        public CartWindow()
+        public CartWindow(UserCartVM cartVM)
         {
             InitializeComponent();
+            this.DataContext = cartVM;
         }
     }
 }

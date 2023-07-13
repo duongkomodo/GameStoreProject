@@ -16,6 +16,6 @@ namespace DataAccess.Respository.UserRepo
         Task<string> ConfirmEmailAsync(string userId, string code);
         Task<string> ResendConfirmEmailAsync(SignInDto model);
         Task<bool> IsEmailConfirmedAsync(SignInDto model);
-        Task LogoutAsync();
+        Task<string> LogoutAsync();
     }
 }

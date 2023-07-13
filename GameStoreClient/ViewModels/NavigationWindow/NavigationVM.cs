@@ -12,13 +12,19 @@ using System.Transactions;
 using System.Windows.Input;
 namespace GameStoreClient.ViewModels.NavigationWindow
 {
-    public class NavigationVM: BaseVM
+    public class NavigationVM : BaseVM
     {
         private object _currentView;
         public object CurrentView
         {
             get { return _currentView; }
             set { _currentView = value; OnPropertyChanged(); }
+        }
+        private UserCartVM _cartVM;
+        public UserCartVM CartVM
+        {
+            get { return _cartVM; }
+            set { _cartVM = value; OnPropertyChanged(); }
         }
         private string _searchBarQuery;
         public string SearchBarQuery
@@ -29,7 +35,7 @@ namespace GameStoreClient.ViewModels.NavigationWindow
             }
             set
             {
-                 _searchBarQuery = value; OnPropertyChanged();
+                _searchBarQuery = value; OnPropertyChanged();
             }
         }
         private void Home(object obj) => CurrentView = new HomeVM();
@@ -43,19 +49,29 @@ namespace GameStoreClient.ViewModels.NavigationWindow
         public ICommand UserInfoCommand { get; set; }
         public ICommand LoginSignUpCommand { get; set; }
         public ICommand ViewCartCommand { get; set; }
+        public ICommand AddToCartCommand { get; set; }
         public NavigationVM()
         {
+            CartVM = new UserCartVM();
+            AddToCartCommand = new RelayCommand<object>((p) =>
+            {
+                return true;
+            }, (p) =>
+            {
+                if (p != null)
+                {
+                    var game = p as DisplayGameDto;
+                    CartVM.AddToCart(game);
+                }
+            });
             ViewCartCommand = new RelayCommand<object>((p) =>
             {
                 return true;
             }, (p) =>
             {
-                CartWindow cart = new CartWindow();
-                cart.Show();
-                
-
+                CartWindow cart = new CartWindow(CartVM);
+                cart.ShowDialog();
             });
-
             GameDetailCommand = new RelayCommand<object>((p) =>
             {
                 return true;
@@ -96,7 +112,7 @@ namespace GameStoreClient.ViewModels.NavigationWindow
             SearchGameCommand = new RelayCommand<object>((p) =>
             {
                 return true;
-            },  (p) =>
+            }, (p) =>
             {
                 if (CurrentView.GetType() != typeof(ListGameVM))
                 {

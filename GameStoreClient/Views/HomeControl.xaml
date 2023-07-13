@@ -92,24 +92,18 @@
                             <ColumnDefinition Width="1.5*" />
                             <ColumnDefinition Width="1*" />
                         </Grid.ColumnDefinitions>
-                        <materialDesign:Chip
-                            Grid.ColumnSpan="2"
-                            Margin="8"
+                        <TextBlock
+                            Margin="10"
                             VerticalAlignment="Center"
-                            Content="{Binding MostBuyGames.SalePrice, StringFormat={}{0}đ}"
-                            FontSize="12"
+                            FontSize="14"
                             Foreground="White"
-                            IconBackground="{DynamicResource PrimaryHueDarkBrush}"
-                            IconForeground="{DynamicResource PrimaryHueDarkForegroundBrush}">
-                            <materialDesign:Chip.Icon>
-                                <materialDesign:PackIcon Kind="AttachMoney" />
-                            </materialDesign:Chip.Icon>
-                        </materialDesign:Chip>
+                            Text="{Binding MostBuyGames.SalePrice, StringFormat={}{0:n0}đ}" />
                         <Button
                             Grid.Column="2"
+                            CommandParameter="{Binding MostBuyGames}"
                             Margin="5"
                             Background="ForestGreen"
-                            DataContext="{Binding MostBuyGames}"
+                            Command="{Binding Path=DataContext.AddToCartCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}"
                             Style="{StaticResource MaterialDesignRaisedSecondaryLightButton}">
                             <StackPanel Orientation="Horizontal">
                                 <materialDesign:PackIcon
@@ -216,21 +210,18 @@
                                                     Gesture="LeftClick" />
                                             </TextBlock.InputBindings>
                                         </TextBlock>
-                                        <materialDesign:Chip
+                                        <TextBlock
+                                            Margin="10"
                                             VerticalAlignment="Center"
-                                            Content="{Binding SalePrice}"
-                                            FontSize="12"
+                                            FontSize="14"
                                             Foreground="White"
-                                            IconBackground="{DynamicResource PrimaryHueDarkBrush}"
-                                            IconForeground="{DynamicResource PrimaryHueDarkForegroundBrush}">
-                                            <materialDesign:Chip.Icon>
-                                                <materialDesign:PackIcon Kind="AttachMoney" />
-                                            </materialDesign:Chip.Icon>
-                                        </materialDesign:Chip>
+                                            Text="{Binding SalePrice, StringFormat={}{0:n0}đ}" />
                                         <Button
                                             Grid.Column="2"
                                             Margin="5"
                                             Background="ForestGreen"
+                                            CommandParameter="{Binding}"
+                                            Command="{Binding Path=DataContext.AddToCartCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}"
                                             IsEnabled="{Binding IsAvailable}"
                                             Style="{StaticResource MaterialDesignRaisedSecondaryLightButton}">
                                             <StackPanel Orientation="Horizontal">

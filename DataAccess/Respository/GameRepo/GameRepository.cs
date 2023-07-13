@@ -26,7 +26,7 @@ namespace DataAccess.Respository.GameRepo
         {
             try
             {
-                var list = await _context.Games.ToListAsync();
+                var list = await _context.Games.Include(x=>x.Category).ToListAsync();
                 var result = _mapper.Map<List<DisplayGameDto>>(list);
 
                 return result;

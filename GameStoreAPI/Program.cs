@@ -51,22 +51,22 @@ options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
     });
 });
 
-builder.Services.AddDbContext<GameStoreContext>(options => {
-    options.UseSqlServer(builder.Configuration.GetConnectionString("ConnectString"));
-});
-builder.Services.AddIdentity<User, IdentityRole>(options => {
-    options.Password.RequireDigit = false;
-    options.Password.RequiredLength = 6;
-    options.Password.RequireNonAlphanumeric = false;
-    options.Password.RequireUppercase = true;
-    options.Password.RequireLowercase = false;
+    builder.Services.AddDbContext<GameStoreContext>(options => {
+        options.UseSqlServer(builder.Configuration.GetConnectionString("ConnectString"));
+    });
+    builder.Services.AddIdentity<User, IdentityRole>(options => {
+        options.Password.RequireDigit = false;
+        options.Password.RequiredLength = 6;
+        options.Password.RequireNonAlphanumeric = false;
+        options.Password.RequireUppercase = true;
+        options.Password.RequireLowercase = false;
 
-    options.SignIn.RequireConfirmedEmail = true;
+        options.SignIn.RequireConfirmedEmail = true;
 
    
-}).AddRoles<IdentityRole>()
-    .AddEntityFrameworkStores<GameStoreContext>()
-    .AddDefaultTokenProviders();
+    }).AddRoles<IdentityRole>()
+        .AddEntityFrameworkStores<GameStoreContext>()
+        .AddDefaultTokenProviders();
 //Life cycle DI: AddSingleton(), AddTransient(), AddScope()
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IGameRepository, GameRepository>();

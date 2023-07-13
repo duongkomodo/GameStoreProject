@@ -163,6 +163,7 @@ namespace DataAccess.Respository.UserRepo
                 var userDto = _mapper.Map<UserDto>(user);
                 var token = JWTConfig.CreateToken(userDto, _configuration);
                 result.Messages.Add(token);
+                result.Status= "Success";
             }
             else
             {
@@ -192,7 +193,7 @@ namespace DataAccess.Respository.UserRepo
         {
             // Get User
             await _signInManager.SignOutAsync();
-            return "Success";
+            return "Success"; 
            
         }
 

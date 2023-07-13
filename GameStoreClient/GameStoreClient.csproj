@@ -26,6 +26,7 @@
     <None Remove="Views\Assets\GameImg\TheElderScrollsOnline.jpg" />
     <None Remove="Views\Assets\GameImg\TheWitcher3.jpg" />
     <None Remove="Views\Assets\GameImg\TotalWarWARHAMMER3.jpg" />
+    <None Remove="Views\Assets\R.png" />
   </ItemGroup>
 
   <ItemGroup>
@@ -56,6 +57,9 @@
     <Resource Include="Views\Assets\GameImg\TheElderScrollsOnline.jpg" />
     <Resource Include="Views\Assets\GameImg\TheWitcher3.jpg" />
     <Resource Include="Views\Assets\GameImg\TotalWarWARHAMMER3.jpg" />
+    <Resource Include="Views\Assets\R.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
   </ItemGroup>
 
 </Project>

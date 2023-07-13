@@ -60,9 +60,9 @@
                                             <Setter Property="Foreground" Value="#FF45BB34" />
                                             <Setter Property="Text" Value="Available" />
                                         </DataTrigger>
-                                        <DataTrigger Binding="{Binding SelectedTable.Status}" Value="False">
-                                            <Setter Property="Foreground" Value="#FFCB5E5E" />
-                                            <Setter Property="Text" Value="Out of stock" />
+                                        <DataTrigger Binding="{Binding Game.IsAvailable}" Value="False">
+                                            <Setter Property="Foreground" Value="Red" />
+                                            <Setter Property="Text" Value="Out Of Stock" />
                                         </DataTrigger>
                                     </Style.Triggers>
                                 </Style>
@@ -82,16 +82,16 @@
                             Text="{Binding Game.Category.Name}" />
                     </StackPanel>
                     <TextBlock
-                        FontSize="20"
-                        FontWeight="Bold"
-                        Text="{Binding Game.SalePrice}" />
+                        VerticalAlignment="Center"
+                        Foreground="White"
+                        Text="{Binding Game.SalePrice, StringFormat={}{0:n0}đ}" />
 
                     <Grid>
                         <Grid.Resources>
 
                             <Style TargetType="{x:Type StackPanel}">
                                 <Style.Triggers>
-                                    <DataTrigger Binding="{Binding Game.Discount}" Value="0%">
+                                    <DataTrigger Binding="{Binding Game.Discount}" Value="0">
                                         <Setter Property="Visibility" Value="Collapsed" />
                                     </DataTrigger>
                                 </Style.Triggers>
@@ -100,8 +100,9 @@
                         </Grid.Resources>
                         <StackPanel Name="stpDiscount" Orientation="Horizontal">
                             <TextBlock
-                                FontSize="18"
-                                Text="{Binding Game.Price}"
+                                VerticalAlignment="Center"
+                                Foreground="White"
+                                Text="{Binding Game.Price, StringFormat={}{0:n0}đ}"
                                 TextDecorations="Strikethrough" />
                             <Border
                                 Height="30"
@@ -110,7 +111,7 @@
                                 <TextBlock
                                     VerticalAlignment="Center"
                                     FontSize="14"
-                                    Text="{Binding Game.Discount}"
+                                    Text="{Binding Game.Discount, StringFormat={}{0}%}"
                                     TextAlignment="Center" />
                             </Border>
                         </StackPanel>
@@ -126,7 +127,11 @@
                                 <Setter Property="Margin" Value="10" />
                             </Style>
                         </StackPanel.Resources>
-                        <Button Height="40" Background="Green">
+                        <Button
+                            Height="40"
+                            Background="Green"
+                            Command="{Binding Path=DataContext.AddToCartCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}"
+                            CommandParameter="{Binding Game}">
                             <StackPanel Orientation="Horizontal">
                                 <materialDesign:PackIcon
                                     Width="20"
@@ -157,25 +162,33 @@
                     </Style>
                 </Grid.Resources>
                 <TextBlock Text="Description:" />
-                <TextBlock
+                <Border
                     Grid.Column="1"
-                    Background="{DynamicResource MaterialDesignLightSeparatorBackground}"
-                    FontSize="16"
-                    FontWeight="Normal"
-                    Text="{Binding Game.Description}"
-                    TextWrapping="Wrap" />
+                    Margin="10"
+                    Background="{DynamicResource MaterialDesignLightSeparatorBackground}">
+                    <TextBlock
+                        FontSize="16"
+                        FontWeight="Normal"
+                        Text="{Binding Game.Description}"
+                        TextWrapping="Wrap" />
+                </Border>
+
                 <TextBlock
                     Grid.Row="1"
                     Text="Technical Requirements: "
                     TextWrapping="Wrap" />
-                <TextBlock
+                <Border
                     Grid.Row="1"
                     Grid.Column="2"
-                    Background="{DynamicResource MaterialDesignLightSeparatorBackground}"
-                    FontSize="16"
-                    FontWeight="Normal"
-                    Text="{Binding Game.TechReq}"
-                    TextWrapping="Wrap" />
+                    Margin="10"
+                    Background="{DynamicResource MaterialDesignLightSeparatorBackground}">
+                    <TextBlock
+                        FontSize="16"
+                        FontWeight="Normal"
+                        Text="{Binding Game.TechReq}"
+                        TextWrapping="Wrap" />
+                </Border>
+
             </Grid>
         </Grid>
     </Grid>

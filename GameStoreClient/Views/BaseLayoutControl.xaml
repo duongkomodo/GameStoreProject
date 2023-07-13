@@ -85,7 +85,7 @@
             <Image
                 HorizontalAlignment="Center"
                 VerticalAlignment="Center"
-                Source="D:\.Net Project\API Net Core\GameStoreProject\GameStoreClient\IMG\R.png" />
+                Source="\Views\Assets\R.png" />
             <StackPanel
                 Grid.Row="1"
                 Width="200"
@@ -110,6 +110,7 @@
                         <materialDesign:PackIcon
                             Width="40"
                             Height="40"
+                            Margin="0,0,10,0"
                             Kind="Home" />
                         <TextBlock
                             VerticalAlignment="Center"
@@ -122,11 +123,12 @@
                         <materialDesign:PackIcon
                             Width="40"
                             Height="40"
-                            Kind="Category" />
+                            Margin="0,0,10,0"
+                            Kind="Gamepad" />
                         <TextBlock
                             VerticalAlignment="Center"
                             FontSize="20"
-                            Text="Category" />
+                            Text="Games" />
                     </StackPanel>
                 </RadioButton>
             </StackPanel>
@@ -173,7 +175,7 @@
                             Foreground="White" />
                     </StackPanel>
 
-                    <materialDesign:Badged VerticalAlignment="Center" Badge="3">
+                    <materialDesign:Badged VerticalAlignment="Center" Badge="{Binding Path=DataContext.CartVM.UserCart.Count, UpdateSourceTrigger=PropertyChanged, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}">
                         <Button
                             Width="50"
                             Height="30"

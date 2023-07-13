@@ -120,21 +120,18 @@
                                                     Gesture="LeftClick" />
                                             </TextBlock.InputBindings>
                                         </TextBlock>
-                                        <materialDesign:Chip
+                                        <TextBlock
+                                            Margin="10"
                                             VerticalAlignment="Center"
-                                            Content="{Binding SalePrice}"
-                                            FontSize="12"
+                                            FontSize="14"
                                             Foreground="White"
-                                            IconBackground="{DynamicResource PrimaryHueDarkBrush}"
-                                            IconForeground="{DynamicResource PrimaryHueDarkForegroundBrush}">
-                                            <materialDesign:Chip.Icon>
-                                                <materialDesign:PackIcon Kind="AttachMoney" />
-                                            </materialDesign:Chip.Icon>
-                                        </materialDesign:Chip>
+                                            Text="{Binding SalePrice, StringFormat={}{0:n0}đ}" />
                                         <Button
                                             Grid.Column="2"
                                             Margin="5"
                                             Background="ForestGreen"
+                                            Command="{Binding Path=DataContext.AddToCartCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}"
+                                            CommandParameter="{Binding}"
                                             IsEnabled="{Binding IsAvailable}"
                                             Style="{StaticResource MaterialDesignRaisedSecondaryLightButton}">
                                             <StackPanel Orientation="Horizontal">

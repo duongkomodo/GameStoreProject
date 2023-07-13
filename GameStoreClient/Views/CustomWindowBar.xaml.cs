@@ -26,9 +26,21 @@ namespace GameStoreClient.Views
             InitializeComponent();
            this.DataContext = new CustomWindowBarVM();
         }
-
+        FrameworkElement getWindowParent(UserControl p)
+        {
+            FrameworkElement parent = p;
+            while (parent.Parent != null)
+            {
+                parent = parent.Parent as FrameworkElement;
+            }
+            return parent;
+        }
         private void UserControl_MouseDown(object sender, MouseButtonEventArgs e)
         {
+            FrameworkElement p = getWindowParent((UserControl)sender);
+
+            if (e.ChangedButton == MouseButton.Left)
+                (p as Window).DragMove() ;
 
         }
     }

@@ -1,50 +1,178 @@
-﻿using DataAccess.Dto;
+﻿using BusinessObject.Models;
+using DataAccess.Dto;
+using GameStoreClient.Views;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Input;
 namespace GameStoreClient.ViewModels
 {
     public class UserCartVM : BaseVM
     {
-
         #region Property
-        private ObservableCollection<UserCartDto> _localUserCart;
-        public ObservableCollection<UserCartDto> LocalUserCart
+        private ObservableCollection<UserCartDto> _userCart = new ObservableCollection<UserCartDto>();
+        public ObservableCollection<UserCartDto> UserCart
         {
             get
             {
-                return _localUserCart;
+                
+                return _userCart;
             }
             set
             {
-                _localUserCart = value; OnPropertyChanged();
+                _userCart = value;
+                OnPropertyChanged();
             }
         }
-        private ObservableCollection<UserCartDto> _loginUserCart;
-        public ObservableCollection<UserCartDto> LoginUserCart
+        private float _userCartTotalPrice;
+        public float UserCartTotalPrice
         {
             get
             {
-                return _loginUserCart;
+                return _userCartTotalPrice;
             }
             set
             {
-                _loginUserCart = value; OnPropertyChanged();
+                if (UserCart != null)
+                {
+                    _userCartTotalPrice = value;
+                }
+                OnPropertyChanged();
             }
         }
         #endregion
-
         #region Function
+        public void AddToCart(DisplayGameDto game)
+        {
+            if (game != null)
+            {
+                var getGame = UserCart.FirstOrDefault(x => x.GameId == game.GameId);
+                if (getGame != null)
+                {
+                    getGame.Quantity += 1;
+                }
+                else
+                {
+                    getGame = new UserCartDto()
+                    {
+                        Game = game,
+                        GameId = game.GameId,
+                        Quantity = 1,
+                    };
+                    UserCart.Add(getGame);
+                }
+                ReCalTotalPrice();
+            }
+        }
+        public void MinusCartItem(UserCartDto item)
+        {
+            if (item != null)
+            {
+                var getGame = UserCart.FirstOrDefault(x => x.GameId == item.GameId);
+                if (getGame != null)
+                {
+                    getGame.Quantity -= 1;
+                    if (getGame.Quantity <= 0)
+                    {
+                        RemoveCartItem(getGame.GameId);
+                    }
+                    ReCalTotalPrice();
+                }
+            }
+        }
+        public void RemoveCartItem(int gId)
+        {
+            var getGame = UserCart.FirstOrDefault(x => x.GameId == gId);
+            if (getGame != null)
+            {
+                var result = MessageBox.Show("Are you sure you want to delete this item?",
+                    "Confirm", MessageBoxButton.YesNo, MessageBoxImage.Question);
+                if (result == MessageBoxResult.Yes)
+                {
+                    UserCart.Remove(getGame);
+                    ReCalTotalPrice();
+                }
+            }
+        }
+        public void AddCartItem(UserCartDto item)
+        {
+            if (item != null)
+            {
+                var getGame = UserCart.FirstOrDefault(x => x.GameId == item.GameId);
+                if (getGame != null)
+                {
+                    getGame.Quantity = getGame.Quantity + 1;
+                    ReCalTotalPrice();
+                }
+            }
+        }
+        public void ReCalTotalPrice()
+        {
+            if (UserCart != null)
+            {
+                UserCartTotalPrice = UserCart.Sum(x => x.Price);
+            }
+        }
         #endregion
-
         #region Command
-        #endregion
+        public ICommand AddCartItemCommand { get; set; }
+        public ICommand MinusCartItemCommand { get; set; }
+        public ICommand RemoveCartItemCommand { get; set; }
 
+        public ICommand CheckoutCommand { get; set; }
+        #endregion
         public UserCartVM()
         {
+            CheckoutCommand = new RelayCommand<object>((p) =>
+            {
+                if (UserCart != null && UserCart.Any())
+                {
+                    return true;
+                }
+                return false;
+             
+            }, (p) =>
+            {
+                CheckOutPopupWindow checkOutPopup = new CheckOutPopupWindow();
+                checkOutPopup.ShowDialog();
+            });
+            RemoveCartItemCommand = new RelayCommand<object>((p) =>
+            {
+                return true;
+            }, (p) =>
+            {
+                if (p != null)
+                {
+                    var item = p as UserCartDto;
+                    RemoveCartItem(item.GameId);
+                }
+            });
+            AddCartItemCommand = new RelayCommand<object>((p) =>
+            {
+                return true;
+            }, (p) =>
+            {
+                if (p != null)
+                {
+                    var item = p as UserCartDto;
+                    AddCartItem(item);
+                }
+            });
+            MinusCartItemCommand = new RelayCommand<object>((p) =>
+            {
+                return true;
+            }, (p) =>
+            {
+                if (p != null)
+                {
+                    var item = p as UserCartDto;
+                    MinusCartItem(item);
+                }
+            });
         }
     }
 }
