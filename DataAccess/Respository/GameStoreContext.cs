@@ -27,36 +27,35 @@ namespace DataAccess.Respository
         {
             base.OnModelCreating(modelBuilder);
 
-
             modelBuilder.Entity<UserFavoriteGame>(entity =>
             {
                 entity.HasKey(e => new { e.UserId, e.GameId })
-                   .HasName("PK_UserGame_Favorite");
-
-           
+                .HasName("PK_UserGame_Favorite");
 
                 entity.HasOne(d => d.User)
-          .WithMany(p => p.FavoriteGames)
-          .HasForeignKey(d => d.UserId)
-          .OnDelete(DeleteBehavior.ClientSetNull)
-          .HasConstraintName("FK_User_Games");
+                .WithMany(p => p.FavoriteGames)
+                .HasForeignKey(d => d.UserId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_User_Games");
 
                 entity.HasOne(d => d.Game)
-          .WithMany(p => p.FavoriteUsers)
-          .HasForeignKey(d => d.GameId)
-          .OnDelete(DeleteBehavior.ClientSetNull)
-          .HasConstraintName("FK_Games_User");
+                .WithMany(p => p.FavoriteUsers)
+                .HasForeignKey(d => d.GameId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_Games_User");
             });
-                modelBuilder.Entity<OrderDetail>(entity =>
+
+            modelBuilder.Entity<OrderDetail>(entity =>
             {
                 entity.HasKey(e => new { e.OrderId, e.GameId })
-                    .HasName("PK_Order_Details");
+                .HasName("PK_Order_Details");
 
                 entity.HasOne(d => d.Order)
-             .WithMany(p => p.OrderDetails)
-             .HasForeignKey(d => d.OrderId)
-             .OnDelete(DeleteBehavior.ClientSetNull)
-             .HasConstraintName("FK_Order_Details_Orders");
+                .WithMany(p => p.OrderDetails)
+                .HasForeignKey(d => d.OrderId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_Order_Details_Orders");
+
                 entity.HasOne(d => d.Game)
                 .WithMany(p => p.OrderDetails)
                 .HasForeignKey(d => d.GameId)
@@ -64,26 +63,24 @@ namespace DataAccess.Respository
                 .HasConstraintName("FK_Order_Details_Games");
             });
 
-            modelBuilder.Entity<GameKey>()
-     .HasKey(c => new { c.GameId, c.Code });
+            modelBuilder.Entity<GameKey>().HasKey(c => new { c.GameId, c.Code });
+
             modelBuilder.Entity<Order>(entity =>
             {
                 entity.HasOne(d => d.User)
-           .WithMany(p => p.Orders)
-           .HasForeignKey(d => d.UserId)
-           .HasConstraintName("FK_Orders_Customers");
-
+               .WithMany(p => p.Orders)
+               .HasForeignKey(d => d.UserId)
+               .HasConstraintName("FK_Orders_Customers");
             });
 
             modelBuilder.Entity<UserCart>(entity =>
             {
                 entity.HasKey(c => c.UserId);
+
                 entity.HasOne(d => d.User)
-           .WithOne(p => p.UserCart)
-           .HasConstraintName("FK_UserCart_User");
-
+                .WithOne(p => p.UserCart)
+                .HasConstraintName("FK_UserCart_User");
             });
-
 
         }
     }

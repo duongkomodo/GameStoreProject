@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace DataAccess.Respository.GameKeyRepo
 {
-    public class GameKeyRepository: IGameKeyRepository
+    public class GameKeyRepository : IGameKeyRepository
     {
         private readonly GameStoreContext _context;
         private readonly IMapper _mapper;

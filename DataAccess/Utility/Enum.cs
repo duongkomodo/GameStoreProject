@@ -9,6 +9,7 @@ namespace DataAccess.Utility
     {
         public static readonly string AvatarLink = @"Assets\blankAvatar.png";
     }
+
     public enum Roles
     {
         Admin,

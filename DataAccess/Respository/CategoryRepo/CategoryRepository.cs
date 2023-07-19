@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace DataAccess.Respository.CategoryRepo
 {
-    public class CategoryRepository: ICategoryRepository
+    public class CategoryRepository : ICategoryRepository
     {
         private readonly GameStoreContext _context;
         private readonly IMapper _mapper;
@@ -20,20 +20,17 @@ namespace DataAccess.Respository.CategoryRepo
             _mapper = mapper;
         }
 
-
-       public async Task<List<CategoryDto>>? LoadAllCategories()
+        public async Task<List<CategoryDto>>? LoadAllCategories()
         {
             try
             {
                 var list = await _context.Categories.ToListAsync();
                 var result = _mapper.Map<List<CategoryDto>>(list);
 
-
                 return result;
             }
             catch (Exception ex)
             {
-
                 throw new Exception(ex.Message);
             }
         }
