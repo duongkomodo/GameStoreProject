@@ -16,11 +16,13 @@ namespace GameStoreAPI.Controllers
     {
         private readonly GameStoreContext _context;
         private readonly IUserRepository _userRepo;
+
         public UserController(GameStoreContext context, IUserRepository userRepository)
         {
             _context = context;
             _userRepo = userRepository;
         }
+
         [HttpPost]
         [AllowAnonymous]
         public async Task<BaseOutputDto> SignUp(SignUpInputDto model)
@@ -30,6 +32,7 @@ namespace GameStoreAPI.Controllers
                 Messages = new List<string>(),
                 Status = "Fail"
             };
+
             try
             {
                 var checkAccount = await _userRepo.CheckAccountExistByEmailAsync(model.Email);
@@ -47,14 +50,14 @@ namespace GameStoreAPI.Controllers
                 return result;
             }
         }
+
         [HttpPost]
         [AllowAnonymous]
         public async Task<BaseOutputDto> Login(SignInDto model)
         {
-            var result = new BaseOutputDto() { Status="Fail"};
+            var result = new BaseOutputDto() { Status = "Fail" };
             try
             {
-
                 var checkAccount = await _userRepo.CheckAccountExistByEmailAsync(model.Email);
                 if (!checkAccount)
                 {
@@ -65,7 +68,7 @@ namespace GameStoreAPI.Controllers
                 if (!checkAccount)
                 {
                     result.Messages.Add("Your email has not been confirmed! \n Would you like to resend the confirmation email ?");
-                    result.Status= "Unconfirmed Email";
+                    result.Status = "Unconfirmed Email";
                     return result;
                 }
                 var resultToken = await _userRepo.SignInAsync(model);
@@ -82,16 +85,16 @@ namespace GameStoreAPI.Controllers
                 return result;
             }
         }
+
         [HttpPost]
         [AllowAnonymous]
         public async Task<BaseOutputDto> ResendConfirmEmail(string email)
         {
-            var result = new BaseOutputDto() { Status= "Fail" };
+            var result = new BaseOutputDto() { Status = "Fail" };
             try
             {
-                 result = await _userRepo.ResendConfirmEmailAsync(email);
+                result = await _userRepo.ResendConfirmEmailAsync(email);
                 return result;
-           
             }
             catch (Exception ex)
             {
@@ -99,6 +102,7 @@ namespace GameStoreAPI.Controllers
                 return result;
             }
         }
+
         [HttpGet]
         public async Task<string> ConfirmRegister(string userId, string code)
         {
@@ -113,15 +117,13 @@ namespace GameStoreAPI.Controllers
             }
         }
 
-        [HttpGet,Authorize]
-        public async Task<UserDto> GetUserInformation([FromQuery]string userName )
+        [HttpGet, Authorize]
+        public async Task<UserDto> GetUserInformation([FromQuery] string userName)
         {
-
-                var result = await _userRepo.GetUserInformationAsync(userName);
-                return result;
-            
-
+            var result = await _userRepo.GetUserInformationAsync(userName);
+            return result;
         }
+
         [HttpGet]
         public async Task<string> Logout()
         {
