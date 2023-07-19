@@ -15,6 +15,7 @@ namespace BusinessObject.Models
 
         [Key]
         public int GameId { get; set; }
+
         [ForeignKey("GameId")]
         public virtual Game Game { get; set; }
         public DateTime? ExpirationDate { get; set; }
