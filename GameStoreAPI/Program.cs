@@ -1,4 +1,3 @@
-using AutoMapper;
 using BusinessObject.Models;
 using DataAccess.Respository;
 using DataAccess.Respository.CategoryRepo;
@@ -14,7 +13,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Text;
-using static WebPWrecover.Services.EmailSender;
 using WebPWrecover.Services;
 using Microsoft.AspNetCore.Identity.UI.Services;
 
@@ -114,6 +112,8 @@ builder.Services.AddAuthentication(options => {
 });
 
 var app = builder.Build();
+app.UseCors(opt => opt.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod());
+
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -123,10 +123,9 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
-app.UseCors(opt => opt.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod());
-app.UseAuthorization();
 app.UseAuthentication();
+app.UseAuthorization();
+
 
 
 app.MapControllers();

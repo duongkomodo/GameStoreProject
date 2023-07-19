@@ -119,7 +119,9 @@ namespace DataAccess.Respository.UserRepo
         }
         public async Task<bool> CheckAccountExistByEmailAsync(string email)
         {
-            return await _userManager.FindByEmailAsync(email) != null ? true : false;
+            var user = await _userManager.FindByNameAsync(email);
+            var check = user != null ? true : false;
+            return check;
         }
         public async Task<bool> CheckAccountExistByUsernameAsync(string username)
         {
@@ -164,29 +166,31 @@ namespace DataAccess.Respository.UserRepo
                 var token = JWTConfig.CreateToken(userDto, _configuration);
                 result.Messages.Add(token);
                 result.Status= "Success";
+                return result;
             }
             else
             {
                 result.Messages.Add("Invalid login attempt!");
             }
             //Map user with dto
-          
             return result;
+
         }
 
-        public async Task<string> ResendConfirmEmailAsync(SignInDto model)
+        public async Task<BaseOutputDto> ResendConfirmEmailAsync(string email)
         {
+            var result = new BaseOutputDto() { Status= "Fail" };
             // Get User
-            User user = await _userManager.FindByNameAsync(model.Email);
-            var result = await _signInManager.PasswordSignInAsync(user, model.Password, false, false);
-            if (!result.Succeeded)
+            User user = await _userManager.FindByNameAsync(email);
+            if (user == null)
             {
-                return string.Empty;
+                result.Messages.Add("User not found!");
+                return result;
             }
-            //Map user with dto
-            var userDto = _mapper.Map<UserDto>(user);
-            var token = JWTConfig.CreateToken(userDto, _configuration);
-            return token;
+            SendConfirmEmailAsync(user);
+            result.Status= "Success";
+            result.Messages.Add("Verification email sent. Please check your email.");
+            return result;
         }
 
         public async Task<string> LogoutAsync()
@@ -201,8 +205,22 @@ namespace DataAccess.Respository.UserRepo
         {
             // Get User
             User user = await _userManager.FindByNameAsync(model.Email);
+            if (user == null)
+            {
+                return false;
+            }
             var isConfirmed = await _userManager.IsEmailConfirmedAsync(user);
             return isConfirmed;
+        }
+
+        public async Task<UserDto> GetUserInformationAsync(string userId)
+        {
+            User user = await _userManager.FindByNameAsync(userId);
+            if (user != null)
+            {
+                return _mapper.Map<UserDto>(user);
+            }
+            return new UserDto() { Email ="User Not Found!"};
         }
     }
 }

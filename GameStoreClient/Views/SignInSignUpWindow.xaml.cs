@@ -1,4 +1,5 @@
-﻿using System;
+﻿using GameStoreClient.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -22,6 +23,11 @@ namespace GameStoreClient.Views
         public SignInSignUpWindow()
         {
             InitializeComponent();
+            var vm = new AuthenVM();
+            this.DataContext = vm;
+            if (vm.CloseAction == null)
+                vm.CloseAction = new Action(Close);
+
         }
     }
 }

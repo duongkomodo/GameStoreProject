@@ -1,4 +1,5 @@
 ﻿using DataAccess.Dto;
+using GameStoreClient.APIHelper;
 using GameStoreClient.ViewModels.HomeWindow;
 using GameStoreClient.ViewModels.ListGameWindow;
 using GameStoreClient.Views;
@@ -31,13 +32,28 @@ namespace GameStoreClient.ViewModels.NavigationWindow
         {
             get
             {
-                return _searchBarQuery;
+                return _searchBarQuery; 
             }
             set
             {
                 _searchBarQuery = value; OnPropertyChanged();
             }
         }
+
+        private  bool _isUserLogined = false;
+        public  bool IsUserLogined
+        {
+            get
+            {
+                return _isUserLogined;
+            }
+            set
+            {
+                _isUserLogined = value;
+                OnPropertyChanged();
+            }
+        }
+
         private void Home(object obj) => CurrentView = new HomeVM();
         private void ListGame(object obj) => CurrentView = new ListGameVM();
         private void UserInfo(object obj) => CurrentView = new UserInfoVM();
@@ -99,7 +115,11 @@ namespace GameStoreClient.ViewModels.NavigationWindow
                 return true;
             }, (p) =>
             {
-                UserInfo(p);
+                if (UserData.User != null )
+                {
+                    UserInfo(p);
+                }
+              
             });
             LoginSignUpCommand = new RelayCommand<object>((p) =>
             {
@@ -108,6 +128,11 @@ namespace GameStoreClient.ViewModels.NavigationWindow
             {
                 SignInSignUpWindow signInSignUpWindow = new SignInSignUpWindow();
                 signInSignUpWindow.ShowDialog();
+
+            if (UserData.User != null)
+                {
+                    IsUserLogined = true;
+                }
             });
             SearchGameCommand = new RelayCommand<object>((p) =>
             {

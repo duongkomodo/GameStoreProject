@@ -9,16 +9,9 @@ using System.Threading.Tasks;
 
 namespace DataAccess.Dto
 {
-    public class UserCartDto:INotifyPropertyChanged
+    public class UserCartDto:BaseDto
     {
-        public event PropertyChangedEventHandler PropertyChanged;
-        private void NotifyPropertyChanged(String info)
-        {
-            if (PropertyChanged != null)
-            {
-                PropertyChanged(this, new PropertyChangedEventArgs(info));
-            }
-        }
+ 
         public string? UserId { get; set; }
         public int GameId
         {
@@ -39,7 +32,7 @@ namespace DataAccess.Dto
             {
 
                 price = value;
-                NotifyPropertyChanged("Price");
+                OnPropertyChanged("Price");
             }
 
         }
@@ -53,7 +46,7 @@ namespace DataAccess.Dto
                 quantity = value;
                 Price = Game.Price * value;
 
-                NotifyPropertyChanged("Quantity");
+                OnPropertyChanged("Quantity");
             }
         }
     }

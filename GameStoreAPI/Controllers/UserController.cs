@@ -32,14 +32,10 @@ namespace GameStoreAPI.Controllers
             };
             try
             {
-                if (await _userRepo.CheckAccountExistByEmailAsync(model.Email))
+                var checkAccount = await _userRepo.CheckAccountExistByEmailAsync(model.Email);
+                if (!checkAccount)
                 {
-                    result.Messages.Add("Name already exist!");
-                    return result;
-                }
-                if (await _userRepo.CheckAccountExistByUsernameAsync(model.FirstName))
-                {
-                    result.Messages.Add("Name already exist!");
+                    result.Messages.Add("Email already exist!");
                     return result;
                 }
                 result = await _userRepo.SignUpAsync(model);
@@ -55,20 +51,29 @@ namespace GameStoreAPI.Controllers
         [AllowAnonymous]
         public async Task<BaseOutputDto> Login(SignInDto model)
         {
-            var result = new BaseOutputDto() { Messages = new List<string>(), Status = "Fail" };
+            var result = new BaseOutputDto() { Status="Fail"};
             try
             {
-                if (await _userRepo.IsEmailConfirmedAsync(model))
+
+                var checkAccount = await _userRepo.CheckAccountExistByEmailAsync(model.Email);
+                if (!checkAccount)
                 {
-                    result.Messages.Add("Your email has not been confirmed!");
+                    result.Messages.Add("Account not found!");
+                    return result;
+                }
+                checkAccount = await _userRepo.IsEmailConfirmedAsync(model);
+                if (!checkAccount)
+                {
+                    result.Messages.Add("Your email has not been confirmed! \n Would you like to resend the confirmation email ?");
+                    result.Status= "Unconfirmed Email";
                     return result;
                 }
                 var resultToken = await _userRepo.SignInAsync(model);
                 if (resultToken != null && resultToken.Status.Equals("Success"))
                 {
-                    return result;
+                    return resultToken;
                 }
-                result.Messages.Add("Login Fail, username or password may incorrect!");
+                result.Messages.Add("Login fail, username or password may incorrect!");
                 return result;
             }
             catch (Exception ex)
@@ -79,20 +84,14 @@ namespace GameStoreAPI.Controllers
         }
         [HttpPost]
         [AllowAnonymous]
-        public async Task<BaseOutputDto> ResendConfrimEmail(SignInDto model)
+        public async Task<BaseOutputDto> ResendConfirmEmail(string email)
         {
-            var result = new BaseOutputDto() { Messages = new List<string>(), Status = "Fail" };
+            var result = new BaseOutputDto() { Status= "Fail" };
             try
             {
-                var resultToken = await _userRepo.ResendConfirmEmailAsync(model);
-                if (!string.IsNullOrEmpty(resultToken))
-                {
-                    result.Messages.Add(resultToken);
-                    result.Status = "Success";
-                    return result;
-                }
-                result.Messages.Add("Login Fail, username or password may incorrect!");
+                 result = await _userRepo.ResendConfirmEmailAsync(email);
                 return result;
+           
             }
             catch (Exception ex)
             {
@@ -112,6 +111,16 @@ namespace GameStoreAPI.Controllers
             {
                 return ex.Message;
             }
+        }
+
+        [HttpGet,Authorize]
+        public async Task<UserDto> GetUserInformation([FromQuery]string userName )
+        {
+
+                var result = await _userRepo.GetUserInformationAsync(userName);
+                return result;
+            
+
         }
         [HttpGet]
         public async Task<string> Logout()

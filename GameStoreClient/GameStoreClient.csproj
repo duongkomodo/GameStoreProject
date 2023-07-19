@@ -8,6 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Views\Assets\blankAvatar.png" />
     <None Remove="Views\Assets\btn_google_sign-in.png" />
     <None Remove="Views\Assets\GameImg\ACValhalla.jpg" />
     <None Remove="Views\Assets\GameImg\CODMW2.jpg" />
@@ -27,6 +28,7 @@
     <None Remove="Views\Assets\GameImg\TheWitcher3.jpg" />
     <None Remove="Views\Assets\GameImg\TotalWarWARHAMMER3.jpg" />
     <None Remove="Views\Assets\R.png" />
+    <None Remove="Views\Cat.jpg" />
   </ItemGroup>
 
   <ItemGroup>
@@ -39,6 +41,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Resource Include="Views\Assets\blankAvatar.png" />
     <Resource Include="Views\Assets\btn_google_sign-in.png" />
     <Resource Include="Views\Assets\GameImg\ACValhalla.jpg" />
     <Resource Include="Views\Assets\GameImg\CODMW2.jpg" />
@@ -60,6 +63,7 @@
     <Resource Include="Views\Assets\R.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
+    <Resource Include="Views\Cat.jpg" />
   </ItemGroup>
 
 </Project>

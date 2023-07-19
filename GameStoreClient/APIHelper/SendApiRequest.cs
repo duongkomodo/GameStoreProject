@@ -20,7 +20,7 @@ namespace GameStoreClient.APIHelper
                     if (jwt != null)
                     {
                         // Set JWT token in Authorization header
-                        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", jwt);
+                         client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", jwt);
                     }
                     if (requestBody != null)
                     {

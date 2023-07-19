@@ -10,7 +10,7 @@ namespace DataAccess.Dto
     public class SignUpInputDto
     {
         [Required]
-        public string FirstName { get; set; } = null!;
+        public string FirstName { get; set;  } = null!;
         [Required]
         public string LastName { get; set; } = null!;
         [Required, EmailAddress]
@@ -20,7 +20,6 @@ namespace DataAccess.Dto
         [Required]
         public string Password { get; set; } = null!;
         [Required]
-
         public string ConfirmPassword { get; set; } = null!;
     }
 
