@@ -48,10 +48,10 @@ namespace DataAccess.Respository.UserRepo
         {
             var result = new BaseOutputDto()
             {
-                Status = "Fail"
+                Status = OutputStatus.Fail
             };
-      
-                var validators = _userManager.PasswordValidators;
+
+            var validator = new PasswordValidator<User>();
                 User user = await _userManager.FindByNameAsync(model.Email);
 
                 if (user != null) {
@@ -75,8 +75,7 @@ namespace DataAccess.Respository.UserRepo
                     {
                         result.Messages.Add("The password and confirmation password do not match.");
                     }
-                    foreach (var validator in validators)
-                    {
+           
                         var validatepassword = await validator.ValidateAsync(_userManager, user, model.Password);
                         if (!validatepassword.Succeeded)
                         {
@@ -84,7 +83,7 @@ namespace DataAccess.Respository.UserRepo
                             {
                                 result.Messages.Add(error.Description);
                             }
-                        }
+                        
                     }
                     var identityResult = await _userManager.CreateAsync(user, model.Password);
                     if (identityResult.Succeeded)
@@ -93,7 +92,7 @@ namespace DataAccess.Respository.UserRepo
                         await _userManager.AddToRoleAsync(user, Roles.Member.ToString());
                     }
 
-                    result.Status = identityResult.Succeeded ? "Succeed":"Fail";
+                    result.Status = identityResult.Succeeded ? OutputStatus.Success: OutputStatus.Fail;
                 }            
              
                 return result;
@@ -148,7 +147,7 @@ namespace DataAccess.Respository.UserRepo
             //Create result 
             var result = new BaseOutputDto()
             {
-                Status = "Fail"
+                Status = OutputStatus.Fail
             };
             // Get User
             User user = await _userManager.FindByNameAsync(model.Email);
@@ -165,7 +164,7 @@ namespace DataAccess.Respository.UserRepo
                 var userDto = _mapper.Map<UserDto>(user);
                 var token = JWTConfig.CreateToken(userDto, _configuration);
                 result.Messages.Add(token);
-                result.Status= "Success";
+                result.Status= OutputStatus.Success;
                 return result;
             }
             else
@@ -179,7 +178,7 @@ namespace DataAccess.Respository.UserRepo
 
         public async Task<BaseOutputDto> ResendConfirmEmailAsync(string email)
         {
-            var result = new BaseOutputDto() { Status= "Fail" };
+            var result = new BaseOutputDto() { Status= OutputStatus.Fail };
             // Get User
             User user = await _userManager.FindByNameAsync(email);
             if (user == null)
@@ -188,7 +187,7 @@ namespace DataAccess.Respository.UserRepo
                 return result;
             }
             SendConfirmEmailAsync(user);
-            result.Status= "Success";
+            result.Status= OutputStatus.Success;
             result.Messages.Add("Verification email sent. Please check your email.");
             return result;
         }
@@ -197,7 +196,7 @@ namespace DataAccess.Respository.UserRepo
         {
             // Get User
             await _signInManager.SignOutAsync();
-            return "Success"; 
+            return OutputStatus.Success; 
            
         }
 
@@ -221,6 +220,46 @@ namespace DataAccess.Respository.UserRepo
                 return _mapper.Map<UserDto>(user);
             }
             return new UserDto() { Email ="User Not Found!"};
+        }
+
+        public async Task<BaseOutputDto> ChangePasswordAsync(string userId, string newPassword, string confirmPassword)
+        {
+            var result = new BaseOutputDto()
+            {
+                Status = OutputStatus.Fail
+            };
+
+            var validator = new PasswordValidator<User>();
+            User user = await _userManager.FindByIdAsync(userId);
+            if (!newPassword.Equals(confirmPassword))
+            {
+                result.Messages.Add("The password and confirmation password do not match.");
+                return result;
+            }
+           
+                var validatepassword = await validator.ValidateAsync(_userManager, user, confirmPassword);
+                if (!validatepassword.Succeeded)
+                {
+                    foreach (var error in validatepassword.Errors)
+                    {
+                        result.Messages.Add(error.Description);
+                    }
+                return result;
+            }
+
+            var token = await _userManager.GeneratePasswordResetTokenAsync(user);
+
+            var resetPassword = await _userManager.ResetPasswordAsync(user, token, confirmPassword);
+
+            if (!resetPassword.Succeeded)
+            {
+                result.Messages.Add("Reset password fail, something wrong happend.");
+                return result;
+            }
+
+            result.Messages.Add("Reset password success!");
+            result.Status = OutputStatus.Success;
+            return result;
         }
     }
 }

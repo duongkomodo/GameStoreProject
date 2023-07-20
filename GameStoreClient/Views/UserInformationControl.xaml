@@ -47,11 +47,11 @@
                     <TextBlock
                         Grid.Row="0"
                         FontSize="14"
-                        Text="Username" />
+                        Text="Email" />
                     <TextBlock
                         FontSize="14"
                         FontWeight="Bold"
-                        Text="String" />
+                        Text="{Binding UserInfor.Email}" />
                 </StackPanel>
                 <StackPanel
                     Grid.Row="1"
@@ -60,11 +60,11 @@
                     <TextBlock
                         Grid.Row="0"
                         FontSize="14"
-                        Text="Email" />
+                        Text="Full Name" />
                     <TextBlock
                         FontSize="14"
                         FontWeight="Bold"
-                        Text="String" />
+                        Text="{Binding UserInfor.FullName}" />
                 </StackPanel>
                 <StackPanel
                     Grid.Row="1"
@@ -73,11 +73,11 @@
                     <TextBlock
                         Grid.Row="0"
                         FontSize="14"
-                        Text="Full Name" />
+                        Text="Role" />
                     <TextBlock
                         FontSize="14"
                         FontWeight="Bold"
-                        Text="String" />
+                        Text="Member" />
                 </StackPanel>
                 <StackPanel
                     Grid.Row="1"
@@ -86,11 +86,11 @@
                     <TextBlock
                         Grid.Row="0"
                         FontSize="14"
-                        Text="Role" />
+                        Text="Join Date" />
                     <TextBlock
                         FontSize="14"
                         FontWeight="Bold"
-                        Text="String" />
+                        Text="{Binding UserInfor.JoinDate}" />
                 </StackPanel>
             </Grid>
             <Border
@@ -107,7 +107,11 @@
                     VerticalAlignment="Center"
                     BorderBrush="White"
                     BorderThickness="1"
-                    CornerRadius="100" />
+                    CornerRadius="100">
+                    <Border.Background>
+                        <ImageBrush ImageSource="{Binding UserInfor.Avatar}" Stretch="UniformToFill" />
+                    </Border.Background>
+                </Border>
                 <Button
                     Width="130"
                     Height="40"
@@ -157,14 +161,24 @@
                         Margin="10"
                         FontWeight="Bold"
                         Text="Personal" />
-                    <TextBox materialDesign:HintAssist.Hint="Email" />
-                    <TextBox materialDesign:HintAssist.Hint="First Name" />
-                    <TextBox materialDesign:HintAssist.Hint="Last Name" />
+
+                    <TextBox
+                        materialDesign:HintAssist.Hint="First Name"
+                        IsEnabled="{Binding ElementName=EditToggle, Path=IsChecked}"
+                        Text="{Binding UserInfor.FirstName}" />
+                    <TextBox
+                        materialDesign:HintAssist.Hint="Last Name"
+                        IsEnabled="{Binding ElementName=EditToggle, Path=IsChecked}"
+                        Text="{Binding UserInfor.LastName}" />
+                    <TextBox
+                        materialDesign:HintAssist.Hint="Phone Number"
+                        IsEnabled="{Binding ElementName=EditToggle, Path=IsChecked}"
+                        Text="{Binding UserInfor.PhoneNumber}" />
                     <StackPanel
                         Margin="10"
                         HorizontalAlignment="Left"
                         Orientation="Horizontal">
-                        <ToggleButton Style="{StaticResource MaterialDesignSwitchLightToggleButton}" />
+                        <ToggleButton x:Name="EditToggle" Style="{StaticResource MaterialDesignSwitchLightToggleButton}" />
                         <TextBlock
                             Grid.Row="0"
                             Margin="10"
@@ -178,7 +192,8 @@
                         materialDesign:ButtonAssist.CornerRadius="20"
                         Content="Save Changes"
                         FontSize="20"
-                        Foreground="White" />
+                        Foreground="White"
+                        IsEnabled="{Binding ElementName=EditToggle, Path=IsChecked}" />
                 </StackPanel>
                 <StackPanel Grid.Column="1" HorizontalAlignment="Left">
                     <TextBlock

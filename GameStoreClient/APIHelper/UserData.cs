@@ -51,10 +51,6 @@ namespace GameStoreClient.APIHelper
         }
         public static string Jwt { get; set; }
 
-        private static string fullName = "dâdad";
-        public static string FullName
-        {
-            get { return fullName; }
-        }
+
     }
 }

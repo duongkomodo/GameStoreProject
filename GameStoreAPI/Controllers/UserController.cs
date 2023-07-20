@@ -1,13 +1,9 @@
-﻿using BusinessObject.Models;
-using DataAccess.Dto;
+﻿using DataAccess.Dto;
 using DataAccess.Respository;
 using DataAccess.Respository.UserRepo;
+using DataAccess.Utility;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.WebUtilities;
-using Microsoft.EntityFrameworkCore;
-using System.Text;
 namespace GameStoreAPI.Controllers
 {
     [ApiController]
@@ -28,7 +24,7 @@ namespace GameStoreAPI.Controllers
             var result = new BaseOutputDto()
             {
                 Messages = new List<string>(),
-                Status = "Fail"
+                Status = OutputStatus.Fail
             };
             try
             {
@@ -51,7 +47,7 @@ namespace GameStoreAPI.Controllers
         [AllowAnonymous]
         public async Task<BaseOutputDto> Login(SignInDto model)
         {
-            var result = new BaseOutputDto() { Status="Fail"};
+            var result = new BaseOutputDto() { Status=OutputStatus.Fail};
             try
             {
 
@@ -69,7 +65,7 @@ namespace GameStoreAPI.Controllers
                     return result;
                 }
                 var resultToken = await _userRepo.SignInAsync(model);
-                if (resultToken != null && resultToken.Status.Equals("Success"))
+                if (resultToken != null && OutputStatus.Success.Equals(resultToken.Status))
                 {
                     return resultToken;
                 }
@@ -86,12 +82,30 @@ namespace GameStoreAPI.Controllers
         [AllowAnonymous]
         public async Task<BaseOutputDto> ResendConfirmEmail(string email)
         {
-            var result = new BaseOutputDto() { Status= "Fail" };
+            var result = new BaseOutputDto() { Status= OutputStatus.Fail };
             try
             {
                  result = await _userRepo.ResendConfirmEmailAsync(email);
                 return result;
            
+            }
+            catch (Exception ex)
+            {
+                result.Messages.Add(ex.Message);
+                return result;
+            }
+        }
+
+        [HttpPost]
+        [Authorize]
+        public async Task<BaseOutputDto> ChangePassword(ChangePasswordDto data)
+        {
+            var result = new BaseOutputDto() { Status = OutputStatus.Fail };
+            try
+            {
+                result = await _userRepo.ChangePasswordAsync(data.Email, data.Password, data.ConfirmPassword);
+                return result;
+
             }
             catch (Exception ex)
             {

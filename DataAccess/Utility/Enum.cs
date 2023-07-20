@@ -9,6 +9,12 @@ namespace DataAccess.Utility
     {
         public static readonly string AvatarLink = @"Assets\blankAvatar.png";
     }
+
+    public static class OutputStatus
+    {
+        public static readonly string Fail = @"Fail";
+        public static readonly string Success = @"Success";
+    }
     public enum Roles
     {
         Admin,

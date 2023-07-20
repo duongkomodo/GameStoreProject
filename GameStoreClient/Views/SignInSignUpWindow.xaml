@@ -71,10 +71,10 @@
                             Width="440"
                             Margin="10"
                             materialDesign:HintAssist.Hint="Password"
-                            materialDesign:PasswordBoxAssist.Password="{Binding SignInData.Password,UpdateSourceTrigger=PropertyChanged}"
+                            materialDesign:PasswordBoxAssist.Password="{Binding SignInData.Password, UpdateSourceTrigger=PropertyChanged}"
                             FontSize="12"
                             Foreground="White"
-                            Style="{StaticResource MaterialDesignOutlinedPasswordBox}" />
+                            Style="{StaticResource MaterialDesignOutlinedRevealPasswordBox}" />
                         <Button
                             materialDesign:ButtonAssist.CornerRadius="10"
                             Command="{Binding Path=DataContext.LoginCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}"
@@ -134,7 +134,7 @@
                                 materialDesign:PasswordBoxAssist.Password="{Binding SignUpData.Password}"
                                 FontSize="12"
                                 Foreground="White"
-                                Style="{StaticResource MaterialDesignOutlinedPasswordBox}" />
+                                Style="{StaticResource MaterialDesignOutlinedRevealPasswordBox}" />
                             <PasswordBox
                                 Width="440"
                                 Margin="10"
@@ -142,7 +142,7 @@
                                 materialDesign:PasswordBoxAssist.Password="{Binding SignUpData.ConfirmPassword}"
                                 FontSize="12"
                                 Foreground="White"
-                                Style="{StaticResource MaterialDesignOutlinedPasswordBox}" />
+                                Style="{StaticResource MaterialDesignOutlinedRevealPasswordBox}" />
                             <Button
                                 materialDesign:ButtonAssist.CornerRadius="10"
                                 Command="{Binding SignUpCommand}"

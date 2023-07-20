@@ -17,5 +17,8 @@ namespace DataAccess.Dto
         [EmailAddress]
         public string Email { get; set; }
         public string Avatar { get; set; }
+        public DateTime? JoinDate { get; set; }
+        public string? Address { get; set; }
+
     }
 }

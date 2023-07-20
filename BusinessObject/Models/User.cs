@@ -16,6 +16,9 @@ namespace BusinessObject.Models
         [EmailAddress]
         public string Email { get; set; }
         public string Avatar { get; set; }
+        public string? Address { get; set; }
+        public DateTime? JoinDate { get; set; }
+
 
         public virtual ICollection<Order> Orders { get; set; }
         public virtual UserCart UserCart { get; set; }
