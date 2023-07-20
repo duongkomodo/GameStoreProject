@@ -17,7 +17,7 @@ namespace DataAccess.Utility
             CreateMap<Game, DisplayGameDto>()
                 .ForMember(dest => dest.Price, act => act.MapFrom(src => src.Price))
                 .ForMember(dest => dest.Discount, act => act.MapFrom(src => src.Discount))
-                .ForMember(dest => dest.SalePrice, act => act.MapFrom(src => (src.Price - (src.Price * src.Discount)/100)));
+                .ForMember(dest => dest.SalePrice, act => act.MapFrom(src => (src.Price - (src.Price * src.Discount) / 100)));
             CreateMap<Category, CategoryDto>().ReverseMap();
 
         }

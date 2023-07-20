@@ -10,6 +10,5 @@ namespace DataAccess.Respository.CategoryRepo
     public interface ICategoryRepository
     {
         Task<List<CategoryDto>>? LoadAllCategories();
- 
     }
 }

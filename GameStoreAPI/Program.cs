@@ -25,17 +25,18 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 
 builder.Services.AddCors();
-builder.Services.AddSwaggerGen(options => {
-options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+builder.Services.AddSwaggerGen(options =>
 {
-    Scheme = "Bearer",
-    BearerFormat = "JWT",
-    In = ParameterLocation.Header,
-    Name = "Authentication",
-    Description = "Bearer Authen with JWT token",
-    Type = SecuritySchemeType.Http,
+    options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+    {
+        Scheme = "Bearer",
+        BearerFormat = "JWT",
+        In = ParameterLocation.Header,
+        Name = "Authentication",
+        Description = "Bearer Authen with JWT token",
+        Type = SecuritySchemeType.Http,
 
-}); options.AddSecurityRequirement(new OpenApiSecurityRequirement {
+    }); options.AddSecurityRequirement(new OpenApiSecurityRequirement {
         {
             new OpenApiSecurityScheme {
                 Reference= new OpenApiReference {
@@ -49,22 +50,24 @@ options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
     });
 });
 
-    builder.Services.AddDbContext<GameStoreContext>(options => {
-        options.UseSqlServer(builder.Configuration.GetConnectionString("ConnectString"));
-    });
-    builder.Services.AddIdentity<User, IdentityRole>(options => {
-        options.Password.RequireDigit = false;
-        options.Password.RequiredLength = 6;
-        options.Password.RequireNonAlphanumeric = false;
-        options.Password.RequireUppercase = true;
-        options.Password.RequireLowercase = false;
+builder.Services.AddDbContext<GameStoreContext>(options =>
+{
+    options.UseSqlServer(builder.Configuration.GetConnectionString("ConnectString"));
+});
+builder.Services.AddIdentity<User, IdentityRole>(options =>
+{
+    options.Password.RequireDigit = false;
+    options.Password.RequiredLength = 6;
+    options.Password.RequireNonAlphanumeric = false;
+    options.Password.RequireUppercase = true;
+    options.Password.RequireLowercase = false;
 
-        options.SignIn.RequireConfirmedEmail = true;
+    options.SignIn.RequireConfirmedEmail = true;
 
-   
-    }).AddRoles<IdentityRole>()
-        .AddEntityFrameworkStores<GameStoreContext>()
-        .AddDefaultTokenProviders();
+
+}).AddRoles<IdentityRole>()
+    .AddEntityFrameworkStores<GameStoreContext>()
+    .AddDefaultTokenProviders();
 //Life cycle DI: AddSingleton(), AddTransient(), AddScope()
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IGameRepository, GameRepository>();
@@ -74,15 +77,15 @@ builder.Services.AddScoped<IOrderDetailRepository, OrderDetailRepository>();
 builder.Services.AddScoped<IOrderRepository, OrderRepository>();
 builder.Services.AddTransient<IEmailSender, EmailSender>();
 
-
-
 builder.Services.AddAutoMapper(typeof(DataAccess.Utility.MapperProfile));
 
-builder.Services.AddAuthentication(options => {
+builder.Services.AddAuthentication(options =>
+{
     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
     options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
     options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
-}).AddJwtBearer(options => {
+}).AddJwtBearer(options =>
+{
     options.SaveToken = true;
     options.RequireHttpsMetadata = false;
     options.TokenValidationParameters =
@@ -101,7 +104,8 @@ builder.Services.AddAuthentication(options => {
     };
     options.Events = new JwtBearerEvents
     {
-        OnAuthenticationFailed = context => {
+        OnAuthenticationFailed = context =>
+        {
             if (context.Exception.GetType() == typeof(SecurityTokenExpiredException))
             {
                 context.Response.Headers.Add("IS-TOKEN-EXPIRED", "true");
@@ -126,13 +130,10 @@ app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();
 
-
-
 app.MapControllers();
 
 using (var scope = app.Services.CreateScope())
 {
-
     var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
 
     var roleValues = Enum.GetValues(typeof(Roles));

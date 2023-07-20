@@ -11,14 +11,15 @@ namespace BusinessObject.Models
 {
     public class Order
     {
-
         public Order()
         {
             OrderDetails = new HashSet<OrderDetail>();
         }
+
         [Key]
         public int OrderId { get; set; }
         public string UserId { get; set; }
+
         [ForeignKey("Id")]
         public virtual User User { get; set; }
 

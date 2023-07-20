@@ -10,7 +10,6 @@ namespace BusinessObject.Models
 {
     public class UserCart
     {
-
         [ForeignKey("UserId")]
         public User User { get; set; }
         public string UserId { get; set; }
@@ -18,6 +17,7 @@ namespace BusinessObject.Models
         {
             get; set;
         }
+
         [ForeignKey("GameId")]
         public virtual Game Game
         {

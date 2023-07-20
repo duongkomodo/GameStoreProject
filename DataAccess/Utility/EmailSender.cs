@@ -9,12 +9,13 @@ public class EmailSender : IEmailSender
 {
     private readonly ILogger _logger;
     private readonly IConfiguration _configuration;
-    public EmailSender(IConfiguration configuration,
-                       ILogger<EmailSender> logger)
+
+    public EmailSender(IConfiguration configuration, ILogger<EmailSender> logger)
     {
         _configuration = configuration;
         _logger = logger;
     }
+
     public async Task SendEmailAsync(string toEmail, string subject, string message)
     {
         if (string.IsNullOrEmpty(_configuration["SendGridKey"]))
@@ -23,6 +24,7 @@ public class EmailSender : IEmailSender
         }
         await Execute(subject, message, toEmail);
     }
+
     public Task Execute(string subject, string message, string toEmail)
     {
         var client = new SmtpClient("smtp.gmail.com", 587)
@@ -31,14 +33,11 @@ public class EmailSender : IEmailSender
             UseDefaultCredentials = false,
             Credentials = new NetworkCredential(_configuration["AdminEmail:Email"], _configuration["AdminEmail:Password"]),
         };
-        var mail = new MailMessage(from: _configuration["AdminEmail:Email"],
-                            to: toEmail,
-                            subject,
-                            message
-                            );
+        var mail = new MailMessage(from: _configuration["AdminEmail:Email"], to: toEmail, subject, message );
         mail.IsBodyHtml = true;
         return client.SendMailAsync(mail);
     }
+
     public class AuthMessageSenderOptions
     {
         public string? SendGridKey { get; set; }

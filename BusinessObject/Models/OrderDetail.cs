@@ -13,11 +13,11 @@ namespace BusinessObject.Models
         {
             get; set;
         }
-
         public int GameId
         {
             get; set;
         }
+
         [ForeignKey("OrderId")]
         public virtual Order Order
         {

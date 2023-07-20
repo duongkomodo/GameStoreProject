@@ -12,8 +12,10 @@ namespace DataAccess.Dto
         public string? FullName { get; set; } = null!;
         public string? FirstName { get; set; } = null!;
         public string? LastName { get; set; } = null!;
+
         [Phone]
         public string? PhoneNumber { get; set; } = null!;
+
         [EmailAddress]
         public string Email { get; set; }
         public string Avatar { get; set; }

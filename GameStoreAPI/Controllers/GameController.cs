@@ -18,7 +18,6 @@ namespace GameStoreAPI.Controllers
             _gameRepo = gameRepo;
         }
 
-
         [HttpGet]
         public async Task<IActionResult> LoadRecentAddedGames()
         {
@@ -52,7 +51,6 @@ namespace GameStoreAPI.Controllers
                 return StatusCode(500, ex.Message);
             }
         }
-
 
     }
 }

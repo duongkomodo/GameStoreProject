@@ -20,60 +20,50 @@ namespace DataAccess.Respository.GameRepo
             _mapper = mapper;
         }
 
-
-
         public async Task<List<DisplayGameDto>>? LoadAllGames()
         {
             try
             {
-                var list = await _context.Games.Include(x=>x.Category).ToListAsync();
+                var list = await _context.Games.Include(x => x.Category).ToListAsync();
                 var result = _mapper.Map<List<DisplayGameDto>>(list);
 
                 return result;
             }
             catch (Exception ex)
             {
-
                 throw new Exception(ex.Message);
             }
-    
         }
 
         public async Task<List<DisplayGameDto>>? LoadRecentAddedGames()
         {
             try
             {
-                var list = await _context.Games.Include(x=>x.Category).OrderByDescending(x => x.GameId).Take(6).ToListAsync();
+                var list = await _context.Games.Include(x => x.Category).OrderByDescending(x => x.GameId).Take(6).ToListAsync();
                 var result = _mapper.Map<List<DisplayGameDto>>(list);
-
 
                 return result;
             }
             catch (Exception ex)
             {
-
                 throw new Exception(ex.Message);
             }
-
         }
 
         public async Task<DisplayGameDto>? LoadMostBuyGame()
         {
             try
             {
-                var list =  await _context.Games.GroupBy(game => game.GameId, game => game.OrderDetails,
+                var list = await _context.Games.GroupBy(game => game.GameId, game => game.OrderDetails,
                     (key, game) => new { GameId = key, Count = game.Count() }).ToListAsync();
 
-
-                var gameId =  list.OrderByDescending(x=>x.Count).Select(x=>x.GameId).FirstOrDefault();
-
-
+                var gameId = list.OrderByDescending(x => x.Count).Select(x => x.GameId).FirstOrDefault();
                 if (gameId == -1)
                 {
                     return null;
                 }
 
-                var getGame = _context.Games.Where(x=>x.GameId== gameId).FirstOrDefault();
+                var getGame = _context.Games.Where(x => x.GameId == gameId).FirstOrDefault();
                 var result = new DisplayGameDto();
                 if (getGame != null)
                 {
@@ -84,7 +74,6 @@ namespace DataAccess.Respository.GameRepo
             }
             catch (Exception ex)
             {
-
                 throw new Exception(ex.Message);
             }
 
@@ -94,7 +83,6 @@ namespace DataAccess.Respository.GameRepo
         {
             throw new NotImplementedException();
         }
-
 
     }
 }

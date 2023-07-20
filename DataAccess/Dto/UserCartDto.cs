@@ -9,19 +9,14 @@ using System.Threading.Tasks;
 
 namespace DataAccess.Dto
 {
-    public class UserCartDto:BaseDto
+    public class UserCartDto : BaseDto
     {
- 
-        public string? UserId { get; set; }
-        public int GameId
-        {
-            get; set;
-        }
-        public virtual DisplayGameDto Game
-        {
-            get; set;
-        }
         private float price;
+        private int quantity;
+
+        public string? UserId { get; set; }
+        public int GameId { get; set; }
+        public virtual DisplayGameDto Game { get; set; }
         public float Price
         {
             get
@@ -30,19 +25,18 @@ namespace DataAccess.Dto
             }
             set
             {
-
                 price = value;
                 OnPropertyChanged("Price");
             }
-
         }
-        private int quantity;
         public int Quantity
         {
-            get { return quantity; }
+            get
+            {
+                return quantity;
+            }
             set
             {
-
                 quantity = value;
                 Price = Game.Price * value;
 
@@ -51,6 +45,5 @@ namespace DataAccess.Dto
         }
     }
 
-
-    }
+}
 
