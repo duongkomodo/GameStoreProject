@@ -22,6 +22,7 @@
         <materialDesign:Card materialDesign:ElevationAssist.Elevation="Dp24" />
         <Border
             Grid.Row="0"
+            Height="330"
             Background="{DynamicResource MaterialDesignCardBackground}"
             BorderThickness="1"
             CornerRadius="10">
@@ -34,7 +35,7 @@
                 <Image
                     Grid.Column="2"
                     Cursor="Hand"
-                    Source="{Binding MostBuyGames.Image}"
+                    Source="{Binding MostBuyGames.Image, IsAsync=True}"
                     Stretch="UniformToFill">
                     <Image.InputBindings>
                         <MouseBinding
@@ -100,10 +101,10 @@
                             Text="{Binding MostBuyGames.SalePrice, StringFormat={}{0:n0}đ}" />
                         <Button
                             Grid.Column="2"
-                            CommandParameter="{Binding MostBuyGames}"
                             Margin="5"
                             Background="ForestGreen"
                             Command="{Binding Path=DataContext.AddToCartCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}"
+                            CommandParameter="{Binding MostBuyGames}"
                             Style="{StaticResource MaterialDesignRaisedSecondaryLightButton}">
                             <StackPanel Orientation="Horizontal">
                                 <materialDesign:PackIcon
@@ -143,6 +144,7 @@
                     Text="NEW GAME"
                     TextDecorations="Underline"
                     TextTrimming="CharacterEllipsis" />
+
 
 
                 <WrapPanel Grid.Row="2">
@@ -220,8 +222,8 @@
                                             Grid.Column="2"
                                             Margin="5"
                                             Background="ForestGreen"
-                                            CommandParameter="{Binding}"
                                             Command="{Binding Path=DataContext.AddToCartCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}"
+                                            CommandParameter="{Binding}"
                                             IsEnabled="{Binding IsAvailable}"
                                             Style="{StaticResource MaterialDesignRaisedSecondaryLightButton}">
                                             <StackPanel Orientation="Horizontal">

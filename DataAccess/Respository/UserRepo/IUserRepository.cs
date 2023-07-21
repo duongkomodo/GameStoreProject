@@ -13,11 +13,12 @@ namespace DataAccess.Respository.UserRepo
         public Task<bool> CheckAccountExistByUsernameAsync(string model);
         Task<BaseOutputDto> SignInAsync(SignInDto model);
         Task<BaseOutputDto> SignUpAsync(SignUpInputDto model);
-        Task<BaseOutputDto> ChangePasswordAsync(string userId, string newPassword, string confirmPassword);
+        Task<BaseOutputDto> ChangePasswordAsync(string userName, string newPassword, string confirmPassword);
         Task<string> ConfirmEmailAsync(string userId, string code);
         Task<BaseOutputDto> ResendConfirmEmailAsync(string email);
         Task<bool> IsEmailConfirmedAsync(SignInDto model);
         Task<string> LogoutAsync();
         Task<UserDto> GetUserInformationAsync(string userId);
+        Task<BaseOutputDto> UpdateUserInforAsync(UserDto userData);
     }
 }

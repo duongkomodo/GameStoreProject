@@ -11,23 +11,7 @@ namespace GameStoreClient.APIHelper
 {
     public class UserData 
     {
-        //private static UserData instance;
 
-        //public static UserData Instance
-        //{
-        //    get
-        //    {
-        //        if (instance == null)
-        //        {
-        //            instance = new UserData();
-        //        }
-        //        return instance;
-        //    }
-        //    private set
-        //    {
-        //        instance = value;
-        //    }
-        //}
         public static event PropertyChangedEventHandler StaticPropertyChanged;
 
         private static void OnStaticPropertyChanged(string propertyName)
@@ -39,8 +23,8 @@ namespace GameStoreClient.APIHelper
         public UserData()
         {
         }
-        private static UserDto _user;
-        public static UserDto User
+        private static UserDto? _user;
+        public static UserDto? User
         {
             get { return _user; }
             set
@@ -49,7 +33,7 @@ namespace GameStoreClient.APIHelper
                 OnStaticPropertyChanged("User");
             }
         }
-        public static string Jwt { get; set; }
+        public static string? Jwt { get; set; }
 
 
     }

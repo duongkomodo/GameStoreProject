@@ -1,5 +1,6 @@
 ﻿using BusinessObject.Models;
 using DataAccess.Dto;
+using DataAccess.Utility;
 using GameStoreClient.APIHelper;
 using GameStoreClient.ViewModels.NavigationWindow;
 using System;
@@ -78,14 +79,14 @@ namespace GameStoreClient.ViewModels
                             var resendEmail = await SendApiRequest
     .SendApiRequestAsync<BaseOutputDto>
     ($"https://localhost:7142/api/User/ResendConfirmEmail?email={SignInData.Email}", HttpMethod.Post, null);
-                            DisplayMessageBox.Show(null, resendEmail.Messages, resendEmail.Status, MessageBoxButton.OK, resendEmail.Status != "Fail" ? MessageBoxImage.Question : MessageBoxImage.Error);
+                            DisplayMessageBox.Show(null, resendEmail.Messages, resendEmail.Status, MessageBoxButton.OK, resendEmail.Status != OutputStatus.Fail ? MessageBoxImage.Question : MessageBoxImage.Error);
                         };
                     }
-                    if ("Fail".Equals(result.Status))
+                    if (OutputStatus.Fail.Equals(result.Status))
                     {
                         DisplayMessageBox.Show(null, result.Messages, "Login Process Error", MessageBoxButton.OK, MessageBoxImage.Error);
                     }
-                    if ("Success".Equals(result.Status))
+                    if (OutputStatus.Success.Equals(result.Status))
                     {
                         var userInfo = await SendApiRequest
      .SendApiRequestAsync<UserDto>
@@ -113,7 +114,7 @@ namespace GameStoreClient.ViewModels
                 {
                     var result = await SendApiRequest
      .SendApiRequestAsync<BaseOutputDto>("https://localhost:7142/api/User/SignUp", HttpMethod.Post, SignUpData);
-                    if ("Fail".Equals(result.Status))
+                    if (OutputStatus.Fail.Equals(result.Status))
                     {
                         DisplayMessageBox.Show(null, result.Messages, "Login Process Error", MessageBoxButton.OK, MessageBoxImage.Error);
                     }

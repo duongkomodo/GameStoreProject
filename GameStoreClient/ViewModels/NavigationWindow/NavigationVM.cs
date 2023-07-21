@@ -10,6 +10,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Transactions;
+using System.Windows;
 using System.Windows.Input;
 namespace GameStoreClient.ViewModels.NavigationWindow
 {
@@ -59,6 +60,7 @@ namespace GameStoreClient.ViewModels.NavigationWindow
         private void UserInfo(object obj) => CurrentView = new UserInfoVM();
         private void GameDetail(DisplayGameDto obj) => CurrentView = new GameDetailVM(obj);
         public ICommand HomeCommand { get; set; }
+        public ICommand LogoutCommand { get; set; }
         public ICommand SearchGameCommand { get; set; }
         public ICommand ListGameCommand { get; set; }
         public ICommand GameDetailCommand { get; set; }
@@ -69,6 +71,22 @@ namespace GameStoreClient.ViewModels.NavigationWindow
         public NavigationVM()
         {
             CartVM = new UserCartVM();
+
+            LogoutCommand = new RelayCommand<object>((p) =>
+            {
+                return true;
+            }, (p) =>
+            {
+
+                if (DisplayMessageBox.Show("Are you sure want to logout?", null, "Logout", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
+                {
+                    UserData.Jwt = null;
+                    UserData.User = null;
+                    IsUserLogined = false;
+                    CurrentView = new HomeVM();
+                }
+             
+            });
             AddToCartCommand = new RelayCommand<object>((p) =>
             {
                 return true;

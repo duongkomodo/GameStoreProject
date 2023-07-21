@@ -7,8 +7,9 @@ using System.Threading.Tasks;
 
 namespace DataAccess.Dto
 {
-    public class UserDto
+    public class UserDto:BaseDto
     {
+        public string Id { get; set; } = null!;
         public string? FullName { get; set; } = null!;
         public string? FirstName { get; set; } = null!;
         public string? LastName { get; set; } = null!;
@@ -18,7 +19,19 @@ namespace DataAccess.Dto
 
         [EmailAddress]
         public string Email { get; set; }
-        public string Avatar { get; set; }
+        private string avatar;
+        public string Avatar
+        {
+            get
+            {
+                return avatar;
+            }
+            set
+            {
+                avatar = value;
+                OnPropertyChanged("Avatar");
+            }
+        }
         public DateTime? JoinDate { get; set; }
         public string? Address { get; set; }
 

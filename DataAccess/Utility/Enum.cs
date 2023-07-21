@@ -8,6 +8,7 @@ namespace DataAccess.Utility
     public static class StringText
     {
         public static readonly string AvatarLink = @"Assets\blankAvatar.png";
+        public static readonly string UploadImageKey = @"secret_kW15bYAFbGHU4Lap5NvRgRHaeYQ5";
     }
 
     public static class OutputStatus

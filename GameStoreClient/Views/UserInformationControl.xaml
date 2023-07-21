@@ -109,16 +109,18 @@
                     BorderThickness="1"
                     CornerRadius="100">
                     <Border.Background>
-                        <ImageBrush ImageSource="{Binding UserInfor.Avatar}" Stretch="UniformToFill" />
+                        <ImageBrush ImageSource="{Binding UserInfor.Avatar, UpdateSourceTrigger=PropertyChanged}" Stretch="UniformToFill" />
                     </Border.Background>
                 </Border>
                 <Button
                     Width="130"
                     Height="40"
                     Margin="20,0"
-                    Background="Transparent"
+                    Background="BlueViolet"
                     BorderBrush="White"
+                    Command="{Binding UploadImageCommand}"
                     Content="Change Avatar"
+                    IsEnabled="{Binding ElementName=EditToggle, Path=IsChecked}"
                     Style="{StaticResource MaterialDesignPaperButton}" />
                 <Border
                     Margin="0,30"
@@ -161,19 +163,6 @@
                         Margin="10"
                         FontWeight="Bold"
                         Text="Personal" />
-
-                    <TextBox
-                        materialDesign:HintAssist.Hint="First Name"
-                        IsEnabled="{Binding ElementName=EditToggle, Path=IsChecked}"
-                        Text="{Binding UserInfor.FirstName}" />
-                    <TextBox
-                        materialDesign:HintAssist.Hint="Last Name"
-                        IsEnabled="{Binding ElementName=EditToggle, Path=IsChecked}"
-                        Text="{Binding UserInfor.LastName}" />
-                    <TextBox
-                        materialDesign:HintAssist.Hint="Phone Number"
-                        IsEnabled="{Binding ElementName=EditToggle, Path=IsChecked}"
-                        Text="{Binding UserInfor.PhoneNumber}" />
                     <StackPanel
                         Margin="10"
                         HorizontalAlignment="Left"
@@ -185,11 +174,29 @@
                             FontWeight="Bold"
                             Text="Edit" />
                     </StackPanel>
+                    <TextBox
+                        materialDesign:HintAssist.Hint="First Name"
+                        IsEnabled="{Binding ElementName=EditToggle, Path=IsChecked}"
+                        Text="{Binding UserInfor.FirstName}" />
+                    <TextBox
+                        materialDesign:HintAssist.Hint="Last Name"
+                        IsEnabled="{Binding ElementName=EditToggle, Path=IsChecked}"
+                        Text="{Binding UserInfor.LastName}" />
+                    <TextBox
+                        materialDesign:HintAssist.Hint="Address"
+                        IsEnabled="{Binding ElementName=EditToggle, Path=IsChecked}"
+                        Text="{Binding UserInfor.Address}" />
+                    <TextBox
+                        materialDesign:HintAssist.Hint="Phone Number"
+                        IsEnabled="{Binding ElementName=EditToggle, Path=IsChecked}"
+                        Text="{Binding UserInfor.PhoneNumber}" />
+
                     <Button
                         Width="250"
                         Height="50"
                         Margin="20"
                         materialDesign:ButtonAssist.CornerRadius="20"
+                        Command="{Binding SaveChangeUpdateInforCommand}"
                         Content="Save Changes"
                         FontSize="20"
                         Foreground="White"
@@ -206,6 +213,7 @@
                         Height="50"
                         Margin="20"
                         materialDesign:ButtonAssist.CornerRadius="20"
+                        Command="{Binding ChangePasswordCommand}"
                         Content="Change Password"
                         FontSize="20"
                         Foreground="White" />
@@ -215,6 +223,15 @@
                         Margin="20"
                         materialDesign:ButtonAssist.CornerRadius="20"
                         Content="Order History"
+                        FontSize="20"
+                        Foreground="White" />
+                    <Button
+                        Width="250"
+                        Height="50"
+                        Margin="20"
+                        materialDesign:ButtonAssist.CornerRadius="20"
+                        Command="{Binding Path=DataContext.LogoutCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}"
+                        Content="Logout"
                         FontSize="20"
                         Foreground="White" />
                 </StackPanel>

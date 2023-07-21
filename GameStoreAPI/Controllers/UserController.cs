@@ -106,7 +106,25 @@ namespace GameStoreAPI.Controllers
             var result = new BaseOutputDto() { Status = OutputStatus.Fail };
             try
             {
-                result = await _userRepo.ChangePasswordAsync(data.Email, data.Password, data.ConfirmPassword);
+                result = await _userRepo.ChangePasswordAsync(data.Email, data.NewPassword, data.ConfirmPassword);
+                return result;
+
+            }
+            catch (Exception ex)
+            {
+                result.Messages.Add(ex.Message);
+                return result;
+            }
+        }
+
+        [HttpPost]
+        [Authorize]
+        public async Task<BaseOutputDto> UpdateUserInfor(UserDto userData)
+        {
+            var result = new BaseOutputDto() { Status = OutputStatus.Fail };
+            try
+            {
+                result = await _userRepo.UpdateUserInforAsync(userData);
                 return result;
 
             }

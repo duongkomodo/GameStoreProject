@@ -20,7 +20,7 @@ namespace BusinessObject.Models
         public int OrderId { get; set; }
         public string UserId { get; set; }
 
-        [ForeignKey("Id")]
+        [ForeignKey("UserId")]
         public virtual User User { get; set; }
 
         public DateTime OrderTime { get; set; }

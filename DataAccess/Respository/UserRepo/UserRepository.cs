@@ -7,16 +7,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Configuration;
-using Microsoft.IdentityModel.Tokens;
-using System;
-using System.Collections.Generic;
-using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
-using System.Net;
-using System.Security.Claims;
 using System.Text;
-using System.Text.Encodings.Web;
-using System.Threading.Tasks;
 using System.Web;
 namespace DataAccess.Respository.UserRepo
 {
@@ -70,6 +61,7 @@ namespace DataAccess.Respository.UserRepo
                     LastName = model.LastName,
                     Email = model.Email,
                     UserName = model.Email,
+                    JoinDate= DateTime.Now,
                     PhoneNumber = model.PhoneNumber,
                     Avatar = StringText.AvatarLink,
                 };
@@ -227,7 +219,7 @@ namespace DataAccess.Respository.UserRepo
             return new UserDto() { Email = "User Not Found!" };
         }
 
-        public async Task<BaseOutputDto> ChangePasswordAsync(string userId, string newPassword, string confirmPassword)
+        public async Task<BaseOutputDto> ChangePasswordAsync(string userName, string newPassword, string confirmPassword)
         {
             var result = new BaseOutputDto()
             {
@@ -235,7 +227,13 @@ namespace DataAccess.Respository.UserRepo
             };
 
             var validator = new PasswordValidator<User>();
-            User user = await _userManager.FindByIdAsync(userId);
+            User user = await _userManager.FindByNameAsync(userName);
+
+            if (user == null)
+            {
+                result.Messages.Add("User not found.");
+                return result;
+            }
             if (!newPassword.Equals(confirmPassword))
             {
                 result.Messages.Add("The password and confirmation password do not match.");
@@ -263,6 +261,35 @@ namespace DataAccess.Respository.UserRepo
             }
 
             result.Messages.Add("Reset password success!");
+            result.Status = OutputStatus.Success;
+            return result;
+        }
+
+        public async Task<BaseOutputDto> UpdateUserInforAsync(UserDto userData)
+        {
+            var result = new BaseOutputDto()
+            {
+                Status = OutputStatus.Fail
+            };
+            User user = await _userManager.FindByNameAsync(userData.Email);
+            if (user == null)
+            {
+                result.Messages.Add("User not found.");
+                return result;
+            }
+            user.LastName = userData.LastName;
+            user.FirstName = userData.FirstName;
+            user.Email = userData.Email;
+            user.Address= userData.Address;
+            user.Avatar= userData.Avatar;
+
+         var check = await _userManager.UpdateAsync(user);
+            if (!check.Succeeded)
+            {
+                result.Messages.Add($"Update user {user.Email} fail.");
+                return result;
+            }
+            result.Messages.Add($"Update user {user.Email} success.");
             result.Status = OutputStatus.Success;
             return result;
         }
