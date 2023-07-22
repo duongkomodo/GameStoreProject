@@ -22,6 +22,7 @@ namespace DataAccess.Utility
                 .ForMember(dest => dest.SalePrice, act => act.MapFrom(src => (src.Price - (src.Price * src.Discount) / 100)));
             CreateMap<Category, CategoryDto>().ReverseMap();
             CreateMap<Order, OrderDto>().ReverseMap();
+            CreateMap<UserCart, UserCartDto>().ReverseMap();
 
         }
 

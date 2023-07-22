@@ -5,16 +5,17 @@ using DataAccess.Respository.GameKeyRepo;
 using DataAccess.Respository.GameRepo;
 using DataAccess.Respository.OrderDetailRepo;
 using DataAccess.Respository.OrderRepo;
+using DataAccess.Respository.UserCartRepo;
 using DataAccess.Respository.UserRepo;
 using DataAccess.Utility;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Text;
 using WebPWrecover.Services;
-using Microsoft.AspNetCore.Identity.UI.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -70,6 +71,7 @@ builder.Services.AddIdentity<User, IdentityRole>(options =>
     .AddDefaultTokenProviders();
 //Life cycle DI: AddSingleton(), AddTransient(), AddScope()
 builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IUserCartRepository, UserCartRepository>();
 builder.Services.AddScoped<IGameRepository, GameRepository>();
 builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
 builder.Services.AddScoped<IGameKeyRepository, GameKeyRepository>();
