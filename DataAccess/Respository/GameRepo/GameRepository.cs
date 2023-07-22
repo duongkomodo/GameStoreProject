@@ -76,7 +76,6 @@ namespace DataAccess.Respository.GameRepo
             {
                 throw new Exception(ex.Message);
             }
-
         }
 
         public bool RemoveGame(int gId)

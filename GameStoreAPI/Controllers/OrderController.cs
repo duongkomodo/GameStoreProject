@@ -1,7 +1,10 @@
 ﻿using BusinessObject.Models;
+using DataAccess.Dto;
 using DataAccess.Respository;
+using DataAccess.Respository.OrderRepo;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Security.Cryptography;
 
 namespace GameStoreAPI.Controllers
 {
@@ -9,101 +12,110 @@ namespace GameStoreAPI.Controllers
     [Route("api/[controller]/[action]")]
     public class OrderController : Controller
     {
+        private readonly IOrderRepository _orderRepo;
         private readonly GameStoreContext _context;
 
-        public OrderController(GameStoreContext context)
+        public OrderController(IOrderRepository orderRepo, GameStoreContext context)
         {
+            _orderRepo = orderRepo;
             _context = context;
         }
 
         [HttpPost]
-        public IActionResult Create(Order order)
+        public IActionResult Create(OrderDto order)
         {
-            Order o = _context.Orders.FirstOrDefault(x => x.OrderId == order.OrderId);
-            if (_context.Orders.Contains(order) || o != null)
-            {
-                return NoContent();
-            }
-
-            _context.Orders.Add(order);
             try
             {
-                _context.SaveChanges();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                return NotFound();
-            }
+                var result = _orderRepo.AddOrder(order);
 
-            return NoContent();
+                if (result)
+                {
+                    return Ok(result);
+                }
+
+                return NotFound();
+
+            }
+            catch (Exception)
+            {
+                return BadRequest();
+            }
         }
 
         [HttpGet]
-        public IActionResult Read()
+        public async Task<IActionResult> Read()
         {
-            if (_context.Orders == null)
+            try
             {
-                return NotFound();
+                return StatusCode(200, await _orderRepo.LoadAllOrders());
             }
-            List<Order> orders = _context.Orders.ToList();
-            return Ok(orders);
+            catch (ApplicationException ae)
+            {
+                return StatusCode(400, ae.Message);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
         }
 
         [HttpGet("{oid}")]
         public IActionResult ReadDetail(int oid)
         {
-            if (_context.Orders == null)
+            try
             {
-                return NotFound();
+                return Ok(_orderRepo.LoadOrder(oid));
             }
-            Order order = _context.Orders.FirstOrDefault(x => x.OrderId == oid);
-            return Ok(order);
+            catch (ApplicationException ae)
+            {
+                return StatusCode(400, ae.Message);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
         }
 
         [HttpPut]
-        public IActionResult Update(Order order)
+        public IActionResult Update(OrderDto order)
         {
-            Order entry = _context.Orders.First(x => x.OrderId == order.OrderId);
-            if (entry == null)
-            {
-                return NoContent();
-            }
-
-            _context.Entry(entry).CurrentValues.SetValues(order);
             try
             {
-                _context.SaveChanges();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                return NotFound();
-            }
+                var result = _orderRepo.UpdateOrder(order);
 
-            return NoContent();
+                if (result)
+                {
+                    return Ok(result);
+                }
+
+                return NotFound("Order not found!");
+
+            }
+            catch (Exception)
+            {
+                return BadRequest();
+            }
         }
 
         [HttpDelete("{oid}")]
         public IActionResult Delete(int oid)
         {
-            Order order = new Order();
-            if (oid == null)
+            try
             {
-                order = _context.Orders.LastOrDefault();
-            }
-            else
-            {
-                order = _context.Orders.FirstOrDefault(x => x.OrderId == oid);
-            }
+                var result = _orderRepo.RemoveOrder(oid);
 
-            if (_context.Orders == null || order == null)
-            {
-                return NotFound();
-            }
+                if (result)
+                {
+                    return Ok(result);
+                }
 
-            _context.OrderDetails.Remove(_context.OrderDetails.FirstOrDefault(x => x.OrderId.Equals(oid)));
-            _context.Orders.Remove(order);
-            _context.SaveChanges();
-            return NoContent();
+                return NotFound("Order not found!");
+
+            }
+            catch (Exception)
+            {
+                return BadRequest();
+            }
         }
     }
 }

@@ -33,7 +33,7 @@ namespace DataAccess.Respository.UserRepo
 
         public UserRepository(IMapper mapper, GameStoreContext context,
             IConfiguration configuration, UserManager<User> userManager,
-            ILookupNormalizer normalizer, IPasswordHasher<User> hashPasswordManager, 
+            ILookupNormalizer normalizer, IPasswordHasher<User> hashPasswordManager,
             SignInManager<User> signInManager, IEmailSender emailSender)
         {
             _context = context;
@@ -54,7 +54,7 @@ namespace DataAccess.Respository.UserRepo
             };
 
             var validator = new PasswordValidator<User>();
-                User user = await _userManager.FindByNameAsync(model.Email);
+            User user = await _userManager.FindByNameAsync(model.Email);
 
             if (user != null)
             {
@@ -74,33 +74,33 @@ namespace DataAccess.Respository.UserRepo
                     Avatar = StringText.AvatarLink,
                 };
 
-                    if (!model.Password.Equals(model.ConfirmPassword))
+                if (!model.Password.Equals(model.ConfirmPassword))
+                {
+                    result.Messages.Add("The password and confirmation password do not match.");
+                }
+
+                var validatepassword = await validator.ValidateAsync(_userManager, user, model.Password);
+                if (!validatepassword.Succeeded)
+                {
+                    foreach (var error in validatepassword.Errors)
                     {
-                        result.Messages.Add("The password and confirmation password do not match.");
-                    }
-           
-                        var validatepassword = await validator.ValidateAsync(_userManager, user, model.Password);
-                        if (!validatepassword.Succeeded)
-                        {
-                            foreach (var error in validatepassword.Errors)
-                            {
-                                result.Messages.Add(error.Description);
-                            }
-                        
-                    }
-                    var identityResult = await _userManager.CreateAsync(user, model.Password);
-                    if (identityResult.Succeeded)
-                    {
-                        await SendConfirmEmailAsync(user);
-                        await _userManager.AddToRoleAsync(user, Roles.Member.ToString());
+                        result.Messages.Add(error.Description);
                     }
 
-                    result.Status = identityResult.Succeeded ? OutputStatus.Success: OutputStatus.Fail;
-                }            
-             
-                return result;
-            
-         
+                }
+                var identityResult = await _userManager.CreateAsync(user, model.Password);
+                if (identityResult.Succeeded)
+                {
+                    await SendConfirmEmailAsync(user);
+                    await _userManager.AddToRoleAsync(user, Roles.Member.ToString());
+                }
+
+                result.Status = identityResult.Succeeded ? OutputStatus.Success : OutputStatus.Fail;
+            }
+
+            return result;
+
+
         }
         public async Task SendConfirmEmailAsync(User newUser)
         {
@@ -170,7 +170,7 @@ namespace DataAccess.Respository.UserRepo
                 var userDto = _mapper.Map<UserDto>(user);
                 var token = JWTConfig.CreateToken(userDto, _configuration);
                 result.Messages.Add(token);
-                result.Status= OutputStatus.Success;
+                result.Status = OutputStatus.Success;
                 return result;
             }
             else
@@ -183,7 +183,7 @@ namespace DataAccess.Respository.UserRepo
 
         public async Task<BaseOutputDto> ResendConfirmEmailAsync(string email)
         {
-            var result = new BaseOutputDto() { Status= OutputStatus.Fail };
+            var result = new BaseOutputDto() { Status = OutputStatus.Fail };
             // Get User
             User user = await _userManager.FindByNameAsync(email);
             if (user == null)
@@ -192,7 +192,7 @@ namespace DataAccess.Respository.UserRepo
                 return result;
             }
             SendConfirmEmailAsync(user);
-            result.Status= OutputStatus.Success;
+            result.Status = OutputStatus.Success;
             result.Messages.Add("Verification email sent. Please check your email.");
             return result;
         }
@@ -201,8 +201,7 @@ namespace DataAccess.Respository.UserRepo
         {
             // Get User
             await _signInManager.SignOutAsync();
-            return OutputStatus.Success; 
-           
+            return OutputStatus.Success;
         }
 
         public async Task<bool> IsEmailConfirmedAsync(SignInDto model)
@@ -241,14 +240,14 @@ namespace DataAccess.Respository.UserRepo
                 result.Messages.Add("The password and confirmation password do not match.");
                 return result;
             }
-           
-                var validatepassword = await validator.ValidateAsync(_userManager, user, confirmPassword);
-                if (!validatepassword.Succeeded)
+
+            var validatepassword = await validator.ValidateAsync(_userManager, user, confirmPassword);
+            if (!validatepassword.Succeeded)
+            {
+                foreach (var error in validatepassword.Errors)
                 {
-                    foreach (var error in validatepassword.Errors)
-                    {
-                        result.Messages.Add(error.Description);
-                    }
+                    result.Messages.Add(error.Description);
+                }
                 return result;
             }
 

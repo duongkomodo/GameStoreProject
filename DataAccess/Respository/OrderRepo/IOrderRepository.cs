@@ -9,8 +9,9 @@ namespace DataAccess.Respository.OrderRepo
 {
     public interface IOrderRepository
     {
-        List<OrderDto>? LoadAllOrders();
-        List<OrderDto>? LoadAllOrdersByUserId(int uId);
+        Task<List<OrderDto>>? LoadAllOrders();
+        Task<List<OrderDto>>? LoadAllOrdersByUserId(string uId);
+        OrderDto? LoadOrder(int oId);
         bool AddOrder(OrderDto Order);
         bool UpdateOrder(OrderDto Order);
         bool RemoveOrder(int oId);
