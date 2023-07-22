@@ -103,10 +103,10 @@ namespace DataAccess.Respository.OrderRepo
                 return false;
             }
 
-            _context.OrderDetails.Remove(_context.OrderDetails.FirstOrDefault(x => x.OrderId.Equals(oId)));
+            _context.OrderDetails.RemoveRange(_context.OrderDetails.Where(x => x.OrderId.Equals(oId)));
             _context.Orders.Remove(order);
             _context.SaveChanges();
-            return true; ;
+            return true;
         }
 
         public bool UpdateOrder(OrderDto order)
