@@ -13,7 +13,9 @@ namespace DataAccess.Utility
     {
         public MapperProfile()
         {
-            CreateMap<User, UserDto>().ForMember(dest => dest.FullName, act => act.MapFrom(src => src.FirstName + " " + src.LastName));
+            CreateMap<User, UserDto>()
+                .ForMember(dest => dest.FullName, act => act.MapFrom(src => src.FirstName + " " + src.LastName))
+                .ForMember(dest => dest.Id, act => act.MapFrom(src => src.Id.ToString()));
             CreateMap<Game, DisplayGameDto>()
                 .ForMember(dest => dest.Price, act => act.MapFrom(src => src.Price))
                 .ForMember(dest => dest.Discount, act => act.MapFrom(src => src.Discount))

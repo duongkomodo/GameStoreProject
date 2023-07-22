@@ -180,7 +180,7 @@
                             ToolTip="View Profile"
                             Visibility="{Binding UpdateSourceTrigger=PropertyChanged, Path=DataContext.IsUserLogined, Converter={StaticResource BoolToHiddenConverter}, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}">
                             <Button.Background>
-                                <ImageBrush ImageSource="{Binding Source={StaticResource versionManager}, Path=User.Avatar}" Stretch="UniformToFill" />
+                                <ImageBrush ImageSource="{Binding Source={StaticResource versionManager}, Path=User.Avatar, UpdateSourceTrigger=PropertyChanged}" Stretch="UniformToFill" />
 
                             </Button.Background>
 

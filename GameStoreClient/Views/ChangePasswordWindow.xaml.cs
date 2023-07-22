@@ -23,6 +23,9 @@ namespace GameStoreClient.Views
         {
             InitializeComponent();
             this.DataContext = userInfoVM;
+        
+            if (userInfoVM.CloseChangePasswordWindowAction == null)
+                userInfoVM.CloseChangePasswordWindowAction = new Action(Close);
         }
     }
 }

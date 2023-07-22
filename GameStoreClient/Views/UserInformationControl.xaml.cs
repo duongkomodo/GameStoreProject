@@ -24,7 +24,6 @@ namespace GameStoreClient.Views
         public UserInformationControl()
         {
             InitializeComponent();
-            this.DataContext = new UserInfoVM();
         }
     }
 }

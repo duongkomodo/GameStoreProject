@@ -1,14 +1,8 @@
-﻿using BusinessObject.Models;
-using DataAccess.Dto;
+﻿using DataAccess.Dto;
+using DataAccess.Utility;
 using GameStoreClient.APIHelper;
-using GameStoreClient.ViewModels.NavigationWindow;
 using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
 using System.Net.Http;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 namespace GameStoreClient.ViewModels
@@ -78,14 +72,14 @@ namespace GameStoreClient.ViewModels
                             var resendEmail = await SendApiRequest
     .SendApiRequestAsync<BaseOutputDto>
     ($"https://localhost:7142/api/User/ResendConfirmEmail?email={SignInData.Email}", HttpMethod.Post, null);
-                            DisplayMessageBox.Show(null, resendEmail.Messages, resendEmail.Status, MessageBoxButton.OK, resendEmail.Status != "Fail" ? MessageBoxImage.Question : MessageBoxImage.Error);
+                            DisplayMessageBox.Show(null, resendEmail.Messages, resendEmail.Status, MessageBoxButton.OK, resendEmail.Status != OutputStatus.Fail ? MessageBoxImage.Question : MessageBoxImage.Error);
                         };
                     }
-                    if ("Fail".Equals(result.Status))
+                    if (OutputStatus.Fail.Equals(result.Status))
                     {
                         DisplayMessageBox.Show(null, result.Messages, "Login Process Error", MessageBoxButton.OK, MessageBoxImage.Error);
                     }
-                    if ("Success".Equals(result.Status))
+                    if (OutputStatus.Success.Equals(result.Status))
                     {
                         var userInfo = await SendApiRequest
      .SendApiRequestAsync<UserDto>
@@ -113,9 +107,13 @@ namespace GameStoreClient.ViewModels
                 {
                     var result = await SendApiRequest
      .SendApiRequestAsync<BaseOutputDto>("https://localhost:7142/api/User/SignUp", HttpMethod.Post, SignUpData);
-                    if ("Fail".Equals(result.Status))
+                    if (OutputStatus.Fail.Equals(result.Status))
                     {
-                        DisplayMessageBox.Show(null, result.Messages, "Login Process Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                        DisplayMessageBox.Show(null, result.Messages, "Sign Up Process", MessageBoxButton.OK, MessageBoxImage.Error);
+                    }
+                    else
+                    {
+                        DisplayMessageBox.Show(null, result.Messages, "Sign Up Process", MessageBoxButton.OK, MessageBoxImage.Information);
                     }
                 }
             });

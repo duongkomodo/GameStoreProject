@@ -55,7 +55,10 @@
                     Grid.Row="2"
                     HorizontalAlignment="Left"
                     VerticalAlignment="Top">
-                    <ItemsControl x:Name="TableList" ItemsSource="{Binding AllGames, UpdateSourceTrigger=PropertyChanged}">
+                    <ItemsControl
+                        x:Name="TableList"
+                        ItemsSource="{Binding AllGames, UpdateSourceTrigger=PropertyChanged}"
+                        VirtualizingStackPanel.IsVirtualizing="False">
                         <ItemsControl.ItemsPanel>
                             <ItemsPanelTemplate>
                                 <WrapPanel Orientation="Horizontal" />
@@ -74,7 +77,7 @@
                                     Margin="10"
                                     Background="#FF455A64"
                                     CornerRadius="10">
-                                    <StackPanel>
+                                    <StackPanel VirtualizingPanel.IsVirtualizing="False">
                                         <Grid>
                                             <Image
                                                 Width="180"
