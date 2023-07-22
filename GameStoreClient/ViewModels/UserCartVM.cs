@@ -14,6 +14,8 @@ namespace GameStoreClient.ViewModels
     public class UserCartVM : BaseVM
     {
         #region Property
+
+        public Action CloseWindowAction { get; set; }
         private ObservableCollection<UserCartDto> _userCart = new ObservableCollection<UserCartDto>();
         public ObservableCollection<UserCartDto> UserCart
         {
@@ -122,11 +124,22 @@ namespace GameStoreClient.ViewModels
         public ICommand AddCartItemCommand { get; set; }
         public ICommand MinusCartItemCommand { get; set; }
         public ICommand RemoveCartItemCommand { get; set; }
+        public ICommand GobackCommand { get; set; }
 
         public ICommand CheckoutCommand { get; set; }
         #endregion
         public UserCartVM()
         {
+
+            GobackCommand = new RelayCommand<object>((p) =>
+            {
+            
+                return true;
+
+            }, (p) =>
+            {
+                CloseWindowAction();
+            });
             CheckoutCommand = new RelayCommand<object>((p) =>
             {
                 if (UserCart != null && UserCart.Any())
