@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
@@ -12,6 +13,7 @@ namespace DataAccess.Dto
     public class UserCartDto : BaseDto
     {
         private float price;
+     
         private int quantity;
 
         public string? UserId { get; set; }
@@ -29,6 +31,7 @@ namespace DataAccess.Dto
                 OnPropertyChanged("Price");
             }
         }
+        
         public int Quantity
         {
             get

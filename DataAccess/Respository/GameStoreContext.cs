@@ -22,6 +22,7 @@ namespace DataAccess.Respository
         public virtual DbSet<OrderDetail> OrderDetails { get; set; } = null!;
         public virtual DbSet<Game> Games { get; set; } = null!;
         public virtual DbSet<GameKey> GameKeys { get; set; } = null!;
+        public virtual DbSet<UserCart> UserCarts { get; set; } = null!;
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

@@ -1,5 +1,6 @@
 ﻿using BusinessObject.Models;
 using DataAccess.Dto;
+using GameStoreClient.APIHelper;
 using GameStoreClient.Views;
 using System;
 using System.Collections.Generic;
@@ -43,6 +44,21 @@ namespace GameStoreClient.ViewModels
                 {
                     _userCartTotalPrice = value;
                 }
+                OnPropertyChanged();
+            }
+        }
+
+        private string _anonymousUserEmail;
+        public string AnonymousUserEmail
+        {
+            get
+            {
+                return _anonymousUserEmail;
+            }
+            set
+            {
+                    _anonymousUserEmail = value;
+                
                 OnPropertyChanged();
             }
         }
@@ -150,8 +166,12 @@ namespace GameStoreClient.ViewModels
              
             }, (p) =>
             {
-                CheckOutPopupWindow checkOutPopup = new CheckOutPopupWindow();
-                checkOutPopup.ShowDialog();
+               if (UserData.User == null)
+                {
+                    CheckOutPopupWindow checkOutPopup = new CheckOutPopupWindow(this);
+                    checkOutPopup.ShowDialog();
+                }
+               
             });
             RemoveCartItemCommand = new RelayCommand<object>((p) =>
             {
@@ -166,7 +186,16 @@ namespace GameStoreClient.ViewModels
             });
             AddCartItemCommand = new RelayCommand<object>((p) =>
             {
-                return true;
+                var item = p as UserCartDto;
+                if (item != null)
+                {
+                    if (item.Quantity <= item.Game.Quantity)
+                    {
+                        return true;
+                    }
+
+                }
+                return false;
             }, (p) =>
             {
                 if (p != null)

@@ -17,7 +17,7 @@
     TextElement.Foreground="{DynamicResource MaterialDesignBody}"
     WindowStartupLocation="CenterScreen"
     mc:Ignorable="d">
-    <Border Background="{DynamicResource MaterialDesignPaper}" >
+    <Border Background="{DynamicResource MaterialDesignPaper}">
 
         <StackPanel>
             <TextBlock
@@ -31,7 +31,8 @@
                 Margin="20"
                 materialDesign:HintAssist.Hint="Purchase Email"
                 Foreground="White"
-                Style="{StaticResource MaterialDesignOutlinedTextBox}" />
+                Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                Text="{Binding AnonymousUserEmail, UpdateSourceTrigger=PropertyChanged}" />
             <StackPanel Margin="20" Orientation="Horizontal">
                 <TextBlock Foreground="Red" Text="Warning: " />
                 <TextBlock
@@ -49,7 +50,7 @@
                     Background="Green"
                     Content="Confirm"
                     Foreground="White" />
-            
+
             </StackPanel>
         </StackPanel>
     </Border>

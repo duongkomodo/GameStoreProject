@@ -19,9 +19,12 @@ namespace GameStoreClient.Views
     /// </summary>
     public partial class CheckOutPopupWindow : Window
     {
-        public CheckOutPopupWindow()
+        public CheckOutPopupWindow(ViewModels.UserCartVM userCartVM)
         {
             InitializeComponent();
+            this.DataContext = userCartVM;
+            if (userCartVM.CloseWindowAction == null)
+                userCartVM.CloseWindowAction = new Action(Close);
         }
     }
 }
