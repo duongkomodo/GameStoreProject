@@ -84,7 +84,8 @@ namespace DataAccess.Respository.UserRepo
                     if (identityResult.Succeeded)
                     {
                         await SendConfirmEmailAsync(user);
-                        await _userManager.AddToRoleAsync(user, Roles.Member.ToString());
+                     result.Messages.Add("Successful registration! We have sent you a confirmation email.\nPlease visit the link in the email to verify.");
+                    await _userManager.AddToRoleAsync(user, Roles.Member.ToString());
                     }
 
                     result.Status = identityResult.Succeeded ? OutputStatus.Success: OutputStatus.Fail;

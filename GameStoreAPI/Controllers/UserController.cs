@@ -25,18 +25,11 @@ namespace GameStoreAPI.Controllers
         {
             var result = new BaseOutputDto()
             {
-                Messages = new List<string>(),
                 Status = OutputStatus.Fail
             };
 
             try
-            {
-                var checkAccount = await _userRepo.CheckAccountExistByEmailAsync(model.Email);
-                if (!checkAccount)
-                {
-                    result.Messages.Add("Email already exist!");
-                    return result;
-                }
+            {         
                 result = await _userRepo.SignUpAsync(model);
                 return result;
             }

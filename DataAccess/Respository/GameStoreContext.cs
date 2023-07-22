@@ -70,7 +70,7 @@ namespace DataAccess.Respository
                 entity.HasOne(d => d.User)
                .WithMany(p => p.Orders)
                .HasForeignKey(d => d.UserId)
-               .HasConstraintName("FK_Orders_Customers");
+               .HasConstraintName("FK_Orders_User");
             });
 
             modelBuilder.Entity<UserCart>(entity =>

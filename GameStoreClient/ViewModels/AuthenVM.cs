@@ -1,15 +1,8 @@
-﻿using BusinessObject.Models;
-using DataAccess.Dto;
+﻿using DataAccess.Dto;
 using DataAccess.Utility;
 using GameStoreClient.APIHelper;
-using GameStoreClient.ViewModels.NavigationWindow;
 using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
 using System.Net.Http;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 namespace GameStoreClient.ViewModels
@@ -116,7 +109,11 @@ namespace GameStoreClient.ViewModels
      .SendApiRequestAsync<BaseOutputDto>("https://localhost:7142/api/User/SignUp", HttpMethod.Post, SignUpData);
                     if (OutputStatus.Fail.Equals(result.Status))
                     {
-                        DisplayMessageBox.Show(null, result.Messages, "Login Process Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                        DisplayMessageBox.Show(null, result.Messages, "Sign Up Process", MessageBoxButton.OK, MessageBoxImage.Error);
+                    }
+                    else
+                    {
+                        DisplayMessageBox.Show(null, result.Messages, "Sign Up Process", MessageBoxButton.OK, MessageBoxImage.Information);
                     }
                 }
             });
