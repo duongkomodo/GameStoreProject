@@ -6,7 +6,9 @@ using GameStoreClient.Views;
 using MaterialDesignThemes.Wpf;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
+using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using System.Transactions;
@@ -71,20 +73,28 @@ namespace GameStoreClient.ViewModels.NavigationWindow
         public NavigationVM()
         {
             CartVM = new UserCartVM();
+            
 
             LogoutCommand = new RelayCommand<object>((p) =>
             {
                 return true;
-            }, (p) =>
+            }, async (p) =>
             {
-
-                if (DisplayMessageBox.Show("Are you sure want to logout?", null, "Logout", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
+                if (UserData.User != null)
                 {
-                    UserData.Jwt = null;
-                    UserData.User = null;
-                    IsUserLogined = false;
-                    CurrentView = new HomeVM();
+                    if (DisplayMessageBox
+                .Show("Are you sure want to logout?", null, "Logout", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
+                    {
+                        CartVM.UnLoadUserCart();
+                        await CartVM.SaveUserCartAsync();
+                        UserData.Jwt = null;
+                        UserData.User = null;
+                        IsUserLogined = false;
+                        CurrentView = new HomeVM();
+                    }
+
                 }
+            
              
             });
             AddToCartCommand = new RelayCommand<object>((p) =>
@@ -142,7 +152,7 @@ namespace GameStoreClient.ViewModels.NavigationWindow
             LoginSignUpCommand = new RelayCommand<object>((p) =>
             {
                 return true;
-            }, (p) =>
+            }, async (p) =>
             {
                 SignInSignUpWindow signInSignUpWindow = new SignInSignUpWindow();
                 signInSignUpWindow.ShowDialog();
@@ -150,6 +160,9 @@ namespace GameStoreClient.ViewModels.NavigationWindow
             if (UserData.User != null)
                 {
                     IsUserLogined = true;
+                    var userCartItems = await SendApiRequest.SendApiRequestAsync<List<UserCartDto>>
+   ($"https://localhost:7142/api/UserCart/LoadAllGamesInUserCart/{UserData.User.Id}", HttpMethod.Get, null, UserData.Jwt);
+                    CartVM.LoadUserCart(userCartItems);
                 }
             });
             SearchGameCommand = new RelayCommand<object>((p) =>

@@ -10,8 +10,8 @@
     Width="1280"
     Height="720"
     Background="{DynamicResource MaterialDesignPaper}"
+    Closing="Window_Closing"
     FontFamily="{materialDesign:MaterialDesignFont}"
-
     ResizeMode="CanMinimize"
     TextElement.FontSize="14"
     TextElement.FontWeight="Medium"

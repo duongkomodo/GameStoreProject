@@ -10,8 +10,7 @@ namespace DataAccess.Respository.UserCartRepo
     public interface IUserCartRepository
     {
         Task<List<UserCartDto>>? LoadAllGamesInUserCart(string uId);
-        bool AddGameToCart(UserCartDto game);
-        bool UpdateGameInCart(UserCartDto game);
-        bool RemoveGameInCart(string uId, int gId);
+        Task<BaseOutputDto> UpdateGameItemInCart(string uId, List<UserCartDto> gameItems);
+     
     }
 }

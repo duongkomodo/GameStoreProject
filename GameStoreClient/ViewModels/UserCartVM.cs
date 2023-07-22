@@ -1,15 +1,19 @@
 ﻿using BusinessObject.Models;
 using DataAccess.Dto;
+using DataAccess.Utility;
 using GameStoreClient.APIHelper;
 using GameStoreClient.Views;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
+using static System.Net.Mime.MediaTypeNames;
+
 namespace GameStoreClient.ViewModels
 {
     public class UserCartVM : BaseVM
@@ -64,6 +68,20 @@ namespace GameStoreClient.ViewModels
         }
         #endregion
         #region Function
+
+        public void LoadUserCart(List<UserCartDto>? game)
+        {
+            if (game != null)
+            {
+                UserCart = new ObservableCollection<UserCartDto>(game);
+            }
+        }
+        public void UnLoadUserCart()
+        {
+          
+                UserCart = new ObservableCollection<UserCartDto>();
+            
+        }
         public void AddToCart(DisplayGameDto game)
         {
             if (game != null)
@@ -135,13 +153,21 @@ namespace GameStoreClient.ViewModels
                 UserCartTotalPrice = UserCart.Sum(x => x.Price);
             }
         }
+
+        public async Task SaveUserCartAsync()
+        {
+            if (UserCart != null && UserCart.Count > 0)
+            {
+                var result = await SendApiRequest
+.SendApiRequestAsync<BaseOutputDto>($"https://localhost:7142/api/UserCart/UpdateGameInCart?uid={UserData.User.Id}", HttpMethod.Post, UserCart, UserData.Jwt);
+            }
+        }
         #endregion
         #region Command
         public ICommand AddCartItemCommand { get; set; }
         public ICommand MinusCartItemCommand { get; set; }
         public ICommand RemoveCartItemCommand { get; set; }
         public ICommand GobackCommand { get; set; }
-
         public ICommand CheckoutCommand { get; set; }
         #endregion
         public UserCartVM()
@@ -152,9 +178,10 @@ namespace GameStoreClient.ViewModels
             
                 return true;
 
-            }, (p) =>
+            },  (p) =>
             {
-                CloseWindowAction();
+          
+                 CloseWindowAction();
             });
             CheckoutCommand = new RelayCommand<object>((p) =>
             {

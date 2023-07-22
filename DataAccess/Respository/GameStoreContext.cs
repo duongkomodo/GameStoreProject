@@ -76,7 +76,7 @@ namespace DataAccess.Respository
 
             modelBuilder.Entity<UserCart>(entity =>
             {
-                entity.HasKey(c => c.UserId);
+                entity.HasKey(c => new { c.UserId, c.GameId });
 
                 entity.HasOne(d => d.User)
                 .WithOne(p => p.UserCart)

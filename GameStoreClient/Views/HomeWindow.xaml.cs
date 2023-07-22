@@ -21,10 +21,17 @@ namespace GameStoreClient.Views
     /// </summary>
     public partial class HomeWindow : Window
     {
+        public NavigationVM NaviVM { get; }
         public HomeWindow()
         {
             InitializeComponent();
-            this.DataContext = new NavigationVM();
+            NaviVM= new NavigationVM();
+            this.DataContext = NaviVM;
+        }
+
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            NaviVM.LogoutCommand.Execute(null);
         }
     }
 }
