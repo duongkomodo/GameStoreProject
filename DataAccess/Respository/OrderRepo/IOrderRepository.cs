@@ -1,4 +1,5 @@
-﻿using DataAccess.Dto;
+﻿using BusinessObject.Models;
+using DataAccess.Dto;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,7 +13,7 @@ namespace DataAccess.Respository.OrderRepo
         Task<List<OrderDto>>? LoadAllOrders();
         Task<List<OrderDto>>? LoadAllOrdersByUserId(string uId);
         OrderDto? LoadOrder(int oId);
-        bool AddOrder(OrderDto Order);
+        Task<Order?> CreateOrder(string uid, float totalPrice);
         bool UpdateOrder(OrderDto Order);
         bool RemoveOrder(int oId);
     }

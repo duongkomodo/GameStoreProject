@@ -11,6 +11,7 @@
     Width="500"
     Background="{DynamicResource MaterialDesignPaper}"
     FontFamily="{materialDesign:MaterialDesignFont}"
+    Icon="/Views/R.png"
     ResizeMode="NoResize"
     SizeToContent="Height"
     TextElement.Foreground="{DynamicResource MaterialDesignBody}"

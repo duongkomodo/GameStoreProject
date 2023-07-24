@@ -19,9 +19,12 @@ namespace GameStoreClient.Views
     /// </summary>
     public partial class OrderHistory : Window
     {
-        public OrderHistory()
+        public OrderHistory(ViewModels.UserInfoVM userInfoVM)
         {
             InitializeComponent();
+            this.DataContext = userInfoVM;
+            if (userInfoVM.CloseOrderHistoryWindowAction == null)
+                userInfoVM.CloseOrderHistoryWindowAction = new Action(Close);
         }
     }
 }

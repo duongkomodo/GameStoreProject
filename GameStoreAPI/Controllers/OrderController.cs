@@ -26,12 +26,12 @@ namespace GameStoreAPI.Controllers
         {
             try
             {
-                var result = _orderRepo.AddOrder(order);
+                //var result = _orderRepo.AddOrder(order);
 
-                if (result)
-                {
-                    return Ok(result);
-                }
+                //if (result)
+                //{
+                //    return Ok(result);
+                //}
 
                 return NotFound();
 
@@ -42,12 +42,12 @@ namespace GameStoreAPI.Controllers
             }
         }
 
-        [HttpGet]
-        public async Task<IActionResult> Read()
+        [HttpGet("{uid}")]
+        public async Task<IActionResult> LoadAllOrdersFromUserId(string uid)
         {
             try
             {
-                return StatusCode(200, await _orderRepo.LoadAllOrders());
+                return StatusCode(200, await _orderRepo.LoadAllOrdersByUserId(uid));
             }
             catch (ApplicationException ae)
             {

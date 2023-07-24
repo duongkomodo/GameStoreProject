@@ -85,11 +85,12 @@ namespace GameStoreClient.ViewModels.NavigationWindow
                     if (DisplayMessageBox
                 .Show("Are you sure want to logout?", null, "Logout", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
                     {
-                        CartVM.UnLoadUserCart();
+                       
                         await CartVM.SaveUserCartAsync();
                         UserData.Jwt = null;
                         UserData.User = null;
                         IsUserLogined = false;
+                        CartVM.UnLoadUserCart();
                         CurrentView = new HomeVM();
                     }
 
@@ -160,8 +161,7 @@ namespace GameStoreClient.ViewModels.NavigationWindow
             if (UserData.User != null)
                 {
                     IsUserLogined = true;
-                    var userCartItems = await SendApiRequest.SendApiRequestAsync<List<UserCartDto>>
-   ($"https://localhost:7142/api/UserCart/LoadAllGamesInUserCart/{UserData.User.Id}", HttpMethod.Get, null, UserData.Jwt);
+                    var userCartItems = await CartVM.GetUserCart();
                     CartVM.LoadUserCart(userCartItems);
                 }
             });

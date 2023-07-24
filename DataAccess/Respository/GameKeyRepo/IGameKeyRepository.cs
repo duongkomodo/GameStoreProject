@@ -1,4 +1,5 @@
-﻿using DataAccess.Dto;
+﻿using BusinessObject.Models;
+using DataAccess.Dto;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,7 +11,8 @@ namespace DataAccess.Respository.GameKeyRepo
     public interface IGameKeyRepository
     {
         List<GameKeyDto>? LoadAllGameKeys();
-        bool AddGameKey(GameKeyDto model);
+        Task<List<GameKey>?> GetGameKeys(int gameId, int quantity);
+        Task<BaseOutputDto> CheckGameKeys(List<UserCartDto> game);
         bool UpdateGameKey(GameKeyDto model);
         bool RemoveGameKey(int gkId);
     }

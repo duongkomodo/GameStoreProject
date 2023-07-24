@@ -31,6 +31,10 @@ namespace BusinessObject.Models
         [Range(0,3)]
         //Unpaid, Pending, Paid
         public int Status { get; set; }
+        public float TotalPrice
+        {
+            get; set;
+        }
 
     }
 }

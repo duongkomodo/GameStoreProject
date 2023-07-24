@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DataAccess.Dto;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -19,9 +20,18 @@ namespace GameStoreClient.Views
     /// </summary>
     public partial class OrderDetailsWindow : Window
     {
-        public OrderDetailsWindow()
+        public OrderDetailsWindow(DataAccess.Dto.OrderDto order)
         {
             InitializeComponent();
+            DataContext=this;
+            SelectOrder = order;
+        }
+
+        public OrderDto SelectOrder { get; }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            this.Close();
         }
     }
 }

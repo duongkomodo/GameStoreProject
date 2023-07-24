@@ -13,7 +13,8 @@ namespace BusinessObject.Models
         [Key]
         public string Code { get; set; }
 
-        [Key]
+        public int? OrderDetailOrderId { get; set; }
+        public int? OrderDetailGameId { get; set; }
         public int GameId { get; set; }
 
         [ForeignKey("GameId")]

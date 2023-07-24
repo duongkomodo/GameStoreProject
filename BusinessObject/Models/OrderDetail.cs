@@ -36,6 +36,10 @@ namespace BusinessObject.Models
         {
             get; set;
         }
+        public List<GameKey> Keys
+        {
+            get; set;
+        }
 
     }
 }

@@ -2,6 +2,7 @@
 using AutoMapper.Execution;
 using BusinessObject.Models;
 using DataAccess.Dto;
+using DataAccess.Utility;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -9,20 +10,17 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
-
 namespace DataAccess.Respository.OrderRepo
 {
     public class OrderRepository : IOrderRepository
     {
         private readonly GameStoreContext _context;
         private readonly IMapper _mapper;
-
         public OrderRepository(IMapper mapper, GameStoreContext context)
         {
             _context = context;
             _mapper = mapper;
         }
-
         public async Task<List<OrderDto>>? LoadAllOrders()
         {
             try
@@ -36,21 +34,21 @@ namespace DataAccess.Respository.OrderRepo
                 throw new Exception(ex.Message);
             }
         }
-
-        public async Task<List<OrderDto>>? LoadAllOrdersByUserId(string uId)
+        public async Task<List<OrderDto>?> LoadAllOrdersByUserId(string uId)
         {
             try
             {
-                var list = await _context.Orders.Where(x => x.UserId == uId).Include(x => x.OrderDetails).ToListAsync();
+                var list = await _context.Orders.Where(x => x.UserId == uId)
+                    .Include(x => x.OrderDetails).ThenInclude(x=>x.Keys).ThenInclude(x=>x.Game).ToListAsync();
                 var result = _mapper.Map<List<OrderDto>>(list);
                 return result;
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                Console.WriteLine(ex.Message);
+                return null;
             }
         }
-
         public OrderDto? LoadOrder(int oId)
         {
             try
@@ -63,29 +61,21 @@ namespace DataAccess.Respository.OrderRepo
                 throw new Exception(ex.Message);
             }
         }
-
-        public bool AddOrder(OrderDto order)
+        public async Task<Order?> CreateOrder(string uid, float totalPrice)
         {
-            try
-            {
-                var addOrder = _mapper.Map<Order>(order);
-                Order o = _context.Orders.FirstOrDefault(x => x.OrderId == order.OrderId);
-                if (_context.Orders.Contains(addOrder) || o != null)
+                Order neworder = new Order()
                 {
-                    return false;
-                }
-                //addOrder.User = _context.Users.FirstOrDefault(x => x.Id == order.UserId);
-                _context.Orders.Add(addOrder);
-                _context.SaveChanges();
-                return true;
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.ToString());
-                return false;
-            }
-        }
+                    OrderTime = DateTime.Now,
+                    Status = OrderStatus.Paid,
+                    UserId = uid,
+                    TotalPrice= totalPrice,
+                };
+                await _context.Orders.AddAsync(neworder);
+                var result = await _context.SaveChangesAsync();
 
+                return neworder;
+
+        }
         public bool RemoveOrder(int oId)
         {
             Order order = new Order();
@@ -97,18 +87,15 @@ namespace DataAccess.Respository.OrderRepo
             {
                 order = _context.Orders.FirstOrDefault(x => x.OrderId == oId);
             }
-
             if (_context.Orders == null || order == null)
             {
                 return false;
             }
-
             _context.OrderDetails.RemoveRange(_context.OrderDetails.Where(x => x.OrderId.Equals(oId)));
             _context.Orders.Remove(order);
             _context.SaveChanges();
             return true;
         }
-
         public bool UpdateOrder(OrderDto order)
         {
             try

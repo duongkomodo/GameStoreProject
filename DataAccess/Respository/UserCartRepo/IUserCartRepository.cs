@@ -1,4 +1,5 @@
-﻿using DataAccess.Dto;
+﻿using BusinessObject.Models;
+using DataAccess.Dto;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,6 +12,7 @@ namespace DataAccess.Respository.UserCartRepo
     {
         Task<List<UserCartDto>>? LoadAllGamesInUserCart(string uId);
         Task<BaseOutputDto> UpdateGameItemInCart(string uId, List<UserCartDto> gameItems);
+        Task<BaseOutputDto> CheckOutForValidUser(string uId, Order order, List<OrderDetail> gameItems);
      
     }
 }

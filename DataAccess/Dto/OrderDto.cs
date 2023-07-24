@@ -11,13 +11,17 @@ namespace DataAccess.Dto
 {
     public class OrderDto
     {
-        [Key]
         public int OrderId { get; set; }
         public string UserId { get; set; }
         public DateTime OrderTime { get; set; }
 
         [Range(0, 3)]
         //Unpaid, Pending, Paid
-        public int Status { get; set; }
+        public string Status { get; set; }
+        public virtual ICollection<OrderDetailDto> OrderDetails { get; set; }
+        public float TotalPrice
+        {
+            get; set;
+        }
     }
 }

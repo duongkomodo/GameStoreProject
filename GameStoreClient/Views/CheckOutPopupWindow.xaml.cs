@@ -23,8 +23,8 @@ namespace GameStoreClient.Views
         {
             InitializeComponent();
             this.DataContext = userCartVM;
-            if (userCartVM.CloseWindowAction == null)
-                userCartVM.CloseWindowAction = new Action(Close);
+            if (userCartVM.CloseCheckOutPopupAction == null)
+                userCartVM.CloseCheckOutPopupAction = new Action(Close);
         }
     }
 }

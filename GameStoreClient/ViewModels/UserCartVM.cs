@@ -13,20 +13,18 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using static System.Net.Mime.MediaTypeNames;
-
 namespace GameStoreClient.ViewModels
 {
     public class UserCartVM : BaseVM
     {
         #region Property
-
-        public Action CloseWindowAction { get; set; }
+        public Action CloseCartWindowAction { get; set; }
+        public Action CloseCheckOutPopupAction { get; set; }
         private ObservableCollection<UserCartDto> _userCart = new ObservableCollection<UserCartDto>();
         public ObservableCollection<UserCartDto> UserCart
         {
             get
             {
-                
                 return _userCart;
             }
             set
@@ -51,7 +49,6 @@ namespace GameStoreClient.ViewModels
                 OnPropertyChanged();
             }
         }
-
         private string _anonymousUserEmail;
         public string AnonymousUserEmail
         {
@@ -61,14 +58,18 @@ namespace GameStoreClient.ViewModels
             }
             set
             {
-                    _anonymousUserEmail = value;
-                
+                _anonymousUserEmail = value;
                 OnPropertyChanged();
             }
         }
         #endregion
         #region Function
 
+        public async Task<List<UserCartDto>> GetUserCart()
+        {
+           return await SendApiRequest.SendApiRequestAsync<List<UserCartDto>>
+   ($"https://localhost:7142/api/UserCart/LoadAllGamesInUserCart/{UserData.User.Id}", HttpMethod.Get, null, UserData.Jwt);
+        }
         public void LoadUserCart(List<UserCartDto>? game)
         {
             if (game != null)
@@ -78,9 +79,7 @@ namespace GameStoreClient.ViewModels
         }
         public void UnLoadUserCart()
         {
-          
-                UserCart = new ObservableCollection<UserCartDto>();
-            
+            UserCart = new ObservableCollection<UserCartDto>();
         }
         public void AddToCart(DisplayGameDto game)
         {
@@ -132,6 +131,10 @@ namespace GameStoreClient.ViewModels
                     UserCart.Remove(getGame);
                     ReCalTotalPrice();
                 }
+                else
+                {
+                    getGame.Quantity = 1;
+                }
             }
         }
         public void AddCartItem(UserCartDto item)
@@ -153,7 +156,24 @@ namespace GameStoreClient.ViewModels
                 UserCartTotalPrice = UserCart.Sum(x => x.Price);
             }
         }
+        public async Task CheckOutProcess()
+        {
+            if (UserCart != null && UserData.User != null)
+            {
+                var result = await SendApiRequest
+.SendApiRequestAsync<BaseOutputDto>($"https://localhost:7142/api/UserCart/CheckOutForValidUser/{UserData.User.Id}", HttpMethod.Post, UserCart, UserData.Jwt);
+                if (result != null)
+                {
+                    DisplayMessageBox.Show(null, result.Messages, "Check Out Process", MessageBoxButton.OK, MessageBoxImage.Information);
 
+                }
+
+                if (result.Status == OutputStatus.Success)
+                {
+                    LoadUserCart( await GetUserCart());
+                }
+            }
+        }
         public async Task SaveUserCartAsync()
         {
             if (UserCart != null && UserCart.Count > 0)
@@ -172,16 +192,12 @@ namespace GameStoreClient.ViewModels
         #endregion
         public UserCartVM()
         {
-
             GobackCommand = new RelayCommand<object>((p) =>
             {
-            
                 return true;
-
-            },  (p) =>
+            }, (p) =>
             {
-          
-                 CloseWindowAction();
+              CloseCartWindowAction();
             });
             CheckoutCommand = new RelayCommand<object>((p) =>
             {
@@ -190,15 +206,17 @@ namespace GameStoreClient.ViewModels
                     return true;
                 }
                 return false;
-             
-            }, (p) =>
+            }, async (p) =>
             {
-               if (UserData.User == null)
+                if (UserData.User == null)
                 {
                     CheckOutPopupWindow checkOutPopup = new CheckOutPopupWindow(this);
                     checkOutPopup.ShowDialog();
                 }
-               
+                else
+                {
+                 await   CheckOutProcess();
+                }
             });
             RemoveCartItemCommand = new RelayCommand<object>((p) =>
             {
@@ -220,7 +238,6 @@ namespace GameStoreClient.ViewModels
                     {
                         return true;
                     }
-
                 }
                 return false;
             }, (p) =>

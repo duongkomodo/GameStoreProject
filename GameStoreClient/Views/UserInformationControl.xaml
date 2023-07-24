@@ -222,6 +222,7 @@
                         Height="50"
                         Margin="20"
                         materialDesign:ButtonAssist.CornerRadius="20"
+                        Command="{Binding OrderHistoryCommand}"
                         Content="Order History"
                         FontSize="20"
                         Foreground="White" />

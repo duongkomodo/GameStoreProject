@@ -21,7 +21,10 @@ namespace DataAccess.Utility
                 .ForMember(dest => dest.Discount, act => act.MapFrom(src => src.Discount))
                 .ForMember(dest => dest.SalePrice, act => act.MapFrom(src => (src.Price - (src.Price * src.Discount) / 100)));
             CreateMap<Category, CategoryDto>().ReverseMap();
-            CreateMap<Order, OrderDto>().ReverseMap();
+            CreateMap<Order, OrderDto>()
+                .ForMember(dest => dest.Status, act => act.MapFrom(src => src.Status  == OrderStatus.Unpaid ? OrderStatus.UnpaidText : src.Status == OrderStatus.Pending ? OrderStatus.PendingText : OrderStatus.PaidText));
+            CreateMap<OrderDetail, OrderDetailDto>();
+            CreateMap<GameKey, GameKeyDto>();
             CreateMap<UserCart, UserCartDto>().ReverseMap();
 
         }

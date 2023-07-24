@@ -24,8 +24,9 @@ namespace GameStoreClient.Views
         {
             InitializeComponent();
             this.DataContext = cartVM;
-            if (cartVM.CloseWindowAction == null)
-                cartVM.CloseWindowAction = new Action(Close);
+      
+       
+                cartVM.CloseCartWindowAction = new Action(this.Close);
         }
     }
 }

@@ -27,9 +27,7 @@
             <RowDefinition Height="6*" />
             <RowDefinition Height="0.8*" />
         </Grid.RowDefinitions>
-  
         <Border
-      
             Margin="10"
             BorderBrush="White"
             BorderThickness="0,0,0,1">
@@ -44,17 +42,15 @@
                         </Style>
                     </Canvas.Resources>
                     <TextBlock Canvas.Left="0" Text="Order History" />
-                    <TextBlock Canvas.Right="20" Text="3 Items" />
+                    <TextBlock Canvas.Right="20" Text="{Binding OrdersList.Count, StringFormat={}Orders: {0}}" />
                 </Canvas>
             </Grid>
         </Border>
         <Grid
-      
             Grid.RowSpan="3"
             Grid.Column="1"
             Background="#FF344046 " />
         <Border
-          
             Grid.Column="1"
             Margin="10"
             BorderBrush="White"
@@ -114,8 +110,6 @@
                         Foreground="White"
                         Style="{StaticResource MaterialDesignOutlinedDatePicker}" />
                 </StackPanel>
-
-
                 <Button
                     Width="130"
                     Height="50"
@@ -124,46 +118,53 @@
                     Background="Green"
                     Content="Apply Filter"
                     Foreground="White" />
-
-
-
             </StackPanel>
         </Border>
-
         <Border Grid.Row="1" Grid.Column="0">
             <ScrollViewer VerticalScrollBarVisibility="Auto">
                 <ListView
                     x:Name="lsvCart"
-                    ItemsSource="{Binding UserCartList}"
+                    ItemsSource="{Binding OrdersList}"
                     VirtualizingStackPanel.IsVirtualizing="False">
                     <ListView.View>
                         <GridView AllowsColumnReorder="False">
-                            <GridViewColumn Width="200" Header="Order ID">
+                            <GridViewColumn Width="140" Header="Order ID">
                                 <GridViewColumn.CellTemplate>
                                     <DataTemplate>
-                                        <TextBlock FontSize="18" Text="{Binding OrderId}" />
+                                        <TextBlock
+                                            FontSize="18"
+                                            Text="{Binding OrderId}"
+                                            TextAlignment="Center" />
                                     </DataTemplate>
                                 </GridViewColumn.CellTemplate>
                             </GridViewColumn>
-                            <GridViewColumn Width="200" Header="Order Time">
+                            <GridViewColumn Width="230" Header="Order Time">
                                 <GridViewColumn.CellTemplate>
                                     <DataTemplate>
-                                        <TextBlock FontSize="18" Text="{Binding OrderTime}" />
+                                        <TextBlock
+                                            FontSize="18"
+                                            Text="{Binding OrderTime}"
+                                            TextAlignment="Center" />
                                     </DataTemplate>
                                 </GridViewColumn.CellTemplate>
                             </GridViewColumn>
-
-                            <GridViewColumn Width="200" Header="Total Cost">
+                            <GridViewColumn Width="250" Header="Total Price">
                                 <GridViewColumn.CellTemplate>
                                     <DataTemplate>
-                                        <TextBlock FontSize="18" Text="{Binding Price, StringFormat={}{0:n0}đ}" />
+                                        <TextBlock
+                                            FontSize="18"
+                                            Text="{Binding TotalPrice, StringFormat={}{0:n0}đ}"
+                                            TextAlignment="Center" />
                                     </DataTemplate>
                                 </GridViewColumn.CellTemplate>
                             </GridViewColumn>
                             <GridViewColumn Width="100" Header="Status">
                                 <GridViewColumn.CellTemplate>
                                     <DataTemplate>
-                                        <TextBlock FontSize="18" Text="{Binding Total}" />
+                                        <TextBlock
+                                            FontSize="18"
+                                            Text="{Binding Status}"
+                                            TextAlignment="Center" />
                                     </DataTemplate>
                                 </GridViewColumn.CellTemplate>
                             </GridViewColumn>
@@ -175,8 +176,8 @@
                                                 x:Name="btnViewOrderDetails"
                                                 Margin="10"
                                                 Background="DarkOrange"
-                                                Command="{Binding DataContext.RemoveFoodCommand, ElementName=lsvFood}"
-                                                CommandParameter="{Binding ElementName=btnRemoveFood}"
+                                                Command="{Binding DataContext.OpenOrderDetailCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}"
+                                                CommandParameter="{Binding}"
                                                 Content="{materialDesign:PackIcon Kind=Details}"
                                                 Foreground="Black"
                                                 ToolTip="View Details" />
@@ -186,7 +187,6 @@
                             </GridViewColumn>
                         </GridView>
                     </ListView.View>
-                    <ListBoxItem />
                 </ListView>
             </ScrollViewer>
         </Border>
@@ -196,7 +196,8 @@
             Height="50"
             Margin="20,0"
             HorizontalAlignment="Left"
-            Background="Transparent">
+            Background="Transparent"
+            Command="{Binding CloseOrderHistoryCommand}">
             <StackPanel Orientation="Horizontal">
                 <materialDesign:PackIcon
                     Margin="0,0,10,0"
