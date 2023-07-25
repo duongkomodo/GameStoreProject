@@ -120,19 +120,19 @@
                             <TextBox
                                 Name="Email"
                                 materialDesign:HintAssist.Hint="Email*"
-                                Text="{Binding SignUpData.Email}" />
+                                Text="{Binding SignUpData.Email, UpdateSourceTrigger=PropertyChanged}" />
                             <TextBox
                                 x:Name="firstName"
                                 materialDesign:HintAssist.Hint="First Name*"
-                                Text="{Binding SignUpData.FirstName}" />
-                            <TextBox materialDesign:HintAssist.Hint="Last Name*" Text="{Binding SignUpData.LastName}" />
+                                Text="{Binding SignUpData.FirstName, UpdateSourceTrigger=PropertyChanged}" />
+                            <TextBox materialDesign:HintAssist.Hint="Last Name*" Text="{Binding SignUpData.LastName, UpdateSourceTrigger=PropertyChanged}" />
 
-                            <TextBox materialDesign:HintAssist.Hint="Phone Number (optional)" Text="{Binding SignUpData.PhoneNumber}" />
+                            <TextBox materialDesign:HintAssist.Hint="Phone Number (optional)" Text="{Binding SignUpData.PhoneNumber, UpdateSourceTrigger=PropertyChanged}" />
                             <PasswordBox
                                 Width="440"
                                 Margin="10"
                                 materialDesign:HintAssist.Hint="Password*"
-                                materialDesign:PasswordBoxAssist.Password="{Binding SignUpData.Password}"
+                                materialDesign:PasswordBoxAssist.Password="{Binding SignUpData.Password, UpdateSourceTrigger=PropertyChanged}"
                                 FontSize="12"
                                 Foreground="White"
                                 Style="{StaticResource MaterialDesignOutlinedRevealPasswordBox}" />
@@ -140,7 +140,7 @@
                                 Width="440"
                                 Margin="10"
                                 materialDesign:HintAssist.Hint="Confirm Password*"
-                                materialDesign:PasswordBoxAssist.Password="{Binding SignUpData.ConfirmPassword}"
+                                materialDesign:PasswordBoxAssist.Password="{Binding SignUpData.ConfirmPassword, UpdateSourceTrigger=PropertyChanged}"
                                 FontSize="12"
                                 Foreground="White"
                                 Style="{StaticResource MaterialDesignOutlinedRevealPasswordBox}" />

@@ -10,10 +10,8 @@ namespace GameStoreClient.ViewModels
     public class AuthenVM : BaseVM
     {
         #region Property   
-
         public Action CloseAction { get; set; }
         private SignInDto _signInData = new SignInDto();
- 
         public SignInDto SignInData
         {
             get
@@ -88,18 +86,22 @@ namespace GameStoreClient.ViewModels
                         {
                             //UserData.Instance.User = userInfo;
                             UserData.User = userInfo;
-                     
-                     
                         }
-                        DisplayMessageBox.Show($"Login success!\nWelcome {SignInData.Email}", null , result.Status, MessageBoxButton.OK, MessageBoxImage.Information);
+                        DisplayMessageBox.Show($"Login success!\nWelcome {SignInData.Email}", null, result.Status, MessageBoxButton.OK, MessageBoxImage.Information);
                         CloseAction();
                     }
-
-  
                 }
             });
             SignUpCommand = new RelayCommand<object>((p) =>
             {
+                if (string.IsNullOrEmpty(SignUpData.FirstName)
+                || string.IsNullOrEmpty(SignUpData.LastName)
+                 || string.IsNullOrEmpty(SignUpData.ConfirmPassword)
+                  || string.IsNullOrEmpty(SignUpData.Password)
+          )
+                {
+                    return false;
+                }
                 return true;
             }, async (p) =>
             {

@@ -135,9 +135,12 @@ namespace GameStoreClient.ViewModels.NavigationWindow
             ListGameCommand = new RelayCommand<object>((p) =>
             {
                 return true;
-            }, (p) =>
+            }, async (p) =>
             {
                 ListGame(p);
+                var listGameVM = (CurrentView as ListGameVM);
+                await listGameVM.LoadListCategoryData();
+                await listGameVM.LoadListGameData();
             });
             UserInfoCommand = new RelayCommand<object>((p) =>
             {
@@ -174,7 +177,11 @@ namespace GameStoreClient.ViewModels.NavigationWindow
                 {
                     this.ListGameCommand.Execute(null);
                 }
-               (CurrentView as ListGameVM).SearchGameData(SearchBarQuery);
+                var listGameVM = (CurrentView as ListGameVM);
+               
+                    listGameVM.SearchGameData(SearchBarQuery);
+                
+               
             });
             // Startup Page
             CurrentView = new HomeVM();

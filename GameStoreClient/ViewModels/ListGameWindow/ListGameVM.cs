@@ -40,8 +40,8 @@ namespace GameStoreClient.ViewModels.ListGameWindow
                 _allCategories = value; OnPropertyChanged();
             }
         }
-        private CategoryDto _selectCategory;
-        public CategoryDto SelectCategory
+        private CategoryDto? _selectCategory;
+        public CategoryDto? SelectCategory
         {
             get
             {
@@ -53,7 +53,6 @@ namespace GameStoreClient.ViewModels.ListGameWindow
                 if (_selectCategory != null)
                 {
                     FilterWithCategory(_selectCategory.CategoryId);
-
                 }
             }
         }
@@ -72,7 +71,7 @@ namespace GameStoreClient.ViewModels.ListGameWindow
         }
         #endregion
         #region Function
-        private async void LoadListGameData()
+        public async Task LoadListGameData()
         {
             var result = await SendApiRequest
                 .SendApiRequestAsync<List<DisplayGameDto>>
@@ -85,14 +84,14 @@ namespace GameStoreClient.ViewModels.ListGameWindow
         }
         public void SearchGameData(string query)
         {
-            if (SelectCategory != null || CurrListGames != null)
+            if (SelectCategory != null && CurrListGames != null)
             {
                 SelectCategory = AllCategories.FirstOrDefault();
                 AllGames = new PagingCollectionView(CurrListGames
                     .Where(x => x.Name.ToLower().Contains(query.ToLower().TrimEnd())).ToList(), ItemsPerPage);
             }
         }
-        public async void FilterWithCategory(int cid)
+        public void FilterWithCategory(int cid)
         {
             if (SelectCategory != null || CurrListGames != null)
             {
@@ -108,7 +107,7 @@ namespace GameStoreClient.ViewModels.ListGameWindow
                 AllGames.Refresh();
             }
         }
-        private async void LoadListCategoryData()
+        public async Task LoadListCategoryData()
         {
             var result = await SendApiRequest
                 .SendApiRequestAsync<List<CategoryDto>>
@@ -117,9 +116,8 @@ namespace GameStoreClient.ViewModels.ListGameWindow
             {
                 result.Insert(0, new CategoryDto { CategoryId = 0, Name = "All Games" });
                 AllCategories = new ObservableCollection<CategoryDto>(result);
-            SelectCategory = AllCategories.FirstOrDefault();
+                SelectCategory = AllCategories.FirstOrDefault();
             }
-          
         }
         #endregion
         #region Command
@@ -130,10 +128,7 @@ namespace GameStoreClient.ViewModels.ListGameWindow
         #endregion
         public ListGameVM()
         {
-             LoadListCategoryData();
-
-            LoadListGameData();
-        
+          
             OnNextCommand = new RelayCommand<object>((p) =>
             {
                 if (AllGames != null)
