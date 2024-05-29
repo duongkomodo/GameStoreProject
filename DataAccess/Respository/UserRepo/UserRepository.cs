@@ -69,6 +69,7 @@ namespace DataAccess.Respository.UserRepo
                 if (!model.Password.Equals(model.ConfirmPassword))
                 {
                     result.Messages.Add("The password and confirmation password do not match.");
+                    return result;
                 }
 
                 var validatepassword = await validator.ValidateAsync(_userManager, user, model.Password);
